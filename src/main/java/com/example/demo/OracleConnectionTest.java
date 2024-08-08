@@ -6,9 +6,9 @@ import java.sql.SQLException;
 
 public class OracleConnectionTest {
     public static void main(String[] args) {
-        String url = "jdbc:oracle:thin:@localhost:1521:xe"; // 데이터베이스 URL
-        String user = "your_username"; // 데이터베이스 사용자 이름
-        String password = "your_password"; // 데이터베이스 비밀번호
+        String url = "jdbc:oracle:thin:@localhost:1521:orcl"; // 데이터베이스 URL
+        String user = "scott"; // 데이터베이스 사용자 이름
+        String password = "tiger"; // 데이터베이스 비밀번호
 
         try {
             // Oracle JDBC 드라이버 로드
