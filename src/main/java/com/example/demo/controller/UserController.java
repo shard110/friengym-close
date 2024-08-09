@@ -1,50 +1,35 @@
-// UserController.java
 package com.example.demo.controller;
 
-import com.example.demo.service.UserService;
-import com.example.demo.security.JwtProvider;
-import com.example.demo.user.User;
-import com.example.demo.dto.LoginRequest;
-import com.example.demo.dto.LoginResponse;
-import com.example.demo.dto.UserDto;
-import com.example.demo.security.UserDetailsImpl;
+import com.example.demo.entity.User;
+import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
 
-    @Autowired
-    private JwtProvider jwtProvider;
-
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        User user = userService.findUserByEmail(loginRequest.getEmail());
-        
-        if (user != null && user.getPwd().equals(loginRequest.getPassword())) {
-            // User 객체를 UserDetailsImpl로 변환
-            UserDetailsImpl userDetails = new UserDetailsImpl(user);
-            // 로그인 성공 시 JWT 생성
-            String token = jwtProvider.generateToken(userDetails);
-            return ResponseEntity.ok(new LoginResponse(token));
-        } else {
-            return ResponseEntity.status(401).body("Invalid email or password");
+    @PostMapping("/register")
+    public ResponseEntity<String> registerUser(@RequestBody User user) {
+        if (userRepository.existsById(user.getId())) {
+            return ResponseEntity.badRequest().body("User already exists");
         }
+        userRepository.save(user);
+        return ResponseEntity.ok("User registered successfully");
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody UserDto userDto) {
-        User newUser = new User(
-            userDto.getId(), userDto.getPwd(), userDto.getName(), userDto.getPhone(),
-            userDto.getSex(), userDto.getHeight(), userDto.getWeight(), userDto.getBirth(),
-            userDto.getFirstday(), userDto.getRestday(), userDto.getPhoto()
-        );
-        userService.saveUser(newUser); // Assuming saveUser method is implemented in UserService
-        return ResponseEntity.ok("User registered successfully");
+    @PostMapping("/login")
+    public ResponseEntity<String> loginUser(@RequestBody User user) {
+        Optional<User> existingUser = userRepository.findById(user.getId());
+        if (existingUser.isPresent() && existingUser.get().getPwd().equals(user.getPwd())) {
+            return ResponseEntity.ok("Login successful");
+        }
+        return ResponseEntity.badRequest().body("Invalid credentials");
     }
 }
