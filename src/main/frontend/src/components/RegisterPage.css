@@ -1,0 +1,12 @@
+.register-container {
+  width: 300px;
+  margin: 0 auto;
+}
+
+.register-container input {
+  margin: 10px 0;
+}
+
+.register-container button {
+  width: 100%;
+}
