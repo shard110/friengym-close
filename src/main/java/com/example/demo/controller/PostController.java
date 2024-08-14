@@ -39,32 +39,32 @@ public class PostController {
 	    }
 
 		//상세페이지
-		@GetMapping("/post/{postId}")
-		public Post getPostById(@PathVariable("postId") Long id) {
-			return postRepository.findById(id)
-					.orElseThrow(() -> new PostNotFoundException(id));
+		@GetMapping("/post/{poNum}")
+		public Post getPostById(@PathVariable("poNum") Long poNum) {
+			return postRepository.findById(poNum)
+					.orElseThrow(() -> new PostNotFoundException(poNum));
 		}
 
 //업데이트
-	    @PutMapping("/post/{postId}")
-	    Post updatePost(@RequestBody Post newPost, @PathVariable("postId") Long id) {
-	        return postRepository.findById(id)
+	    @PutMapping("/post/{poNum}")
+	    Post updatePost(@RequestBody Post newPost, @PathVariable("poNum") Long poNum) {
+	        return postRepository.findById(poNum)
 	                .map(post -> {
 	                    post.setUsername(newPost.getUsername());
 	                    post.setTitle(newPost.getTitle());
 	                    post.setContent(newPost.getContent());
 	                    return postRepository.save(post);
-	                }).orElseThrow(() -> new PostNotFoundException(id));
+	                }).orElseThrow(() -> new PostNotFoundException(poNum));
 	    }
 
 		//Delete
-	    @DeleteMapping("/post/{postId}")
-	    String deletePost(@PathVariable("postId") Long id){
-	        if(!postRepository.existsById(id)){
-	            throw new PostNotFoundException(id);
+	    @DeleteMapping("/post/{poNum}")
+	    String deletePost(@PathVariable("poNum") Long poNum){
+	        if(!postRepository.existsById(poNum)){
+	            throw new PostNotFoundException(poNum);
 	        }
-	        postRepository.deleteById(id);
-	        return  "Post with id "+id+" has been deleted success.";
+	        postRepository.deleteById(poNum);
+	        return  "Post with poNum " +poNum+ " has been deleted success.";
 	    }
 
 

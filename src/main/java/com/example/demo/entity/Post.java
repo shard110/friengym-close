@@ -1,27 +1,31 @@
 package com.example.demo.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
 public class Post {
 
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // GenerationType.IDENTITY는 데이터베이스에 따라 자동으로 ID를 생성.
+    @Column(name = "ponum") // 데이터베이스 열 이름
+	private Long poNum;
     
     //임시 (jpa가 기존테이블을 수정할 수있어서 상의 후 바꾸겠습니다) ///////////////
     private String title;
     private String content;
     private String username;
 	
-    public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getPoNum() {
+        return poNum;
+    }
+    
+    public void setPoNum(Long poNum) {
+        this.poNum = poNum; 
+    }
 	public String getTitle() {
 		return title;
 	}
