@@ -31,10 +31,6 @@ dependencies {
 
     // Lombok
     implementation 'org.projectlombok:lombok:1.18.24'
-
-    
-
-	//wlswl
 }
 
 tasks.named('test') {

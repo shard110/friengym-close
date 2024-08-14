@@ -1,0 +1,12 @@
+.login-container {
+  width: 300px;
+  margin: 0 auto;
+}
+
+.login-container input {
+  margin: 10px 0;
+}
+
+.login-container button {
+  width: 100%;
+}
