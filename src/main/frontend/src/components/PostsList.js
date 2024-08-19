@@ -1,5 +1,6 @@
 // src/components/PostsList.js
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";  // Link 컴포넌트 import
 
 export default function PostsList() {
   const [posts, setPosts] = useState([]);
@@ -26,10 +27,13 @@ export default function PostsList() {
       <h2>Posts List</h2>
       <ul className="list-group">
         {posts.map((post) => (
-          <li key={post.id} className="list-group-item">
+          <li key={post.ponum} className="list-group-item"> {/* 'ponum'을 key로 사용 */}
             <h5>{post.title}</h5>
             <p>{post.content}</p>
             <small>By {post.username}</small>
+            <Link to={`/post/${post.poNum}`} className="btn btn-outline-info mt-2">
+              View Details
+            </Link>
           </li>
         ))}
       </ul>
