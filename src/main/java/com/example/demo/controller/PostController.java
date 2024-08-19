@@ -29,6 +29,7 @@ public class PostController {
 		//Create
 	    @PostMapping("/post")
 	    Post newPost(@RequestBody Post newPost) {
+			
 	        return postRepository.save(newPost);
 	    }
 

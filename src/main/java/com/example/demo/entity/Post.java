@@ -19,26 +19,35 @@ public class Post {
     private Long poNum;
 
     @Column(name = "username", nullable = false, length = 50)
-    private String username; 
+    private String username;
 
     @Column(name = "poTitle", nullable = false, length = 100)
-    private String title; 
+    private String title;
 
     @Column(name = "poContents", nullable = false, length = 4000)
-    private String content; 
+    private String content;
 
     @Column(name = "poDate", updatable = false)
-    private LocalDateTime poDate; 
+    private LocalDateTime poDate;
 
     @Column(name = "updatedDate")
     private LocalDateTime updatedDate; // 수정 날짜추가
 
-    public Post() {}
+    @Column(name = "viewcnt", nullable = false)
+    private int viewCnt = 0; // 기본값 설정
+
+    @Column(name = "replycnt", nullable = false)
+    private int replyCnt = 0;
+
+    public Post() {
+    }
 
     public Post(String title, String content, String username) {
         this.title = title;
         this.content = content;
         this.username = username;
+        this.poDate = LocalDateTime.now();
+        this.replyCnt = 0; // 기본값 설정
     }
 
     public Long getPoNum() {
@@ -87,6 +96,22 @@ public class Post {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public int getViewCnt() {
+        return viewCnt;
+    }
+
+    public void setViewCnt(int viewCnt) {
+        this.viewCnt = viewCnt;
+    }
+
+    public int getReplyCnt() {
+        return replyCnt;
+    }
+
+    public void setReplyCnt(int replyCnt) {
+        this.replyCnt = replyCnt;
     }
 
     @PrePersist
