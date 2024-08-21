@@ -6,22 +6,20 @@ import { useAuth } from './AuthContext';
 function LoginPage() {
   const [id, setId] = useState('');
   const [pwd, setPwd] = useState('');
-  const [error, setError] = useState(''); // 에러 메시지를 저장할 상태 추가
+  const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { setUser } = useAuth();
+  const { login } = useAuth();
 
   const handleLogin = async () => {
     try {
       // 서버에 JSON 형식으로 로그인 요청
-      const response = await axios.post('/api/login', {
-        id,
-        pwd
-      });
-      const user = response.data;
-      setUser(user);
+      const response = await axios.post('/api/login', { id, pwd });
+      const { token, user } = response.data; // 서버가 token과 user를 반환한다고 가정
+
+      // 로그인 상태를 업데이트하고 토큰을 저장
+      login({ ...user, token });
       navigate('/');
     } catch (error) {
-      // 에러 발생 시 메시지 설정
       setError('Login failed. Please check your credentials and try again.');
       console.error('Login failed', error);
     }
@@ -30,7 +28,7 @@ function LoginPage() {
   return (
     <div className="LoginPage">
       <h2>Login</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>} {/* 에러 메시지 표시 */}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
       <input
         type="text"
         value={id}

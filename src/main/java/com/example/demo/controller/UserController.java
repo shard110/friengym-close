@@ -1,13 +1,17 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.RegisterRequest;
+import com.example.demo.config.JwtTokenProvider;
 import com.example.demo.dto.LoginRequest;
+import com.example.demo.dto.LoginResponse;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.Optional;
 
 @RestController
@@ -15,6 +19,9 @@ import java.util.Optional;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
@@ -29,7 +36,7 @@ public class UserController {
             user.setPwd(registerRequest.getPwd());
             user.setName(registerRequest.getName());
             user.setPhone(registerRequest.getPhone());
-            user.setSex(registerRequest.getSex()); // sex 필드 추가
+            user.setSex(registerRequest.getSex());
             User registeredUser = userService.registerUser(user);
             return ResponseEntity.ok(registeredUser);
         } catch (Exception e) {
@@ -41,9 +48,40 @@ public class UserController {
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         Optional<User> user = userService.authenticateUser(loginRequest.getId(), loginRequest.getPwd());
         if (user.isPresent()) {
+            String token = jwtTokenProvider.createToken(user.get().getId()); // 실제 토큰 생성
+            LoginResponse loginResponse = new LoginResponse(token, user.get());
+            return ResponseEntity.ok(loginResponse);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        }
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> getUserInfo(@PathVariable String id, Principal principal) {
+        if (principal == null || !principal.getName().equals(id)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied");
+        }
+
+        Optional<User> user = userService.findById(id);
+        if (user.isPresent()) {
             return ResponseEntity.ok(user.get());
         } else {
-            return ResponseEntity.status(401).body("Invalid credentials");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+    }
+
+    @GetMapping("/mypage")
+    public ResponseEntity<?> getUserInfo(Principal principal) {
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied");
+        }
+
+        String userId = principal.getName();
+        Optional<User> user = userService.findById(userId);
+        if (user.isPresent()) {
+            return ResponseEntity.ok(user.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
     }
 
