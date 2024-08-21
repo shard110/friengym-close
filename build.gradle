@@ -31,6 +31,7 @@ dependencies {
 
     // Lombok
     implementation 'org.projectlombok:lombok:1.18.24'
+<<<<<<< HEAD
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
     // JWT 라이브러리 추가
@@ -39,6 +40,8 @@ dependencies {
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
 
+=======
+>>>>>>> ed4f3e5731bad5edb5ee9bc06a1e98168a2099ad
 }
 
 tasks.named('test') {
