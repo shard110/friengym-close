@@ -1,13 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate  } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 
 function HomePage() {
-  const { user, setUser } = useAuth();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    setUser(null);
-    window.location.href = '/';
+    logout();
+    navigate('/');
   };
 
   return (
@@ -16,6 +17,9 @@ function HomePage() {
         <div>
           <h1>Welcome, {user.name}</h1>
           <button onClick={handleLogout}>Logout</button>
+          <Link to="/mypage">
+            <button>My Page</button>
+          </Link>
         </div>
       ) : (
         <div>

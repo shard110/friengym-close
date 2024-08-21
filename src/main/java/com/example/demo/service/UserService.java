@@ -24,4 +24,12 @@ public class UserService {
         Optional<User> user = userRepository.findById(id);
         return user.isPresent() && encoder.matches(pwd, user.get().getPwd()) ? user : Optional.empty();
     }
+
+    public Optional<User> getUserById(String id) {
+        return userRepository.findById(id);
+    }
+
+    public Optional<User> findById(String id) {
+        return userRepository.findById(id);
+    }
 }
