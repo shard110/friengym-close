@@ -66,8 +66,8 @@ def webappDir = "$projectDir/src/main/frontend"
 
 // Node.js 설정
 node {
-    version = '16.14.0' // 원하는 Node.js 버전으로 설정
-    npmVersion = '8.5.5' // 원하는 npm 버전으로 설정
+    version = '18.12.0' // 원하는 Node.js 버전으로 설정
+    npmVersion = '8.19.2' // 원하는 npm 버전으로 설정
     download = true // Node.js를 다운로드할지 여부
 }
 
