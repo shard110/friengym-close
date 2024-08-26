@@ -52,7 +52,7 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 
-  
+
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.3'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.3'
 }
@@ -85,7 +85,8 @@ copyWebApp.dependsOn(appNpmInstall)
 compileJava.dependsOn(copyWebApp)
 
 
-def reactDir = "$projectDir/frontend/msys";  // 본인의 리액트 프로젝트 경로
+
+def reactDir = "$projectDir/src/main/frontend";  // 본인의 리액트 프로젝트 경로
 
 sourceSets{
 	main{
