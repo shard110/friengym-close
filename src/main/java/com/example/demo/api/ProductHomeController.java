@@ -31,7 +31,7 @@ public class ProductHomeController {
     }
 
     @GetMapping("/popular")
-public ResponseEntity<List<Product>> getPopularProducts(@RequestParam(required = false) Integer limit) {
+public ResponseEntity<List<Product>> getPopularProducts(@RequestParam(value = "limit", required = false) Integer limit) {
     List<Product> products = productService.findPopularProducts(limit);
     if (products.isEmpty()) {
         System.out.println("No popular products found");
@@ -61,7 +61,7 @@ public ResponseEntity<List<Product>> getNewProducts() {
 
 
 @GetMapping("/category/{catenum}")
-public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable int catenum) {
+public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable (value = "catenum") int catenum) {
     List<Product> products = productService.findProductsByCategory(catenum);
     if (products.isEmpty()) {
         return ResponseEntity.notFound().build();

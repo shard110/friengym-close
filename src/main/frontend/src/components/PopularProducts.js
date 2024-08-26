@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
-function PopularProducts() {
+function PopularProducts({ limit }) {
     const [popularProducts, setPopularProducts] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:8080/product/popular')
+        fetch(`http://localhost:8080/product/popular${limit ? `?limit=${limit}` : ''}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                return response.json();  // JSON으로 바로 받아옴
+                return response.json();
             })
             .then(data => {
                 if (Array.isArray(data)) {
@@ -20,8 +20,8 @@ function PopularProducts() {
                 }
             })
             .catch(error => console.error('Error fetching popular products:', error));
-    }, []);
-    
+    }, [limit]);
+
     return (
         <div>
             <h2>Popular Products</h2>

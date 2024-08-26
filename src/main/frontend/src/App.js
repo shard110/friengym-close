@@ -2,9 +2,9 @@ import React from 'react';
 import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import CategoryProductsPage from './components/CategoryProductsPage';
 import NewProducts from './components/NewProducts';
-import PopularProducts from './components/PopularProducts';
 import PostList from './components/PostList';
 import ProductHome from './components/ProductHome';
+import PopularProductsPage from './PopularProductsPage';
 
 function App() {
   return (
@@ -31,7 +31,7 @@ function App() {
           <Route path="/posts" element={<PostList />} />
           <Route path="/products" element={<ProductHome />} />
           <Route path="/categories/:catenum" element={<CategoryProductsPage />} />
-          <Route path="/products/popular" element={<PopularProducts />} />
+          <Route path="/products/popular" element={<PopularProductsPage />} />
           <Route path="/products/new" element={<NewProducts />} />
         </Routes>
       </div>

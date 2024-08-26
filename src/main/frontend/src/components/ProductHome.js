@@ -93,7 +93,7 @@ function ProductHome() {
 
             <div className="section popular-products">
                 <h3><Link to="/products/popular">인기상품 모두보기</Link></h3>
-                <PopularProducts />
+                <PopularProducts limit={4} />
             </div>
 
             <div className="section new-products">
