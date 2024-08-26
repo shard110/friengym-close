@@ -1,28 +1,107 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.3.2'
-	id 'io.spring.dependency-management' version '1.1.6'
+    id 'org.springframework.boot' version '3.3.2'
+    id 'io.spring.dependency-management' version '1.1.6'
+    id 'java'
+    id 'com.github.node-gradle.node' version '3.5.0' // Node Gradle plugin 사용
 }
 
-group = 'com.example'
+group = 'com.msys'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
-	}
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)  // Java 17로 설정
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web-services'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    implementation 'mysql:mysql-connector-java:8.0.33'
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.3'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.3'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
+}
+
+// Node.js 작업
+def webappDir = "$projectDir/frontend/msys"
+
+// Node.js 설정
+node {
+    version = '16.14.0' // 원하는 Node.js 버전으로 설정
+    npmVersion = '8.5.5' // 원하는 npm 버전으로 설정
+    download = true // Node.js를 다운로드할지 여부
+}
+
+task appNpmInstall(type: NpmTask) {
+    workingDir = file("${webappDir}")
+    args = ["install"]
+}
+
+task copyWebApp(type: Copy) {
+    from 'frontend/msys/build'
+    into "build/resources/main/static"
+}
+
+copyWebApp.dependsOn(appNpmInstall)
+compileJava.dependsOn(copyWebApp)
+
+
+def reactDir = "$projectDir/frontend/msys";  // 본인의 리액트 프로젝트 경로
+
+sourceSets{
+	main{
+		resources{
+			srcDirs = ["$projectDir/src/main/resources"]
+		}
+	}
+}
+
+processResources{
+	dependsOn "copyReactBuildFiles"
+}
+
+task installReact(type:Exec){
+	workingDir "$reactDir"
+	inputs.dir "$reactDir"
+	group = BasePlugin.BUILD_GROUP
+	
+	if(System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')){
+		commandLine "npm.cmd", "audit", "fix"
+		commandLine 'npm.cmd', 'install'
+	}else{
+		commandLine "npm", "audit", "fix"
+		commandLine 'npm', 'install'
+	}
+}
+
+task buildReact(type:Exec){
+	dependsOn "installReact"
+	workingDir "$reactDir"
+	inputs.dir "$reactDir"
+	group = BasePlugin.BUILD_GROUP
+	
+	if(System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')){
+		commandLine "npm.cmd", "run-script", "build"
+	}else{
+		commandLine "npm", "run-script", "build"
+	}
+}
+
+task copyReactBuildFiles(type:Copy){
+	dependsOn "buildReact"
+	from "$reactDir/build"
+	into "$projectDir/src/main/resources/static"
 }
