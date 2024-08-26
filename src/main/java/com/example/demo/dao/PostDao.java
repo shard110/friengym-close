@@ -7,8 +7,8 @@ import javax.swing.tree.RowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.msys.reactboot.dto.Page;
-import com.msys.reactboot.entity.Post;
+import com.example.demo.dto.Page;
+import com.example.demo.entity.Post;
 
 @Repository
 public class PostDao {

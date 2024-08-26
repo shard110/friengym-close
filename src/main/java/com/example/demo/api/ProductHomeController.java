@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.Product;
-import com.msys.reactboot.service.ProductService;
+import com.example.demo.service.ProductService;
 
 @RestController
 @RequestMapping(value = "/product")

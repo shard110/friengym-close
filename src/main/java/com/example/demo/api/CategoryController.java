@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.msys.reactboot.service.CategoryService;
+import com.example.demo.service.CategoryService;
 
 @RestController
 @RequestMapping("/api/categories")
