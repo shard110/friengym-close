@@ -36,7 +36,7 @@ tasks.named('test') {
 }
 
 // Node.js 작업
-def webappDir = "$projectDir/frontend/msys"
+def webappDir = "$projectDir/src/main/frontend"
 
 // Node.js 설정
 node {
@@ -51,7 +51,7 @@ task appNpmInstall(type: NpmTask) {
 }
 
 task copyWebApp(type: Copy) {
-    from 'frontend/msys/build'
+    from 'src/main/frontend/build'
     into "build/resources/main/static"
 }
 
