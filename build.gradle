@@ -56,6 +56,11 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+// Java 컴파일 시 '-parameters' 플래그 추가
+tasks.withType(JavaCompile) {
+    options.compilerArgs << '-parameters'
+}
+
 
 // Node.js 작업
 def webappDir = "$projectDir/src/main/frontend"

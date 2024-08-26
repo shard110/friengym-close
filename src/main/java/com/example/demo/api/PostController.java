@@ -27,8 +27,8 @@ public class PostController {
     private PostService postService;
 
     @GetMapping(value = "/posts")
-    public Map<String, Object> getPosts(@RequestParam(defaultValue = "1") int page,
-                                         @RequestParam(defaultValue = "10") int size) {
+    public Map<String, Object> getPosts(@RequestParam(name = "page", defaultValue = "1") int page,
+                                         @RequestParam(name = "size", defaultValue = "10") int size) {
         // 게시글 목록 가져오기
         List<Post> posts = postService.getPosts(page, size);
 

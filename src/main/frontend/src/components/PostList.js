@@ -8,7 +8,7 @@ const PostList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1); // 현재 페이지
-  const [size, setSize] = useState(10); // 페이지당 게시글 수
+  const [size] = useState(10); // 페이지당 게시글 수
   const [totalPages, setTotalPages] = useState(0); // 총 페이지 수
 
   useEffect(() => {
@@ -32,7 +32,6 @@ const PostList = () => {
   if (error) return <div>Error: {error}</div>;
 
   // 총 페이지 그룹 수 계산
-  const totalPageGroups = Math.ceil(totalPages / 10);
 
   // 페이지 버튼 생성
   const renderPageButtons = () => {
@@ -82,14 +81,8 @@ const PostList = () => {
   };
 
   // 이전 그룹으로 이동
-  const handlePreviousGroup = () => {
-    setPage(Math.max(page - 10, 1)); // 현재 페이지에서 10을 빼고, 1보다 작지 않도록 설정
-  };
 
   // 다음 그룹으로 이동
-  const handleNextGroup = () => {
-    setPage(Math.min(page + 10, totalPages)); // 현재 페이지에서 10을 더하고, 총 페이지 수보다 크지 않도록 설정
-  };
 
   return (
     <div>
