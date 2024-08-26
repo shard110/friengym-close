@@ -133,6 +133,3 @@ task copyReactBuildFiles(type:Copy){
 	into "$projectDir/src/main/resources/static"
 }
 
-task copyBuildToStatic(type: Exec) {
-    commandLine 'cmd', '/c', 'xcopy /E /I build\\* src\\main\\resources\\static\\'
-}
