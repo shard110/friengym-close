@@ -36,7 +36,7 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok'
     
     // MySQL JDBC Driver
-    runtimeOnly 'mysql:mysql-connector-java:8.0.33'
+    runtimeOnly 'mysql:mysql-connector-java:8.0.32'
     
     // Thymeleaf extras
     implementation 'org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE'
