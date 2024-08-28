@@ -12,13 +12,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class JwtTokenProvider {
 
     @Value("${jwt.secret}")
     private String secretKey;
+
+    private Set<String> blacklistedTokens = new HashSet<>();
 
     private static final long VALIDITY_IN_MS = 3600000; // 1 hour
 
@@ -36,6 +40,9 @@ public class JwtTokenProvider {
     }
 
     public Claims getClaims(String token) {
+        if (isTokenBlacklisted(token)) {
+            throw new JwtException("Token is blacklisted");
+        }
         try {
             return Jwts.parser()
                     .setSigningKey(secretKey.getBytes())
@@ -62,5 +69,13 @@ public class JwtTokenProvider {
                                       .authorities(List.of())  // Add authorities if needed
                                       .build();
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    }
+
+    public void blacklistToken(String token) {
+        blacklistedTokens.add(token);
+    }
+
+    public boolean isTokenBlacklisted(String token) {
+        return blacklistedTokens.contains(token);
     }
 }

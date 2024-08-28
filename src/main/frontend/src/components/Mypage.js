@@ -3,31 +3,40 @@ import axios from 'axios';
 import { useAuth } from './AuthContext';
 
 const Mypage = () => {
-    const { user } = useAuth();
+    const { user, loading } = useAuth();
     const [userInfo, setUserInfo] = useState(null);
     const [error, setError] = useState('');
 
     useEffect(() => {
         const fetchUserInfo = async () => {
-            try {
-                if (!user || !user.token) {
-                    throw new Error('User not authenticated or token missing');
+            const token = user?.token || localStorage.getItem('authToken');
+            if (token) {
+                try {
+                    console.log('Fetching user info with token:', token);
+                    const response = await axios.get('/api/mypage', {
+                        headers: { 
+                            Authorization: `Bearer ${token}`
+                        }
+                    });
+                    console.log('User info fetched successfully:', response.data);
+                    setUserInfo(response.data);
+                } catch (error) {
+                    console.error('Failed to fetch user info:', error);
+                    setError('Failed to fetch user info');
                 }
-    
-                const response = await axios.get(`/api/mypage`, {
-                    headers: {
-                        Authorization: `Bearer ${user.token}`
-                    }
-                });
-                setUserInfo(response.data);
-            } catch (error) {
-                setError('Failed to fetch user info');
-                console.error('Failed to fetch user info', error);
+            } else {
+                setError('No user token found');
             }
         };
-        console.log('User from context:', user);
-        fetchUserInfo();
-    }, [user]);
+
+        if (!loading) {
+            fetchUserInfo();
+        }
+    }, [loading, user]);
+
+    if (loading) {
+        return <p>Loading...</p>;
+    }
 
     return (
         <div className="Mypage">
@@ -44,10 +53,12 @@ const Mypage = () => {
                     <p>Birth: {userInfo.birth}</p>
                     <p>Firstday: {userInfo.firstday}</p>
                     <p>Restday: {userInfo.restday}</p>
-                    <img src={`data:image/jpeg;base64,${userInfo.photo}`} alt="Profile" />
+                    {userInfo.photo && (
+                        <img src={`data:image/jpeg;base64,${userInfo.photo}`} alt="Profile" />
+                    )}
                 </div>
             ) : (
-                <p>Loading user info...</p>
+                <p>No user info available.</p>
             )}
         </div>
     );
