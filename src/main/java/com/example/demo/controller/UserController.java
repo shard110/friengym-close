@@ -6,6 +6,9 @@ import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.LoginResponse;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -75,7 +78,7 @@ public class UserController {
         if (principal == null) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied");
         }
-
+ 
         String userId = principal.getName();
         Optional<User> user = userService.findById(userId);
         if (user.isPresent()) {
@@ -86,8 +89,17 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<String> logout() {
-        // 실제 애플리케이션에서는 세션 또는 토큰을 무효화해야 합니다.
+    public ResponseEntity<String> logout(HttpServletRequest request) {
+        // 요청 헤더에서 토큰 추출
+        String token = request.getHeader("Authorization");
+        if (token == null || !token.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing or invalid Authorization header");
+        }
+        token = token.substring(7); // "Bearer " 부분 제거
+
+        // 토큰을 블랙리스트에 추가
+        jwtTokenProvider.blacklistToken(token);
+
         return ResponseEntity.ok("Logout successful");
     }
 }
