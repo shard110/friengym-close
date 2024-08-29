@@ -1,77 +1,49 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entity.Post;
-import com.example.demo.exception.PostNotFoundException;
-import com.example.demo.repository.PostRepository;
+import com.example.demo.service.PostService;
+import java.util.Map;
 
 @RestController
-@CrossOrigin("http://localhost:3000")
-
+@CrossOrigin(origins = "http://localhost:3000")
 public class PostController {
-	
 
+    @Autowired
+    private PostService postService;
 
-	    @Autowired
-	    private PostRepository postRepository;
+    // Create
+    @PostMapping("/post")
+    public Post createPost(@RequestBody Post post) {
+        return postService.createPost(post);
+    }
 
-		//Create
-	    @PostMapping("/post")
-	    Post newPost(@RequestBody Post newPost) {
-			
-	        return postRepository.save(newPost);
-	    }
+    // 모든 게시글 (페이지네이션 지원)
+    @GetMapping("/posts")
+    public Map<String, Object> getPosts(
+        @RequestParam(value = "page", defaultValue = "1") int page,
+        @RequestParam(value = "size", defaultValue = "10") int size) {
+        return postService.getPagedPosts(page, size);
+    }
 
-		//모든 게시글
-	    @GetMapping("/posts")
-	    List<Post> getAllPosts() {
-	        return postRepository.findAll();
-	    }
+    // 상세 페이지
+    @GetMapping("/post/{poNum}")
+    public Post getPostById(@PathVariable("poNum") Integer poNum) {
+        return postService.getPostById(poNum);
+    }
 
-		//상세페이지
-		@GetMapping("/post/{poNum}")
-		public Post getPostById(@PathVariable("poNum") Long poNum) {
-			return postRepository.findById(poNum)
-					.orElseThrow(() -> new PostNotFoundException(poNum));
-		}
+    // 업데이트
+    @PutMapping("/post/{poNum}")
+    public Post updatePost(@PathVariable("poNum") Integer poNum, @RequestBody Post newPostData) {
+        return postService.updatePost(poNum, newPostData);
+    }
 
-//업데이트
-	    @PutMapping("/post/{poNum}")
-	    Post updatePost(@RequestBody Post newPost, @PathVariable("poNum") Long poNum) {
-	        return postRepository.findById(poNum)
-	                .map(post -> {
-	                    post.setUsername(newPost.getUsername());
-	                    post.setTitle(newPost.getTitle());
-	                    post.setContent(newPost.getContent());
-	                    return postRepository.save(post);
-	                }).orElseThrow(() -> new PostNotFoundException(poNum));
-	    }
-
-		//Delete
-	    @DeleteMapping("/post/{poNum}")
-	    String deletePost(@PathVariable("poNum") Long poNum){
-	        if(!postRepository.existsById(poNum)){
-	            throw new PostNotFoundException(poNum);
-	        }
-	        postRepository.deleteById(poNum);
-	        return  "Post with poNum " +poNum+ " has been deleted success.";
-	    }
-
-
-
-	}
-
-
-
-
+    // 삭제
+    @DeleteMapping("/post/{poNum}")
+    public String deletePost(@PathVariable("poNum") Integer poNum) {
+        postService.deletePost(poNum);
+        return "Post with poNum " + poNum + " has been deleted successfully.";
+    }
+}

@@ -4,8 +4,8 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 
 export default function PostDetail() {
   const [post, setPost] = useState({
-    title: "",
-    content: "",
+    poTitle: "",
+    poContents: "",
     username: "",
   });
   const [loading, setLoading] = useState(true);
@@ -51,11 +51,11 @@ export default function PostDetail() {
               Details of Post ID: {poNum}
             </div>
             <div className="card-body">
-              <h3>{post.title}</h3>
+              <h3>{post.poTitle}</h3>
               <h5>By {post.username}</h5>
-              <p>{post.content}</p>
+              <p>{post.poContents}</p>
               <div className="mt-3">
-                <Link to={`/edit/${post.poNum}`} className="btn btn-outline-primary mx-2">
+                <Link to={`/edit/${poNum}`} className="btn btn-outline-primary mx-2">
                   Edit
                 </Link>
                 <button

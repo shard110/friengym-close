@@ -1,4 +1,3 @@
-// src/components/EditPost.js
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -6,8 +5,8 @@ import axios from "axios";
 export default function EditPost() {
   const { poNum } = useParams();
   const [post, setPost] = useState({
-    title: "",
-    content: "",
+    poTitle: "",
+    poContents: "",
     username: "",
   });
   const [loading, setLoading] = useState(true);
@@ -52,24 +51,24 @@ export default function EditPost() {
       <h2>Edit Post</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label htmlFor="title" className="form-label">Title</label>
+          <label htmlFor="poTitle" className="form-label">Title</label>
           <input
             type="text"
-            id="title"
-            name="title"
+            id="poTitle"
+            name="poTitle"
             className="form-control"
-            value={post.title}
+            value={post.poTitle}
             onChange={handleChange}
             required
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="content" className="form-label">Content</label>
+          <label htmlFor="poContents" className="form-label">Content</label>
           <textarea
-            id="content"
-            name="content"
+            id="poContents"
+            name="poContents"
             className="form-control"
-            value={post.content}
+            value={post.poContents}
             onChange={handleChange}
             required
           />
