@@ -163,7 +163,7 @@ fi
 #   * args from the command line
 #   * the main class name
 #   * -classpath
-#   * -D...appname settings
+#   * -D...appName settings
 #   * --module-path (only if needed)
 #   * DEFAULT_JVM_OPTS, JAVA_OPTS, and GRADLE_OPTS environment variables.
 
@@ -209,7 +209,7 @@ DEFAULT_JVM_OPTS='"-Xmx64m" "-Xms64m"'
 #     treated as '${Hostname}' itself on the command line.
 
 set -- \
-        "-Dorg.gradle.appname=$APP_BASE_NAME" \
+        "-Dorg.gradle.appName=$APP_BASE_NAME" \
         -classpath "$CLASSPATH" \
         org.gradle.wrapper.GradleWrapperMain \
         "$@"

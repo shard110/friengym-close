@@ -1,26 +1,25 @@
-<<<<<<< HEAD
-.container {
-  text-align: center;
-  padding: 20px;
+@import "./reset.css";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
+
+body{
+  font-family: "Noto Sans KR", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
 
-button {
-  margin: 10px;
-  padding: 10px 20px;
-  font-size: 16px;
+h1{
+  font-weight: 200;
+  font-size: 32px;
 }
 
-input {
-  display: block;
-  margin: 10px auto;
-  padding: 10px;
-  font-size: 16px;
-  width: 200px;
+nav ul{
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
 
-.error {
-  color: red;
-=======
 .App {
   text-align: center;
 }
@@ -40,15 +39,23 @@ input {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  justify-content: space-around;
 }
 
-.App-link {
-  color: #61dafb;
+nav ul li {
+  display: inline;
+  margin-right: 32px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #555;
+  font-weight: 700;
+}
+
+nav ul li a:hover {
+  text-decoration: underline;
 }
 
 @keyframes App-logo-spin {
@@ -58,5 +65,8 @@ input {
   to {
     transform: rotate(360deg);
   }
->>>>>>> temp-branch
+}
+
+#homeTit{
+  padding-top: 300px;
 }
