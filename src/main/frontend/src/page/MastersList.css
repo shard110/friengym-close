@@ -1,0 +1,121 @@
+ul{
+    list-style: none;
+}
+
+h1{
+    margin: 0 0 50px 0;
+    text-align: center;
+}
+
+h1, h2{font-weight: 300;}
+
+h2{margin-bottom: 40px;}
+
+input{
+    width: 300px;
+    border: none;
+    border-bottom: 1px solid #bdbdbd;
+    padding: 30px 30px 10px 10px;
+    display: block;
+    margin: 20px auto;
+}
+
+input:focus-visible{
+    outline:none;
+    border: none;
+    border-bottom: 1px solid #00caa9;
+}
+
+button{
+    width: 80px;
+    padding: 8px 20px;
+    margin: 12px 2px;
+    border: none;
+    border-radius: 5px;
+    background-color: #00d6b3;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 800;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+button:first-child{
+    margin-left: 80px;
+}
+
+button:nth-child(2){
+    background-color: #ffa857;
+}
+
+form button{
+    width: 340px;
+    height: 50px;
+    padding: 16px;
+    margin: 50px;
+    border: none;
+    border-radius: 5px;
+    background-color: #00d6b3;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 800;
+    box-sizing: border-box;
+    outline: none;
+}
+
+form button:hover{
+    outline: none;
+    border: 1px solid #00d6b3;
+    background-color: #fff;
+    color: #00d6b3;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+section:first-child{
+    margin-right: 150px;
+}
+
+.justify{
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.justify>select{
+    width: 25%;
+    height: 32px;
+    margin-right: 24px;
+    text-align: center;
+    border: 1px solid #bdbdbd;
+    border-radius: 5px;
+
+}
+
+.justify>input{
+    width: 39%;
+    margin: 0;
+}
+
+form>.search{
+    background-color: #fff;
+    margin-top: 16px;
+    outline: none;
+    border: 1px solid #00d6b3;
+    color: #00d6b3;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+form>.search:hover{
+    background-color: #00d6b3;
+    color: #fff;
+}
+
+.adminList{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 60px;
+    margin-left: -32px;
+}
