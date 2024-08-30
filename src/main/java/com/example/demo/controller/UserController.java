@@ -1,11 +1,19 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.RegisterRequest;
+<<<<<<< HEAD
 import com.example.demo.config.JwtTokenProvider;
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.LoginResponse;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
+=======
+import com.example.demo.dto.LoginRequest;
+import com.example.demo.dto.LoginResponse;
+import com.example.demo.entity.User;
+import com.example.demo.service.UserService;
+import com.example.demo.config.JwtTokenProvider;
+>>>>>>> temp-branch
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -14,7 +22,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+<<<<<<< HEAD
 import java.security.Principal;
+=======
+>>>>>>> temp-branch
 import java.util.Optional;
 
 @RestController
@@ -51,7 +62,11 @@ public class UserController {
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         Optional<User> user = userService.authenticateUser(loginRequest.getId(), loginRequest.getPwd());
         if (user.isPresent()) {
+<<<<<<< HEAD
             String token = jwtTokenProvider.createToken(user.get().getId()); // 실제 토큰 생성
+=======
+            String token = jwtTokenProvider.createToken(user.get().getId());
+>>>>>>> temp-branch
             LoginResponse loginResponse = new LoginResponse(token, user.get());
             return ResponseEntity.ok(loginResponse);
         } else {
@@ -60,8 +75,19 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
+<<<<<<< HEAD
     public ResponseEntity<?> getUserInfo(@PathVariable String id, Principal principal) {
         if (principal == null || !principal.getName().equals(id)) {
+=======
+    public ResponseEntity<?> getUserInfo(@PathVariable String id, @RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token");
+        }
+
+        String username = jwtTokenProvider.getClaims(token).getSubject();
+        if (!username.equals(id)) {
+>>>>>>> temp-branch
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied");
         }
 
@@ -74,6 +100,7 @@ public class UserController {
     }
 
     @GetMapping("/mypage")
+<<<<<<< HEAD
     public ResponseEntity<?> getUserInfo(Principal principal) {
         if (principal == null) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied");
@@ -81,6 +108,16 @@ public class UserController {
  
         String userId = principal.getName();
         Optional<User> user = userService.findById(userId);
+=======
+    public ResponseEntity<?> getUserInfo(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token");
+        }
+
+        String username = jwtTokenProvider.getClaims(token).getSubject();
+        Optional<User> user = userService.findById(username);
+>>>>>>> temp-branch
         if (user.isPresent()) {
             return ResponseEntity.ok(user.get());
         } else {
@@ -90,7 +127,10 @@ public class UserController {
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {
+<<<<<<< HEAD
         // 요청 헤더에서 토큰 추출
+=======
+>>>>>>> temp-branch
         String token = request.getHeader("Authorization");
         if (token == null || !token.startsWith("Bearer ")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing or invalid Authorization header");

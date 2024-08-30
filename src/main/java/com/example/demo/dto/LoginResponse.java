@@ -1,6 +1,10 @@
 package com.example.demo.dto;
 
+<<<<<<< HEAD
 import com.example.demo.model.User;
+=======
+import com.example.demo.entity.User;
+>>>>>>> temp-branch
 
 public class LoginResponse {
     private String token;
