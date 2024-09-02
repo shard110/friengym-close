@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -93,6 +94,44 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
     }
+
+    @PutMapping("/user/update")
+    public ResponseEntity<?> updateUserInfo(@RequestBody User updatedUser, @RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+
+        // 토큰 유효성 검사
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token");
+        }
+
+        // 토큰에서 사용자 정보 추출
+        String username = jwtTokenProvider.getClaims(token).getSubject();
+        Optional<User> userOpt = userService.findById(username);
+
+        if (userOpt.isPresent()) {
+            User existingUser = userOpt.get();
+
+            // 필드 업데이트
+            existingUser.setName(updatedUser.getName());
+            existingUser.setPhone(updatedUser.getPhone());
+            existingUser.setSex(updatedUser.getSex());
+            existingUser.setHeight(updatedUser.getHeight());
+            existingUser.setWeight(updatedUser.getWeight());
+            existingUser.setBirth(updatedUser.getBirth());
+            existingUser.setFirstday(updatedUser.getFirstday());
+            existingUser.setRestday(updatedUser.getRestday());
+
+            // 사용자를 업데이트 (저장)
+            User updated = userService.save(existingUser);
+
+            return ResponseEntity.ok(updated);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+    }
+
+
+
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {

@@ -23,6 +23,7 @@ import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import HomePage from './components/HomePage';
 import Mypage from './components/Mypage';
+import EditProfilePage from './components/EditProfilePage';
 import { AuthProvider } from './components/AuthContext';
 
 export default function App() {
@@ -92,6 +93,7 @@ export default function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/mypage" element={<Mypage />} />
+            <Route path="/edit-profile" element={<EditProfilePage />} />
         </Routes>
         </div>
       </Router>

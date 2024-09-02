@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from './AuthContext';
+import { Link } from 'react-router-dom';
 
 const Mypage = () => {
     const { user, loading } = useAuth();
@@ -56,6 +57,8 @@ const Mypage = () => {
                     {userInfo.photo && (
                         <img src={`data:image/jpeg;base64,${userInfo.photo}`} alt="Profile" />
                     )}
+                    {/* 링크 추가 */}
+                    <Link to="/edit-profile">Edit Profile</Link>
                 </div>
             ) : (
                 <p>No user info available.</p>
