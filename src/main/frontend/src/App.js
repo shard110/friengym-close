@@ -22,6 +22,7 @@ import MastersList from './page/MastersList';
 import Board from './page/Board';
 import ProductDetail from './page/ProductDetail';
 import ProductList from './page/ProductList';
+import Cart from './page/Cart';
 
 
 export default function App() {
@@ -53,10 +54,10 @@ export default function App() {
                     <Link to="/masters">Master 목록</Link>
                   </li>
                   <li>
-                    <Link to="/productslist/1">상품상세페이지</Link>
+                    <Link to="/productslist">상품 목록</Link>
                   </li>
                   <li>
-                    <Link to="/productslist">상품 목록</Link>
+                    <Link to="/cart">장바구니</Link>
                   </li>
                 </ul>
               </li>
@@ -81,6 +82,7 @@ export default function App() {
             <Route path="/products/popular" element={<PopularProductsPage />} />
             <Route path="/products/new" element={<NewProducts />} />
             <Route path="/masters" element={<MastersList />} />
+            <Route path="/cart" element={<Cart />} />
             <Route path="/board" element={<Board />} />
             <Route path="/productslist/:pNum" element={<ProductDetail />} />
             <Route path="/productslist" element={<ProductList />} />

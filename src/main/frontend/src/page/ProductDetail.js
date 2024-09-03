@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';
+import { useAuth } from '../components/AuthContext'; // useAuth 훅 추가
+import { addToCart } from '../utils/cartUtils.js'; // addToCart 함수 임포트
 
 import './ProductDetail.css';
 import Gnb from '../components/Gnb';
 
 const ProductDetail = () => {
     const { pNum } = useParams();
+    const { user, loading } = useAuth(); // useAuth 훅 사용
     const [product, setProduct] = useState(null);
 
     useEffect(() => {
@@ -17,31 +19,12 @@ const ProductDetail = () => {
                 console.log(data);
                 setProduct(data);
             })
-            .catch(error => console.error('Error fetching product:', error));
+            .catch(error => console.error('상품을 불러오는 동안 오류 발생:', error));
     }, [pNum]);
 
-    const addToCart = () => {
-        // const token = localStorage.getItem('token');
-        // const decodedToken = jwtDecode(token); // jwt_decode 라이브러리 사용
-        // const userId = decodedToken.userId;
-
-        const cartItem = {
-            product: product,
-            cCount: 1, // 기본 수량 1
-            user: { id: '이용자10' }
-        };
-
-        axios.post('/api/cart', cartItem, {
-            headers: {
-                'Content-Type': 'application/json',
-                // 'Authorization': `Bearer ${token}`
-            }
-        })
-        .then(response => {
-            console.log('Item added to cart:', response.data);
-        })
-        .catch(error => console.error('Error adding item to cart:', error));
-    };
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
     if (!product) {
         return <div>Loading...</div>;
@@ -59,7 +42,7 @@ const ProductDetail = () => {
                     <div className="price">{product.pPrice.toLocaleString()}원</div>
                     <div className="count">재고 수량: {product.pCount}개</div>
                     <div className="date">업데이트: {new Date(product.pDate).toLocaleString()}</div>
-                    <button type="submit" className='cartBtn' onClick={addToCart}>장바구니</button>
+                    <button type="submit" className='cartBtn' onClick={() => addToCart(product)}>장바구니</button>
                     <button type="submit" className='buyBtn'>구매하기</button>
                 </div>
             </div>

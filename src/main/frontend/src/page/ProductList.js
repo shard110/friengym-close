@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useLocation } from 'react-router-dom';
+import { addToCart } from '../utils/cartUtils'; // addToCart 함수 임포트
 import './ProductList.css';
 import Footer from '../components/Footer';
 import icon_cart from '../img/icon_cart.png';
@@ -40,7 +41,6 @@ const ProductList = () => {
         }
         setProducts(sortedProducts);
     };
-    
 
     return (
         <div>
@@ -59,12 +59,14 @@ const ProductList = () => {
                             <div className="product-card" key={product.pNum}>
                                 <Link to={`/productslist/${product.pNum}`}>
                                     <img className='product-img' src={product.pImgUrl} alt={product.pName} />
-                                    <button><img src={icon_cart} alt='장바구니'></img></button>
                                 </Link>
+                                <button className='cartIconBtn' onClick={() => addToCart(product)}>
+                                    <img src={icon_cart} alt='장바구니'></img>
+                                </button>
                                 <Link to={`/productslist/${product.pNum}`}>
                                     <h3>{product.pName}</h3>
                                 </Link>
-                                <p className='product-price'> &#8361; {product.pPrice.toLocaleString()}</p>
+                                <p className='product-price'> ₩ {product.pPrice.toLocaleString()}</p>
                                 <p className='product-conut'>재고: {product.pCount}개 남음</p>
                             </div>
                         ))}
