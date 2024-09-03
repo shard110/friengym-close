@@ -1,5 +1,7 @@
 package com.example.demo.api;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -61,6 +63,7 @@ public class AskController {
     Ask ask = new Ask();
     ask.setATitle(title);
     ask.setAContents(contents);
+    ask.setADate(new Date()); // 현재 날짜를 설정
 
     // 파일 URL 처리
     if (fileUrl != null && !fileUrl.isEmpty()) {
