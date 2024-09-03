@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useLocation } from 'react-router-dom';
 import './ProductList.css';
-import CategoryList from '../components/CategoryList';
 import Footer from '../components/Footer';
-import Gnb from '../components/Gnb';
 import icon_cart from '../img/icon_cart.png';
 
 const ProductList = () => {
