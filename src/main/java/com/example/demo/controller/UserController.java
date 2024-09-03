@@ -47,6 +47,13 @@ public class UserController {
         }
     }
 
+    @GetMapping("/check-id/{id}")
+    public ResponseEntity<?> checkId(@PathVariable String id) {
+        boolean exists = userService.findById(id).isPresent();
+        return ResponseEntity.ok(!exists);
+    }
+
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         Optional<User> user = userService.authenticateUser(loginRequest.getId(), loginRequest.getPwd());
