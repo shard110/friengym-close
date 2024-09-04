@@ -32,7 +32,7 @@ public class User {
     private Date birth;
     private Integer firstday;
     private Integer restday;
-    private byte[] photo;
+    private String photo;
     private String sessionkey;
     private Date sessionlimit;
 
@@ -117,11 +117,11 @@ public class User {
         this.restday = restday;
     }
 
-    public byte[] getPhoto() {
+    public String getPhoto() {
         return photo;
     }
 
-    public void setPhoto(byte[] photo) {
+    public void setPhoto(String photo) {
         this.photo = photo;
     }
 
