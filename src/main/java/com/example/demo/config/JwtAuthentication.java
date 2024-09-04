@@ -4,10 +4,11 @@ import java.util.Collections;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import io.jsonwebtoken.Claims;
 
-public class JwtAuthentication extends AbstractAuthenticationToken {
+public class JwtAuthentication extends AbstractAuthenticationToken implements UserDetails  {
 
     private final Claims claims;
 
@@ -25,5 +26,15 @@ public class JwtAuthentication extends AbstractAuthenticationToken {
     @Override
     public Object getPrincipal() {
         return claims.getSubject(); // JWT의 subject를 사용자 식별자로 사용
+    }
+
+    @Override
+    public String getUsername() {
+        return claims.getSubject();  // JWT 토큰의 subject를 사용자 이름으로 사용
+    }
+
+    @Override
+    public String getPassword() {
+        return null;  // JWT 기반 인증에서는 비밀번호가 필요 없으므로 null 반환
     }
 }

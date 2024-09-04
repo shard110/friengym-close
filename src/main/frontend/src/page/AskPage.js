@@ -8,11 +8,13 @@ import Gnb from "../components/customerGnb";
 
 const AskPage = () => {
   const [asks, setAsks] = useState([]);
-  const [page, setPage] = useState(1); // 현재 페이지 상태
-  const [totalPages, setTotalPages] = useState(0); // 전체 페이지 수
-  const [pageSize] = useState(10); // 페이지당 항목 수
-  const [selectedAsk, setSelectedAsk] = useState(null); // 선택한 문의글
-  const [mode, setMode] = useState("view"); // "create", "view", "update", "delete" 모드 관리
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [pageSize] = useState(10);
+  const [selectedAsk, setSelectedAsk] = useState(null);
+  const [mode, setMode] = useState("view");
+  const [password, setPassword] = useState(""); // 비밀번호 상태 추가
+  const [isPasswordVerified, setIsPasswordVerified] = useState(false); // 비밀번호 검증 상태 추가
 
   useEffect(() => {
     fetchAsks(page);
@@ -20,13 +22,45 @@ const AskPage = () => {
 
   const fetchAsks = async (page) => {
     try {
-      const response = await axios.get(
-        `/api/asks?page=${page - 1}&size=${pageSize}`
-      );
+
+      const token = localStorage.getItem('jwtToken');  // localStorage에서 JWT 토큰 가져오기
+      if (!token) {
+        throw new Error("로그인이 필요합니다.");  // 토큰이 없으면 에러 발생
+      }
+  
+
+      const response = await axios.get(`/api/asks?page=${page - 1}&size=${pageSize}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,  // JWT 토큰을 Authorization 헤더에 포함
+        },
+      });
+
       setAsks(response.data.content);
       setTotalPages(response.data.totalPages);
     } catch (error) {
       console.error("Error fetching asks:", error);
+    }
+  };
+
+  const handleSelectAsk = async (ask) => {
+    setSelectedAsk(ask);
+    setIsPasswordVerified(false); // 초기화
+    setMode("view"); // 초기화
+  };
+
+  const handleVerifyPassword = async () => {
+    try {
+      const response = await axios.post('/api/asks/check-password', {
+        anum: selectedAsk.anum,
+        password: password
+      });
+      if (response.status === 200) {
+        setIsPasswordVerified(true);
+      } else {
+        alert("비밀번호가 일치하지 않습니다.");
+      }
+    } catch (error) {
+      alert("비밀번호 확인 중 오류가 발생했습니다.");
     }
   };
 
@@ -57,30 +91,31 @@ const AskPage = () => {
     setPage(totalPages);
   };
 
+  const formatDate = (timestamp) => {
+    return new Date(timestamp).toLocaleString();  // 날짜와 시간을 함께 표시
+  };
+
   return (
     <div>
-        <Gnb />
+      <Gnb />
       <h1>문의글 목록</h1>
 
-      {/* 문의글 작성, 수정, 삭제, 조회 컴포넌트 조건부 렌더링 */}
       {mode === "create" && <CreateAsk onAskCreated={() => fetchAsks(page)} />}
-      {mode === "update" && selectedAsk && (
+      {mode === "update" && selectedAsk && isPasswordVerified && (
         <UpdateAsk anum={selectedAsk.anum} onAskUpdated={() => fetchAsks(page)} />
       )}
-      {mode === "delete" && selectedAsk && (
+      {mode === "delete" && selectedAsk && isPasswordVerified && (
         <DeleteAsk anum={selectedAsk.anum} onAskDeleted={() => fetchAsks(page)} />
       )}
-      {mode === "view" && selectedAsk && <ViewAsk anum={selectedAsk.anum} />}
+      {mode === "view" && selectedAsk && isPasswordVerified && <ViewAsk anum={selectedAsk.anum} />}
 
       <ul>
         {asks && asks.length > 0 ? (
           asks.map((ask) => (
             <li key={ask.anum}>
-              <button onClick={() => setSelectedAsk(ask)}>
-                <h3>{ask.aTitle}</h3>
-                <p>{ask.aContents}</p>
-                <p>{new Date(ask.aDate).toLocaleDateString()}</p>
-              </button>
+              <h3>{ask.atitle}</h3>
+                  작성자: {ask.user ? ask.user.id : "Unknown"}
+                  작성일: {formatDate(ask.aDate)}  {/* Timestamp를 형식화하여 표시 */}
             </li>
           ))
         ) : (
@@ -88,7 +123,18 @@ const AskPage = () => {
         )}
       </ul>
 
-      {/* 페이지 네비게이션 */}
+      {selectedAsk && (
+        <div>
+          <h2>비밀번호를 입력하세요</h2>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button onClick={handleVerifyPassword}>비밀번호 확인</button>
+        </div>
+      )}
+
       <div>
         <button onClick={handleFirstPage} disabled={page === 1}>
           {"<<"} 첫 페이지
@@ -105,7 +151,7 @@ const AskPage = () => {
         </button>
       </div>
 
-      <button onClick={() => setMode("create")}>문의글 작성</button>
+      <button onClick={() => setMode("create")}>문의글 작성하기</button>
     </div>
   );
 };

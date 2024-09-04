@@ -1,29 +1,41 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // 페이지 이동을 위한 useNavigate 사용
+import { useNavigate } from "react-router-dom";
 
 const CreateAsk = ({ onAskCreated }) => {
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
   const [password, setPassword] = useState("");
-  const [fileUrl, setFileUrl] = useState(""); // 파일 URL 상태 추가
-  const navigate = useNavigate(); // useNavigate 훅으로 페이지 이동
+  const [fileUrl, setFileUrl] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async () => {
     const formData = new FormData();
     formData.append("aTitle", title);
     formData.append("aContents", contents);
     formData.append("password", password);
-    formData.append("fileUrl", fileUrl); // 서버에서 예상하는 필드 이름으로 사용
-  
+    formData.append("fileUrl", fileUrl);
+
     try {
-      await axios.post("/api/asks", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      // JWT 토큰을 localStorage에서 가져오거나 필요한 방식으로 불러옵니다.
+      const token = localStorage.getItem("jwtToken"); // JWT 토큰 가져오기
+
+     // 토큰이 없는 경우 오류를 표시하고 종료
+    if (!token) {
+      console.error("JWT 토큰이 존재하지 않습니다.");
+      return;
+    }
+
+    await axios.post("/api/asks", formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data"
+          // JWT 토큰을 Authorization 헤더에 추가
+      },
+    });
+
       alert("문의글이 성공적으로 작성되었습니다.");
-      onAskCreated(); // 문의글 작성 후 목록 갱신
+      onAskCreated();
       navigate('/asks'); // 문의글 작성 후 AskPage로 이동
     } catch (error) {
       console.error("문의글 작성 중 오류가 발생했습니다.", error.response?.data || error.message);
@@ -31,7 +43,7 @@ const CreateAsk = ({ onAskCreated }) => {
   };
 
   return (
-    <div>
+    <div id="create-ask">
       <h1>문의글 작성</h1>
       <input
         type="text"
@@ -54,9 +66,9 @@ const CreateAsk = ({ onAskCreated }) => {
         type="text"
         placeholder="파일 URL"
         value={fileUrl}
-        onChange={(e) => setFileUrl(e.target.value)} // 파일 URL 입력
+        onChange={(e) => setFileUrl(e.target.value)}
       />
-      <button onClick={handleSubmit}>작성</button>
+      <button onClick={handleSubmit}>작성완료</button>
     </div>
   );
 };

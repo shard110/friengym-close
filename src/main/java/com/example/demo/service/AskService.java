@@ -67,6 +67,6 @@ public class AskService {
     // 특정 작성자의 모든 문의글을 페이징 처리하여 조회
     public Page<Ask> getAsksByUserId(String id, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return askRepository.findById(id, pageable);
+        return askRepository.findByUserId(id, pageable);
     }
 }

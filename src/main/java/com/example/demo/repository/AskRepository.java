@@ -9,5 +9,5 @@ import com.example.demo.entity.Ask;
 public interface AskRepository extends JpaRepository<Ask, Integer> {
 
      // 특정 작성자의 모든 문의글을 페이징 처리하여 조회
-     Page<Ask> findById(String id, Pageable pageable);
+     Page<Ask> findByUserId(String userId, Pageable pageable);
 }

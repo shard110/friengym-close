@@ -3,9 +3,9 @@ package com.example.demo.config;
 import java.io.IOException;
 
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,15 +23,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain chain) throws ServletException, IOException {
+        // 요청에서 토큰 추출
         String token = resolveToken(request);
-        if (token != null && jwtTokenProvider.validateToken(token)) {
-            var claims = jwtTokenProvider.getClaims(token);
-            var authentication = new JwtAuthentication(claims); 
-            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        }
-        chain.doFilter(request, response);
+
+         System.out.println("Token: " + token);  // 토큰이 제대로 들어오는지 확인
+
+    if (token != null && jwtTokenProvider.validateToken(token)) {
+        Claims claims = jwtTokenProvider.getClaims(token);
+        System.out.println("Claims: " + claims.getSubject());  // 클레임이 제대로 추출되는지 확인
+
+        // 인증 객체를 생성하여 SecurityContext에 설정
+        JwtAuthentication authentication = new JwtAuthentication(claims);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    } else {
+        System.out.println("Invalid token or token is null.");
     }
+
+    chain.doFilter(request, response);
+}
 
     private String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");

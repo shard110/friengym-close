@@ -1,11 +1,17 @@
 package com.example.demo.entity;
 
-import java.util.Date;
+
+
+import java.sql.Timestamp;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,10 +24,19 @@ public class Ask {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)  // 자동 증가 설정
   private int anum;
-  private String id;
+
   private String aTitle; // 제목
   private String aContents; // 내용
-  private Date aDate;
+
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+  private Timestamp aDate;
   private String afile;
   private String passwordHash; // 비밀번호 해시값
+
+  @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false) // 외래키 컬럼 이름
+    private User user; // 작성자 (User 엔티티와 연결)
+
+
+
 }

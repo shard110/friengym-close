@@ -1,6 +1,6 @@
 import React from 'react';
+import logo from '../img/logo.png';
 import './Gnb.css';
-import logo from '../img/logo.png'
 
 const Gnb = () => {
     return (
@@ -11,9 +11,9 @@ const Gnb = () => {
                 </div>
                 <ul className="gnb-menu">
                     <li><a href="/">About frienGym</a></li>
-                    <li><a href="/board">게시판</a></li>
+                    <li><a href="/posts">게시판</a></li>
                     <li><a href="/products">쇼핑몰</a></li>
-                    <li><a href="/">고객센터</a></li>
+                    <li><a href="/qna">고객센터</a></li>
                 </ul>
             </div>
         </nav>

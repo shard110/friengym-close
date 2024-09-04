@@ -23,7 +23,7 @@ function QnaHeader() {
           <p>일요일: 휴무</p>
           <p>전화: 1670-0876</p>
           
-          <button onclick="https://open.kakao.com/o/s1vFvvMg" >1:1 카톡 상담</button>
+          <button >1:1 카톡 상담</button>
         </div>
       </div>
     </header>
