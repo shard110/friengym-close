@@ -1,14 +1,11 @@
 package com.example.demo.entity;
 
 import java.time.LocalDateTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import lombok.Data;
@@ -47,17 +44,13 @@ public class Post {
 
  
 
-    @ManyToOne
-    @JoinColumn(name = "id", nullable = false) // 외래키 컬럼 이름
-    private User user; // 작성자 (User 엔티티와 연결)
-
     // 생성자
-    public Post(String poTitle, String poContent, User user) {
+    public Post(String poTitle, String poContent, String username) {
         this.poTitle = poTitle;
         this.poContents = poContent;
-        this.user = user; // 작성자 설정
-        this.poDate = LocalDateTime.now(); // 게시글 작성 시 현재 시간으로 초기화
-        this.replyCnt = 0; // 댓글 수 기본값 설정
+        this.username = username;
+        this.poDate = LocalDateTime.now();
+        this.replyCnt = 0; // 기본값 설정
     }
 
     @PrePersist
