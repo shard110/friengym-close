@@ -4,6 +4,7 @@ import CreateAsk from '../components/CreateAsk';
 import DeleteAsk from '../components/DeleteAsk';
 import UpdateAsk from '../components/UpdateAsk';
 import ViewAsk from '../components/ViewAsk';
+import Gnb from "../components/customerGnb";
 
 const AskPage = () => {
   const [asks, setAsks] = useState([]);
@@ -58,6 +59,7 @@ const AskPage = () => {
 
   return (
     <div>
+        <Gnb />
       <h1>문의글 목록</h1>
 
       {/* 문의글 작성, 수정, 삭제, 조회 컴포넌트 조건부 렌더링 */}
