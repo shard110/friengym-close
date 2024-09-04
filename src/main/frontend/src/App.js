@@ -6,6 +6,7 @@ import CategoryProductsPage from './components/CategoryProductsPage';
 import NewProducts from './components/NewProducts';
 import ProductHome from './components/ProductHome';
 import PopularProductsPage from './components/PopularProductsPage';
+import { AuthProvider } from './components/AuthContext';
 import Navbar from "./components/NavBar";
 import CreatePost from "./components/CreatePost";
 import PostsList from "./components/PostsList";
@@ -16,7 +17,13 @@ import RegisterPage from './components/RegisterPage';
 import HomePage from './components/HomePage';
 import Mypage from './components/Mypage';
 import EditProfilePage from './components/EditProfilePage';
-import { AuthProvider } from './components/AuthContext';
+import CategoryProductsPage from './components/CategoryProductsPage';
+import PopularProductsPage from './components/PopularProductsPage';
+import NewProducts from './components/NewProducts';
+import MastersList from './page/MastersList';
+import Board from './page/Board';
+import ProductDetail from './page/ProductDetail';
+import ProductList from './page/ProductList';
 
 import MastersList from './page/MastersList';
 import Board from './page/Board';
@@ -26,11 +33,11 @@ import Cart from './page/Cart';
 
 
 export default function App() {
-  const [searchKeyword, setSearchKeyword] = useState('');
+    const [searchKeyword, setSearchKeyword] = useState('');
 
-  const handleSearch = () => {
-    window.location.href = `/productslist?keyword=${searchKeyword}`;
-  };
+    const handleSearch = () => {
+        window.location.href = `/productslist?keyword=${searchKeyword}`;
+    };
 
   return (
     <AuthProvider>
