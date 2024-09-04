@@ -17,5 +17,34 @@ code {
 }
 
 h1 {
+  margin: 120px auto 56px auto;
   text-align: center;
+}
+
+button{
+  min-width: 100px;
+}
+
+div>a{
+  background-color: #00d6b3;
+  color: #fff;
+  min-width: 100px;
+  padding: 16px;
+  margin-right: 8px;
+  border-radius: 5px;
+  display: inline-block;
+  text-align: center;
+  font-weight: 600;
+}
+
+div>a:nth-last-of-type(1){
+  margin-right: 0;
+}
+
+div>a:hover, button:hover{
+  opacity: 65%;
+}
+
+a button{
+  padding: 0;
 }

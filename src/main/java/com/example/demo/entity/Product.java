@@ -1,12 +1,15 @@
 package com.example.demo.entity;
 
 import java.util.Date;
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
@@ -28,7 +31,10 @@ public class Product {
   @ManyToOne
   @JoinColumn(name = "pcate", referencedColumnName = "catenum", insertable = false, updatable = false)
   private Category category;
-  
+
+  @OneToMany(mappedBy = "product")
+  private List<Dorder> dorders;
+
   public int getpNum() {
     return this.pNum;
   }
@@ -107,5 +113,13 @@ public class Product {
 
   public void setpCate(int pCate) {
     this.pCate = pCate;
+  }
+
+  public List<Dorder> getDorders() {
+    return this.dorders;
+  }
+
+  public void setDorders(List<Dorder> dorders) {
+    this.dorders = dorders;
   }
 }

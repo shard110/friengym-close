@@ -9,7 +9,7 @@ export default function Navbar() {
           <Link className="navbar-brand text-light" to="/">
             게. 시. 판
           </Link>
-          <button
+          {/* <button 
             className="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
@@ -19,7 +19,7 @@ export default function Navbar() {
             aria-label="Toggle navigation"
           >
             <span className="navbar-toggler-icon"></span>
-          </button>
+          </button> */}
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav ms-auto">
