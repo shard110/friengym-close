@@ -1,5 +1,8 @@
 package com.example.demo.service;
 
+import java.sql.Timestamp;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -49,17 +52,30 @@ public class AskService {
     }
 
     // 문의글 수정
-    public Ask updateAsk(int anum, String rawPassword, Ask updatedAsk) {
-        Ask existingAsk = getAskByIdAndPassword(anum, rawPassword); // 비밀번호 검증
+    public Ask updateAsk(int anum, Ask updatedAsk) {
+        Ask existingAsk = askRepository.findById(anum)
+        .orElseThrow(() -> new IllegalArgumentException("해당 문의글을 찾을 수 없습니다."));
+
+        // 기존 정보 수정
         existingAsk.setATitle(updatedAsk.getATitle());
         existingAsk.setAContents(updatedAsk.getAContents());
+        existingAsk.setAfile(updatedAsk.getAfile());
+
+        // 수정한 날짜로 작성일 업데이트
+        existingAsk.setADate(new Timestamp(System.currentTimeMillis()));
+
+        // 수정됨 상태로 변경
+        existingAsk.setUpdated(true);
+
         return askRepository.save(existingAsk);
     }
 
     // 문의글 삭제
-    public void deleteAsk(int anum, String rawPassword) {
-        Ask ask = getAskByIdAndPassword(anum, rawPassword); // 비밀번호 검증
-        askRepository.delete(ask);
+    public void deleteAsk(int anum) {
+        Ask ask = askRepository.findById(anum)
+        .orElseThrow(() -> new IllegalArgumentException("해당 문의글을 찾을 수 없습니다."));
+    
+    askRepository.delete(ask);
     }
 
 
@@ -69,4 +85,14 @@ public class AskService {
         Pageable pageable = PageRequest.of(page, size);
         return askRepository.findByUserId(id, pageable);
     }
+
+    public Ask getAskById(int anum) {
+        Optional<Ask> ask = askRepository.findById(anum);  // JPA repository의 기본 메소드인 findById를 사용
+        if (ask.isPresent()) {
+            return ask.get();  // 게시글이 존재하면 반환
+        } else {
+            throw new RuntimeException("해당 게시글을 찾을 수 없습니다.");  // 존재하지 않으면 예외 처리
+        }
+    }
+
 }

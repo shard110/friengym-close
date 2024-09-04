@@ -50,10 +50,29 @@ const AskPage = () => {
 
   const handleVerifyPassword = async () => {
     try {
-      const response = await axios.post('/api/asks/check-password', {
+      const token = localStorage.getItem('jwtToken'); // localStorage에서 JWT 토큰을 가져옵니다.
+    if (!token) {
+      throw new Error("로그인이 필요합니다.");
+    }
+
+      // anum 값이 제대로 선택되었는지 확인하는 로그 추가
+      console.log("Selected Ask:", selectedAsk);
+      console.log("anum:", selectedAsk.anum);
+  
+
+      const response = await axios.post(
+        '/api/asks/check-password',
+      {
         anum: selectedAsk.anum,
         password: password
-      });
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}` // JWT 토큰을 Authorization 헤더에 추가합니다.
+        },
+      }
+    );
+
       if (response.status === 200) {
         setIsPasswordVerified(true);
       } else {
@@ -61,6 +80,7 @@ const AskPage = () => {
       }
     } catch (error) {
       alert("비밀번호 확인 중 오류가 발생했습니다.");
+      console.error(error);
     }
   };
 
@@ -112,11 +132,12 @@ const AskPage = () => {
       <ul>
         {asks && asks.length > 0 ? (
           asks.map((ask) => (
-            <li key={ask.anum}>
+            <li key={ask.anum} onClick={() => handleSelectAsk(ask)} style={{ cursor: "pointer" }}>
               <h3>{ask.atitle}</h3>
                   작성자: {ask.user ? ask.user.id : "Unknown"}
                   작성일: {formatDate(ask.aDate)}  {/* Timestamp를 형식화하여 표시 */}
             </li>
+            
           ))
         ) : (
           <p>문의글이 없습니다.</p>

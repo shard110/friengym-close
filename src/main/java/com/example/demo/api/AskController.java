@@ -1,6 +1,7 @@
 package com.example.demo.api;
 
 import java.sql.Timestamp;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,20 +43,14 @@ public class AskController {
              @RequestParam(defaultValue = "10") int size) {
          
          Page<Ask> asks = askService.getAllAsks(page, size);  // `page`와 `size`를 전달
-         
-          // 모든 문의글에 대해 aTitle 로그 출력
-        asks.getContent().forEach(ask -> {
-        System.out.println("Title: " + ask.getATitle());
-        });
-    
-         
+
          return ResponseEntity.ok(asks);
      }
 
     // 특정 문의글 조회
     @GetMapping("/{anum}")
-    public ResponseEntity<Ask> getAsk(@PathVariable int anum, @RequestParam String password) {
-        Ask ask = askService.getAskByIdAndPassword(anum, password); // 수정된 메소드 사용
+    public ResponseEntity<Ask> getAsk(@PathVariable int anum) {
+        Ask ask = askService.getAskById(anum); // 수정된 메소드 사용
         return ResponseEntity.ok(ask);
     }
 
@@ -116,26 +111,29 @@ public class AskController {
   @PutMapping("/{anum}")
   public ResponseEntity<Ask> updateAsk(
       @PathVariable int anum,
-      @RequestParam String password,
       @RequestBody Ask updatedAsk) {
       
-      Ask updated = askService.updateAsk(anum, password, updatedAsk);
-      return ResponseEntity.ok(updated);
+        Ask updated = askService.updateAsk(anum, updatedAsk);
+        return ResponseEntity.ok(updated);
   }
 
    // 삭제 엔드포인트
    @DeleteMapping("/{anum}")
-   public ResponseEntity<Void> deleteAsk(
-       @PathVariable int anum,
-       @RequestParam String password) {
+   public ResponseEntity<Void> deleteAsk(@PathVariable int anum) {
        
-       askService.deleteAsk(anum, password);
+       askService.deleteAsk(anum);
        return ResponseEntity.noContent().build();
    }
 
-   @PostMapping("/check-password")
-   public ResponseEntity<Ask> getAskWithPassword(@RequestParam int anum, @RequestParam String password) {
-       Ask ask = askService.getAskByIdAndPassword(anum, password);
-       return ResponseEntity.ok(ask);
-   }
+  @PostMapping("/check-password")
+public ResponseEntity<Ask> getAskWithPassword(@RequestBody Map<String, Object> request) {
+    int anum = (int) request.get("anum");  // JSON에서 anum 추출
+    String password = (String) request.get("password");  // JSON에서 password 추출
+
+    System.out.println("Received anum: " + anum);
+    System.out.println("Received password: " + password);
+
+    Ask ask = askService.getAskByIdAndPassword(anum, password);
+    return ResponseEntity.ok(ask);
+}
 }

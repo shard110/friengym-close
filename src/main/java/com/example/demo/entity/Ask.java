@@ -37,6 +37,6 @@ public class Ask {
     @JoinColumn(name = "user_id", nullable = false) // 외래키 컬럼 이름
     private User user; // 작성자 (User 엔티티와 연결)
 
-
+    private boolean isUpdated; // 수정 여부를 나타내는 필드
 
 }
