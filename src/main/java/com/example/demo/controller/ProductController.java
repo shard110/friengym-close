@@ -35,7 +35,7 @@ public class ProductController {
 
     @PutMapping("/{pNum}")
     public Product updateProduct(@PathVariable("pNum") int pNum, @RequestBody Product product) {
-        product.setPNum(pNum);
+        product.setpNum(pNum);
         return productService.saveOrUpdateProduct(product);
     }
 
@@ -58,7 +58,7 @@ public class ProductController {
         file.transferTo(dest);
 
         // 이미지 URL 설정
-        product.setPImgUrl("/images/" + fileName);
+        product.setpImgUrl("/images/" + fileName);
         return productService.saveOrUpdateProduct(product);
     }
 
@@ -76,7 +76,7 @@ public class ProductController {
         file.transferTo(dest);
 
         // 상세 이미지 URL 설정
-        product.setPDetailImgUrl("/images/" + fileName);
+        product.setpDetailImgUrl("/images/" + fileName);
         return productService.saveOrUpdateProduct(product);
     }
 

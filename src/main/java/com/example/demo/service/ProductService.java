@@ -63,13 +63,13 @@ public class ProductService {
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             Product product = new Product();
-            product.setPNum(rs.getInt("pNum"));
-            product.setPName(rs.getString("pName"));
-            product.setPPrice(rs.getInt("pPrice"));
-            product.setPCount(rs.getInt("pCount"));
-            product.setPImg(rs.getString("pImg"));
-            product.setPDate(rs.getDate("pDate"));
-            product.setPIntro(rs.getString("pIntro"));
+            product.setpNum(rs.getInt("pNum"));
+            product.setpName(rs.getString("pName"));
+            product.setpPrice(rs.getInt("pPrice"));
+            product.setpCount(rs.getInt("pCount"));
+            product.setpImg(rs.getString("pImg"));
+            product.setpDate(rs.getDate("pDate"));
+            product.setpIntro(rs.getString("pIntro"));
             
 
             return product;
@@ -81,13 +81,13 @@ public class ProductService {
         String sql = "SELECT * FROM product ORDER BY pDate DESC LIMIT ?";
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             Product product = new Product();
-            product.setPNum(rs.getInt("pNum"));
-            product.setPName(rs.getString("pName"));
-            product.setPPrice(rs.getInt("pPrice"));
-            product.setPCount(rs.getInt("pCount"));
-            product.setPImg(rs.getString("pImg"));
-            product.setPDate(rs.getDate("pDate"));
-            product.setPIntro(rs.getString("pIntro"));
+            product.setpNum(rs.getInt("pNum"));
+            product.setpName(rs.getString("pName"));
+            product.setpPrice(rs.getInt("pPrice"));
+            product.setpCount(rs.getInt("pCount"));
+            product.setpImg(rs.getString("pImg"));
+            product.setpDate(rs.getDate("pDate"));
+            product.setpIntro(rs.getString("pIntro"));
             return product;
         }, limit);
     }
@@ -98,13 +98,13 @@ public class ProductService {
         String sql = "SELECT * FROM product WHERE pDate >= ? ORDER BY pDate DESC";
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             Product product = new Product();
-            product.setPNum(rs.getInt("pNum"));
-            product.setPName(rs.getString("pName"));
-            product.setPPrice(rs.getInt("pPrice"));
-            product.setPCount(rs.getInt("pCount"));
-            product.setPImg(rs.getString("pImg"));
-            product.setPDate(rs.getDate("pDate"));
-            product.setPIntro(rs.getString("pIntro"));
+            product.setpNum(rs.getInt("pNum"));
+            product.setpName(rs.getString("pName"));
+            product.setpPrice(rs.getInt("pPrice"));
+            product.setpCount(rs.getInt("pCount"));
+            product.setpImg(rs.getString("pImg"));
+            product.setpDate(rs.getDate("pDate"));
+            product.setpIntro(rs.getString("pIntro"));
             return product;
         }, java.sql.Date.valueOf(oneMonthAgo));
     }

@@ -9,56 +9,104 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @NoArgsConstructor
 @Entity
 public class Product {
   @Id
-    @Column(name = "pnum")
-    @JsonProperty("pNum")
-    private int pNum;
-    
-    @Column(name = "pname")
-    @JsonProperty("pName")
-    private String pName;
+  private int pNum;
+  private String pName;
+  private Date pDate;
+  private int pCount;
+  private int pPrice;
+  private String pImg;
+  private String pIntro;
+  private String pImgUrl;
+  private String pDetailImgUrl;
+  private int pCate;
+  
+  @ManyToOne
+  @JoinColumn(name = "pcate", referencedColumnName = "catenum", insertable = false, updatable = false)
+  private Category category;
+  
+  public int getpNum() {
+    return this.pNum;
+  }
 
-    @Column(name = "pdate")
-    @JsonProperty("pDate")
-    private Date pDate;
+  public void setpNum(int pNum) {
+    this.pNum = pNum;
+  }
 
-    @Column(name = "pcount")
-    @JsonProperty("pCount")
-    private int pCount;
+  public String getpName() {
+    return this.pName;
+  }
 
-    @Column(name = "pprice")
-    @JsonProperty("pPrice")
-    private int pPrice;
+  public void setpName(String pName) {
+    this.pName = pName;
+  }
 
-    @Column(name = "pimg")
-    @JsonProperty("pImg")
-    private String pImg;
+  public Date getpDate() {
+    return this.pDate;
+  }
 
-    @Column(name = "pintro")
-    @JsonProperty("pIntro")
-    private String pIntro;
+  public void setpDate(Date pDate) {
+    this.pDate = pDate;
+  }
 
-    @ManyToOne
-    @JoinColumn(name = "pcate", referencedColumnName = "catenum", insertable = false, updatable = false)
-    private Category category;
+  public int getpCount() {
+    return this.pCount;
+  }
 
-    @Column(name = "pimgurl")
-    @JsonProperty("pImgUrl")
-    private String pImgUrl;
+  public void setpCount(int pCount) {
+    this.pCount = pCount;
+  }
 
-    @Column(name = "pdetailimgurl")
-    @JsonProperty("pDetailImgUrl")
-    private String pDetailImgUrl;
+  public int getpPrice() {
+    return this.pPrice;
+  }
 
-    @Column(name = "pcate")
-    @JsonProperty("pCate")
-    private int pCate;
+  public void setpPrice(int pPrice) {
+    this.pPrice = pPrice;
+  }
 
+  public String getpImg() {
+    return this.pImg;
+  }
+
+  public void setpImg(String pImg) {
+    this.pImg = pImg;
+  }
+
+  public String getpIntro() {
+    return this.pIntro;
+  }
+
+  public void setpIntro(String pIntro) {
+    this.pIntro = pIntro;
+  }
+
+  public String getpImgUrl() {
+    return this.pImgUrl;
+  }
+
+  public void setpImgUrl(String pImgUrl) {
+    this.pImgUrl = pImgUrl;
+  }
+
+  public String getpDetailImgUrl() {
+    return this.pDetailImgUrl;
+  }
+
+  public void setpDetailImgUrl(String pDetailImgUrl) {
+    this.pDetailImgUrl = pDetailImgUrl;
+  }
+
+  public int getpCate() {
+    return this.pCate;
+  }
+
+  public void setpCate(int pCate) {
+    this.pCate = pCate;
+  }
 }
