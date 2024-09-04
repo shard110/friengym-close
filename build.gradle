@@ -25,7 +25,8 @@ repositories {
 }
 
 dependencies {
-    // Spring Boot Starters
+    testImplementation 'org.assertj:assertj-core:3.23.1'
+	// Spring Boot Starters
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
@@ -58,6 +59,8 @@ dependencies {
     implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
+
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 }
 
 tasks.named('test') {
@@ -66,5 +69,9 @@ tasks.named('test') {
 
 // Java 컴파일 시 '-parameters' 플래그 추가
 tasks.withType(JavaCompile) {
+    options.compilerArgs << '-parameters'
+}
+
+compileJava {
     options.compilerArgs << '-parameters'
 }

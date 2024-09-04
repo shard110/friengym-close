@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useLocation } from 'react-router-dom';
+import { addToCart } from '../utils/cartUtils'; // addToCart 함수 임포트
 import './ProductList.css';
-import CategoryList from '../components/CategoryList';
 import Footer from '../components/Footer';
-import Gnb from '../components/Gnb';
 import icon_cart from '../img/icon_cart.png';
 
 const ProductList = () => {
@@ -33,6 +32,10 @@ const ProductList = () => {
         let sortedProducts = [...products];
         if (type === 'name') {
             sortedProducts.sort((a, b) => a.pName.localeCompare(b.pName));
+        } else if (type === 'lowPrice') {
+            sortedProducts.sort((a, b) => a.pPrice - b.pPrice);
+        } else if (type === 'highPrice') {
+            sortedProducts.sort((a, b) => b.pPrice - a.pPrice);
         } else if (type === 'count') {
             sortedProducts.sort((a, b) => b.pCount - a.pCount);
         }
@@ -41,36 +44,36 @@ const ProductList = () => {
 
     return (
         <div>
-            <Gnb />
             <div id='grand-wrap'>
-                <div id='sec-wrap'>
-                    <CategoryList />
-                    <div className="product-section">
-                        <div className="sort-container">
-                            <select onChange={(e) => handleSort(e.target.value)}>
-                                <option value="name">이름순 정렬</option>
-                                <option value="count">재고순 정렬</option>
-                            </select>
-                        </div>
-                        <section className="product-grid">
-                            {products.map(product => (
-                                <div className="product-card" key={product.pNum}>
-                                    <Link to={`/productslist/${product.pNum}`}>
-                                        <img src={product.pImgUrl} alt={product.pName} />
-                                        <button><img src={icon_cart} alt='장바구니'></img></button>
-                                    </Link>
-                                    <Link to={`/products/${product.pNum}`}>
-                                        <h3>{product.pName}</h3>
-                                    </Link>
-                                    <p>가격: {product.pPrice}</p>
-                                    <p>재고: {product.pCount}개 남음</p>
-                                </div>
-                            ))}
-                        </section>
+                <div className="product-section">
+                    <div className="sort-container">
+                        <select onChange={(e) => handleSort(e.target.value)}>
+                            <option value="name">이름순 정렬</option>
+                            <option value="lowPrice">낮은 가격순 정렬</option>
+                            <option value="highPrice">높은 가격순 정렬</option>
+                            <option value="count">재고순 정렬</option>
+                        </select>
                     </div>
+                    <section className="product-grid">
+                        {products.map(product => (
+                            <div className="product-card" key={product.pNum}>
+                                <Link to={`/productslist/${product.pNum}`}>
+                                    <img className='product-img' src={product.pImgUrl} alt={product.pName} />
+                                </Link>
+                                <button className='cartIconBtn' onClick={() => addToCart(product)}>
+                                    <img src={icon_cart} alt='장바구니'></img>
+                                </button>
+                                <Link to={`/productslist/${product.pNum}`}>
+                                    <h3>{product.pName}</h3>
+                                </Link>
+                                <p className='product-price'> ₩ {product.pPrice.toLocaleString()}</p>
+                                <p className='product-conut'>재고: {product.pCount}개 남음</p>
+                            </div>
+                        ))}
+                    </section>
                 </div>
-                <Footer />
             </div>
+            <Footer />
         </div>
     );
 };
