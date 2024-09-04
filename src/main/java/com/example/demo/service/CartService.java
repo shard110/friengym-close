@@ -17,13 +17,18 @@ public class CartService {
         return cartRepository.findByUserId(userId);
     }
 
-    public Cart addCartItem(Cart cart) {
-        try {
+    public Cart addOrUpdateCartItem(Cart cart) {
+        Cart existingCartItem = cartRepository.findByUserIdAndProductPNum(cart.getUser().getId(), cart.getProduct().getpNum());
+        if (existingCartItem != null) {
+            existingCartItem.setcCount(existingCartItem.getcCount() + 1);
+            return cartRepository.save(existingCartItem);
+        } else {
             return cartRepository.save(cart);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("카트에 상품 추가 오류..: ", e);
         }
+    }
+    
+    public Cart getCartItemById(int cnum) {
+        return cartRepository.findById(cnum).orElse(null);
     }
 
     public void removeCartItem(int cnum) {

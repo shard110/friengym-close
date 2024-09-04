@@ -29,18 +29,33 @@ public class CartController {
     }
 
     @PostMapping
-    public Cart addCartItem(@RequestBody Cart cart, @RequestHeader("Authorization") String token) {
+    public Cart addOrUpdateCartItem(@RequestBody Cart cart, @RequestHeader("Authorization") String token) {
         String userId = jwtTokenProvider.getClaims(token).getSubject();
         if (jwtTokenProvider.validateToken(token)) {
             User user = new User();
             user.setId(userId);
-            cart.setUser(user); // User 객체 대신 userId만 설정
-            return cartService.addCartItem(cart);
+            cart.setUser(user);
+            return cartService.addOrUpdateCartItem(cart);
         } else {
             throw new RuntimeException("Invalid token");
         }
     }
     
+    @PutMapping("/{cnum}")
+    public Cart updateCartItemCount(@PathVariable int cnum, @RequestBody Cart cart, @RequestHeader("Authorization") String token) {
+    String userId = jwtTokenProvider.getClaims(token).getSubject();
+    if (jwtTokenProvider.validateToken(token)) {
+        Cart existingCartItem = cartService.getCartItemById(cnum);
+        if (existingCartItem != null && existingCartItem.getUser().getId().equals(userId)) {
+            existingCartItem.setcCount(cart.getcCount());
+            return cartService.addOrUpdateCartItem(existingCartItem);
+        } else {
+            throw new RuntimeException("Invalid cart item or user");
+        }
+    } else {
+        throw new RuntimeException("Invalid token");
+    }
+}
 
     @DeleteMapping("/{cnum}")
     public void removeCartItem(@PathVariable int cnum, @RequestHeader("Authorization") String token) {

@@ -6,6 +6,7 @@ export const addToCart = async (product) => {
     const token = localStorage.getItem('authToken');
     if (!token) {
         console.error('토큰을 찾을 수 없습니다.');
+        alert("로그인이 필요합니다.");
         return;
     }
 
