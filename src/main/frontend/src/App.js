@@ -17,13 +17,6 @@ import RegisterPage from './components/RegisterPage';
 import HomePage from './components/HomePage';
 import Mypage from './components/Mypage';
 import EditProfilePage from './components/EditProfilePage';
-import CategoryProductsPage from './components/CategoryProductsPage';
-import PopularProductsPage from './components/PopularProductsPage';
-import NewProducts from './components/NewProducts';
-import MastersList from './page/MastersList';
-import Board from './page/Board';
-import ProductDetail from './page/ProductDetail';
-import ProductList from './page/ProductList';
 
 import MastersList from './page/MastersList';
 import Board from './page/Board';
