@@ -1,28 +1,26 @@
 import React, { useState } from 'react';
-import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { AuthProvider } from './components/AuthContext';
-import CreatePost from "./components/CreatePost";
 import Navbar from "./components/NavBar";
+import CreatePost from "./components/CreatePost";
 
-import './App.css';
-import CategoryProductsPage from './components/CategoryProductsPage';
-import EditPost from './components/EditPost';
-import EditProfilePage from './components/EditProfilePage';
-import HomePage from './components/HomePage';
-import LoginPage from './components/LoginPage';
-import Mypage from './components/Mypage';
-import NewProducts from './components/NewProducts';
-import PopularProductsPage from './components/PopularProductsPage';
-import PostDetail from "./components/PostDetail";
 import PostsList from "./components/PostsList";
-import ProductHome from './components/ProductHome';
+import PostDetail from "./components/PostDetail";
+import EditPost from './components/EditPost';
+import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
-import AskPage from './page/AskPage';
-import Board from './page/Board';
+import HomePage from './components/HomePage';
+import Mypage from './components/Mypage';
+import EditProfilePage from './components/EditProfilePage';
+import ProductHome from './components/ProductHome';
+import CategoryProductsPage from './components/CategoryProductsPage';
+import PopularProductsPage from './components/PopularProductsPage';
+import NewProducts from './components/NewProducts';
 import MastersList from './page/MastersList';
+import Board from './page/Board';
 import ProductDetail from './page/ProductDetail';
 import ProductList from './page/ProductList';
-import QnaPage from './page/QnaPage';
+import './App.css';
 
 export default function App() {
     const [searchKeyword, setSearchKeyword] = useState('');
@@ -58,9 +56,6 @@ export default function App() {
                                     <li>
                                         <Link to="/productslist">상품 목록</Link>
                                     </li>
-                                    <li>
-                                    <Link to="/qna">고객센터</Link>
-                                    </li>
                                 </ul>
                             </li>
                             <li>
@@ -95,8 +90,6 @@ export default function App() {
                         <Route path="/register" element={<RegisterPage />} />
                         <Route path="/mypage" element={<Mypage />} />
                         <Route path="/edit-profile" element={<EditProfilePage />} />
-                        <Route path="/qna" element={<QnaPage />} />
-                        <Route path="/asks" element={<AskPage />} />
                     </Routes>
                 </div>
             </Router>
