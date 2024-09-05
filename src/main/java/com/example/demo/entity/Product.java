@@ -1,20 +1,24 @@
 package com.example.demo.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import jakarta.persistence.Column;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Entity
 public class Product {
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int pNum;
   private String pName;
   private Date pDate;
@@ -29,7 +33,10 @@ public class Product {
   @ManyToOne
   @JoinColumn(name = "pcate", referencedColumnName = "catenum", insertable = false, updatable = false)
   private Category category;
-  
+
+  @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Dorder> dorders = new ArrayList<>();
+
   public int getpNum() {
     return this.pNum;
   }
@@ -108,5 +115,13 @@ public class Product {
 
   public void setpCate(int pCate) {
     this.pCate = pCate;
+  }
+
+  public List<Dorder> getDorders() {
+    return this.dorders;
+  }
+
+  public void setDorders(List<Dorder> dorders) {
+    this.dorders = dorders;
   }
 }

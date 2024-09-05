@@ -46,6 +46,7 @@
 
 .product-card a{
     position: relative;
+    background-color: #fff;
 }
 
 .product-card .product-conut{

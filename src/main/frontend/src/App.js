@@ -17,7 +17,6 @@ import RegisterPage from './components/RegisterPage';
 import HomePage from './components/HomePage';
 import Mypage from './components/Mypage';
 import EditProfilePage from './components/EditProfilePage';
-
 import MastersList from './page/MastersList';
 import Board from './page/Board';
 import ProductDetail from './page/ProductDetail';
