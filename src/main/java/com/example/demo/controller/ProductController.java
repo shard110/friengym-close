@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.ProductDetailDTO;
+import com.example.demo.dto.ProductListDTO;
 import com.example.demo.entity.Product;
 import com.example.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +21,13 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping
-    public List<Product> getAllProducts() {
+    public List<ProductListDTO> getAllProducts() {
         return productService.getAllProducts();
     }
 
     @GetMapping("/{pNum}")
-    public Product getProductById(@PathVariable("pNum") int pNum) {
-        return productService.getProductById(pNum);
+    public ProductDetailDTO getProductDetail(@PathVariable int pNum) {
+        return productService.getProductDetail(pNum);
     }
 
     @PostMapping
@@ -80,9 +82,9 @@ public class ProductController {
         return productService.saveOrUpdateProduct(product);
     }
 
-    // 상품 검색
+    // 검색
     @GetMapping("/search")
-    public List<Product> searchProducts(@RequestParam("keyword") String keyword) {
+    public List<ProductListDTO> searchProducts(@RequestParam String keyword) {
         return productService.searchProducts(keyword);
     }
 }

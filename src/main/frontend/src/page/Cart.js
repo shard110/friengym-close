@@ -13,6 +13,7 @@ const Cart = () => {
             const token = user?.token || localStorage.getItem('authToken');
             if (!token) {
                 console.error('토큰을 찾을 수 없습니다.');
+                alert('로그인이 필요합니다.');
                 return;
             }
 
@@ -22,7 +23,6 @@ const Cart = () => {
                         'Authorization': `${token}` // 요청 헤더에 JWT 토큰 추가
                     }
                 });
-                console.log(response.data); // 응답 데이터 확인
                 setCartItems(response.data);
             } catch (error) {
                 console.error('장바구니 아이템을 불러오는 동안 오류 발생:', error);

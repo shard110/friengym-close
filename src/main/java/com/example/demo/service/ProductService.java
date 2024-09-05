@@ -3,11 +3,14 @@ package com.example.demo.service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.ProductDetailDTO;
+import com.example.demo.dto.ProductListDTO;
 import com.example.demo.entity.Product;
 import com.example.demo.repository.ProductRepository;
 
@@ -22,10 +25,6 @@ public class ProductService {
 
     // 모든 상품 가져오기
     public List<Product> findAllProducts() {
-        return productRepository.findAll();
-    }
-
-    public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
@@ -114,8 +113,44 @@ public class ProductService {
         return productRepository.findByCategory(catenum);
     }
 
-    // 상품 검색
-    public List<Product> searchProducts(String keyword) {
-        return productRepository.findByPNameContaining(keyword);
+
+    // 검색
+    public List<ProductListDTO> searchProducts(String keyword) {
+        List<Product> products = productRepository.findByPNameContaining(keyword);
+        return products.stream()
+                .map(product -> new ProductListDTO(
+                        product.getpNum(),
+                        product.getpName(),
+                        product.getpPrice(),
+                        product.getpImgUrl(),
+                        product.getpCount()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    public List<ProductListDTO> getAllProducts() {
+        List<Product> products = productRepository.findAll();
+        return products.stream()
+                .map(product -> new ProductListDTO(
+                        product.getpNum(),
+                        product.getpName(),
+                        product.getpPrice(),
+                        product.getpImgUrl(),
+                        product.getpCount()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    public ProductDetailDTO getProductDetail(int pNum) {
+        Product product = productRepository.findById(pNum).orElseThrow(() -> new RuntimeException("Product not found"));
+        return new ProductDetailDTO(
+                product.getpNum(),
+                product.getpName(),
+                product.getpPrice(),
+                product.getpImgUrl(),
+                product.getpCount(),
+                product.getpDate(),
+                product.getpDetailImgUrl()
+        );
     }
 }

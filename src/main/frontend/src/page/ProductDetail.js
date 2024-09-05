@@ -13,13 +13,15 @@ const ProductDetail = () => {
     const [product, setProduct] = useState(null);
 
     useEffect(() => {
-        fetch(`http://localhost:8080/api/products/${pNum}`)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                setProduct(data);
-            })
-            .catch(error => console.error('상품을 불러오는 동안 오류 발생:', error));
+        const fetchProduct = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8080/api/products/${pNum}`);
+                setProduct(response.data);
+            } catch (error) {
+                console.error('상품을 불러오는 동안 오류 발생:', error);
+            }
+        };
+        fetchProduct();
     }, [pNum]);
 
     if (loading) {
@@ -29,6 +31,8 @@ const ProductDetail = () => {
     if (!product) {
         return <div>Loading...</div>;
     }
+    
+    const formattedDate = new Date(product.pDate).toLocaleString();
 
     return (
         <div className="product-detail">
@@ -41,7 +45,7 @@ const ProductDetail = () => {
                     <h3 className="title">{product.pName}</h3>
                     <div className="price">{product.pPrice.toLocaleString()}원</div>
                     <div className="count">재고 수량: {product.pCount}개</div>
-                    <div className="date">업데이트: {new Date(product.pDate).toLocaleString()}</div>
+                    <div className="date">업데이트: {formattedDate}</div>
                     <button type="submit" className='cartBtn' onClick={() => addToCart(product)}>장바구니</button>
                     <button type="submit" className='buyBtn'>구매하기</button>
                 </div>
