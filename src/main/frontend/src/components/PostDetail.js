@@ -1,8 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
+import { useAuth } from "../components/AuthContext"; // AuthContext import
 
 export default function PostDetail() {
+  const { user } = useAuth(); // 로그인한 사용자 정보 가져오기
   const [post, setPost] = useState({
     poTitle: "",
     poContents: "",
@@ -55,15 +57,19 @@ export default function PostDetail() {
               <h5>By {post.username}</h5>
               <p>{post.poContents}</p>
               <div className="mt-3">
-                <Link to={`/edit/${poNum}`} className="btn btn-outline-primary mx-2">
-                  Edit
-                </Link>
-                <button
-                  className="btn btn-danger mx-2"
-                  onClick={deletePost}
-                >
-                  Delete
-                </button>
+                {user && post.username === user.name && (
+                  <>
+                    <Link to={`/edit/${poNum}`} className="btn btn-outline-primary mx-2">
+                      Edit
+                    </Link>
+                    <button
+                      className="btn btn-danger mx-2"
+                      onClick={deletePost}
+                    >
+                      Delete
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </div>
