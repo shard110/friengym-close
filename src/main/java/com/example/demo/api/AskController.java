@@ -1,5 +1,9 @@
 package com.example.demo.api;
 
+import java.io.IOException;  // 파일 입출력 예외 처리
+import java.nio.file.Files;  // 파일 읽기 및 쓰기
+import java.nio.file.Path;  // 파일 경로 설정
+import java.nio.file.Paths;  // 경로 생성
 import java.sql.Timestamp;
 import java.util.Map;
 import java.util.Optional;
@@ -18,12 +22,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.config.JwtAuthentication;
 import com.example.demo.entity.Ask;
 import com.example.demo.entity.User;
 import com.example.demo.service.AskService;
 import com.example.demo.service.UserService;
+
 
 
 @RestController
@@ -70,7 +76,7 @@ public class AskController {
                                         @RequestParam("aTitle") String title,
                                         @RequestParam("aContents") String contents,
                                         @RequestParam("password") String password,
-                                        @RequestParam(value = "fileUrl", required = false) String fileUrl){
+                                       @RequestParam(value = "afile", required = false) MultipartFile file) {
 
   // SecurityContextHolder에서 인증 정보 직접 가져오기
     JwtAuthentication authentication = (JwtAuthentication) SecurityContextHolder.getContext().getAuthentication();
@@ -89,11 +95,20 @@ public class AskController {
     ask.setADate(new Timestamp(System.currentTimeMillis())); // 현재 시간으로 Timestamp 설정
 
 
+// 파일 처리 로직
+if (file != null && !file.isEmpty()) {
+    try {
+        String uploadDir = "C:/sowon0903/friengym/uploads/askuploads/";  // 실제 파일 경로
+        String fileName = file.getOriginalFilename();
+        Path path = Paths.get(uploadDir + fileName);
+        Files.write(path, file.getBytes());
 
-    // 파일 URL 처리
-    if (fileUrl != null && !fileUrl.isEmpty()) {
-        ask.setAfile(fileUrl); // 파일 URL을 저장
+        ask.setAfile("/uploads/askuploads/" + fileName);  // URL 설정
+    } catch (IOException e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
+}
     
     // 로그인한 사용자 정보를 Ask 엔티티에 설정
     Optional<User> userOpt = userService.getUserById(username);
@@ -109,21 +124,51 @@ public class AskController {
   }
   // 수정 엔드포인트
   @PutMapping("/{anum}")
-  public ResponseEntity<Ask> updateAsk(
-      @PathVariable int anum,
-      @RequestBody Ask updatedAsk) {
-      
-        Ask updated = askService.updateAsk(anum, updatedAsk);
-        return ResponseEntity.ok(updated);
-  }
+  public ResponseEntity<Ask> updateAsk(@PathVariable int anum,
+                                       @RequestParam("aTitle") String title,
+                                       @RequestParam("aContents") String contents,
+                                       @RequestParam(value = "afile", required = false) MultipartFile file) {
+        Ask ask = askService.getAskById(anum);  // 기존 문의글 가져오기
+        ask.setATitle(title);
+        ask.setAContents(contents);
+    
+       // 파일 업데이트 처리
+       if (file != null && !file.isEmpty()) {
+        try {
+            String uploadDir = "C:/sowon0903/friengym/uploads/askuploads/";
+            String fileName = file.getOriginalFilename();
+            Path path = Paths.get(uploadDir + fileName);
+            Files.write(path, file.getBytes());
+
+            ask.setAfile("/uploads/askuploads/" + fileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    
+        Ask updatedAsk = askService.updateAsk(anum, ask);
+        return ResponseEntity.ok(updatedAsk);
+    }
 
    // 삭제 엔드포인트
    @DeleteMapping("/{anum}")
-   public ResponseEntity<Void> deleteAsk(@PathVariable int anum) {
-       
-       askService.deleteAsk(anum);
-       return ResponseEntity.noContent().build();
-   }
+public ResponseEntity<Void> deleteAsk(@PathVariable int anum) {
+    // anum으로 문의글을 가져옴
+    Ask ask = askService.getAskById(anum);  // 해당 문의글을 가져옴
+    if (ask.getAfile() != null) {
+        // 서버에서 파일 삭제
+        try {
+            Path path = Paths.get("C:/sowon0903/friengym/uploads/askuploads/" + ask.getAfile().substring(19));
+            Files.delete(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    askService.deleteAsk(anum);
+    return ResponseEntity.noContent().build();
+}
 
   @PostMapping("/check-password")
 public ResponseEntity<Ask> getAskWithPassword(@RequestBody Map<String, Object> request) {

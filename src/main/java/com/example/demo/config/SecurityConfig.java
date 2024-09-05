@@ -33,6 +33,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/api/asks/**").authenticated() // JWT 인증 필요
+                .requestMatchers("/uploads/**").permitAll()  // /uploads/** 경로에 대한 요청은 인증 없이 접근 가능
                 .anyRequest().permitAll()
             )
             .sessionManagement(session -> session

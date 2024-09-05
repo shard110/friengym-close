@@ -70,7 +70,12 @@ const ViewAsk = ({ anum }) => {
           <p>내용: {ask.acontents}</p>
           <p>작성자: {ask.user ? ask.user.id : "Unknown"}</p>
           <p>작성일: {formatDate(ask.aDate)}</p>
-          {ask.afile && <p>첨부파일: <a href={ask.afile} target="_blank" rel="noopener noreferrer">파일 보기</a></p>}
+          {ask.afile &&
+          <div>
+          <p>첨부파일 경로: {ask.afile}</p>  {/* 경로를 출력해서 확인 */}
+          <p>첨부파일: <a href={`http://localhost:8080${ask.afile}`} target="_blank" rel="noopener noreferrer">파일 보기</a></p>
+        </div>
+          }
 
           <button onClick={handleUpdate}>수정하기</button>
           <button onClick={handleDelete}>삭제하기</button>

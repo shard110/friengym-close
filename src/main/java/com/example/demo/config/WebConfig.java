@@ -21,12 +21,17 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(@NonNull ResourceHandlerRegistry registry) {
-        // 정적 파일 제공 설정
-        registry.addResourceHandler("/images/**")
-                .addResourceLocations("classpath:/static/images/");
-        // 파일 시스템 경로에서 파일 제공 설정
-        registry.addResourceHandler("/files/**")
-                .addResourceLocations("file:files/");
-}
+       // 쇼핑몰 이미지 제공 설정
+       registry.addResourceHandler("/images/**")
+       .addResourceLocations("classpath:/static/images/");
+
+        // 문의글 업로드 파일에 대한 외부 경로 제공 설정
+        registry.addResourceHandler("/uploads/**")
+        .addResourceLocations("file:C:/sowon0903/friengym/uploads/");
+        
+         // 파일 시스템 경로에서 파일 제공 설정
+         registry.addResourceHandler("/files/**")
+         .addResourceLocations("file:files/");
        
     }
+}

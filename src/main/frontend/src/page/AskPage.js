@@ -27,14 +27,11 @@ const AskPage = () => {
       if (!token) {
         throw new Error("로그인이 필요합니다.");  // 토큰이 없으면 에러 발생
       }
-  
-
       const response = await axios.get(`/api/asks?page=${page - 1}&size=${pageSize}`, {
         headers: {
           Authorization: `Bearer ${token}`,  // JWT 토큰을 Authorization 헤더에 포함
         },
       });
-
       setAsks(response.data.content);
       setTotalPages(response.data.totalPages);
     } catch (error) {
@@ -55,34 +52,32 @@ const AskPage = () => {
       throw new Error("로그인이 필요합니다.");
     }
 
-      // anum 값이 제대로 선택되었는지 확인하는 로그 추가
-      console.log("Selected Ask:", selectedAsk);
-      console.log("anum:", selectedAsk.anum);
-  
-
       const response = await axios.post(
         '/api/asks/check-password',
       {
         anum: selectedAsk.anum,
         password: password
+        
       },
+     
       {
         headers: {
           Authorization: `Bearer ${token}` // JWT 토큰을 Authorization 헤더에 추가합니다.
         },
       }
     );
-
-      if (response.status === 200) {
-        setIsPasswordVerified(true);
-      } else {
-        alert("비밀번호가 일치하지 않습니다.");
-      }
-    } catch (error) {
-      alert("비밀번호 확인 중 오류가 발생했습니다.");
-      console.error(error);
+    if (response.status === 200) {
+      setIsPasswordVerified(true);  // 비밀번호가 일치하면 상태를 업데이트
+    } else {
+      alert("비밀번호가 일치하지 않습니다.");
+      console.log("Response data:", response.data);
     }
-  };
+  } catch (error) {
+    if (error.response ) {
+      alert("비밀번호 확인 중 오류가 발생했습니다.");
+    }
+  }
+};
 
   const renderPageButtons = () => {
     const buttons = [];

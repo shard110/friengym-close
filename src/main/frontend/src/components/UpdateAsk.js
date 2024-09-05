@@ -10,6 +10,8 @@ const UpdateAsk = () => {
     acontents: "",
     afile: ""
   });
+
+  const [newFile, setNewFile] = useState(null);  // 새로운 파일을 저장할 상태 추가
   const navigate = useNavigate();
 
   // 기존 데이터를 불러오기
@@ -32,11 +34,20 @@ const UpdateAsk = () => {
   }, [anum]);
 
   const handleUpdate = async () => {
+    const formData = new FormData();
+    formData.append("atitle", ask.atitle);
+    formData.append("acontents", ask.acontents);
+
+    if (newFile) {
+      formData.append("afile", newFile);  // 새로운 파일을 선택한 경우
+    }
+
     try {
       const token = localStorage.getItem('jwtToken');
-      await axios.put(`/api/asks/${anum}`, ask, {
+      await axios.put(`/api/asks/${anum}`,formData, {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
+           "Content-Type": "multipart/form-data"
         }
       });
       alert("문의글이 성공적으로 수정되었습니다.");
@@ -51,29 +62,36 @@ const UpdateAsk = () => {
     setAsk({ ...ask, [e.target.name]: e.target.value });
   };
 
+  const handleFileChange = (e) => {
+    setNewFile(e.target.files[0]);  // 새로운 파일을 상태에 저장
+  };
+
   return (
     <div>
     <h1>문의글 수정</h1>
     <input
       type="text"
-      name="aTitle"
+      name="atitle"
       value={ask.atitle}
       onChange={handleChange}
       placeholder="제목"
     />
     <textarea
-      name="aContents"
+      name="acontents"
       value={ask.acontents}
       onChange={handleChange}
       placeholder="내용"
     />
-    <input
-      type="text"
-      name="afile"
-      value={ask.afile}
-      onChange={handleChange}
-      placeholder="파일 URL"
-    />
+      {ask.afile && (
+        <div>
+          <p>현재 파일: <a href={ask.afile} target="_blank" rel="noopener noreferrer">파일 보기</a></p>
+        </div>
+      )}
+      <input
+        type="file"
+        name="afile"
+        onChange={handleFileChange}  // 파일 변경 처리
+      />
     <button onClick={handleUpdate}>수정 완료</button>
   </div>
   );

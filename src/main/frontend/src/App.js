@@ -16,6 +16,8 @@ import PostDetail from "./components/PostDetail";
 import PostsList from "./components/PostsList";
 import ProductHome from './components/ProductHome';
 import RegisterPage from './components/RegisterPage';
+import UpdateAsk from './components/UpdateAsk';
+import ViewAsk from './components/ViewAsk';
 import AskPage from './page/AskPage';
 import Board from './page/Board';
 import MastersList from './page/MastersList';
@@ -96,9 +98,11 @@ export default function App() {
             <Route path="/edit-profile" element={<EditProfilePage />} />
                         <Route path="/qna" element={<QnaPage />} />
                         <Route path="/asks" element={<AskPage />} />
-        </Routes>
-        </div>
-      </Router>
-    </AuthProvider>
-  );
+                        <Route path="/asks/view/:anum" element={<ViewAsk />} />
+                        <Route path="/asks/update/:anum" element={<UpdateAsk />} />
+                    </Routes>
+                </div>
+            </Router>
+        </AuthProvider>
+    );
 }

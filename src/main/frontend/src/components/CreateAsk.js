@@ -6,7 +6,7 @@ const CreateAsk = ({ onAskCreated }) => {
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
   const [password, setPassword] = useState("");
-  const [fileUrl, setFileUrl] = useState("");
+  const [file, setFile] = useState(null);  // 파일을 저장할 상태 추가
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
@@ -14,7 +14,9 @@ const CreateAsk = ({ onAskCreated }) => {
     formData.append("aTitle", title);
     formData.append("aContents", contents);
     formData.append("password", password);
-    formData.append("fileUrl", fileUrl);
+    if (file) {
+      formData.append("afile", file);  // 선택한 파일을 formData에 추가
+    }
 
     try {
       // JWT 토큰을 localStorage에서 가져오거나 필요한 방식으로 불러옵니다.
@@ -42,6 +44,10 @@ const CreateAsk = ({ onAskCreated }) => {
     }
   };
 
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);  // 파일 선택 시 상태에 저장
+  };
+
   return (
     <div id="create-ask">
       <h1>문의글 작성</h1>
@@ -62,11 +68,9 @@ const CreateAsk = ({ onAskCreated }) => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <input
-        type="text"
-        placeholder="파일 URL"
-        value={fileUrl}
-        onChange={(e) => setFileUrl(e.target.value)}
+    <input
+        type="file"
+        onChange={handleFileChange}  // 파일 선택
       />
       <button onClick={handleSubmit}>작성완료</button>
     </div>
