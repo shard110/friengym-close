@@ -106,15 +106,15 @@ const Cart = () => {
                                         {item.product.pName}
                                     </Link>
                                 </td>
-                                <td>{item.product.pPrice}원</td>
+                                <td>{item.product.pPrice.toLocaleString()}원</td>
                                 <td>
                                     <button onClick={() => updateCartItemCount(item.cnum, item.cCount - 1)} disabled={item.cCount <= 1}>-</button>
                                     {item.cCount}
                                     <button onClick={() => updateCartItemCount(item.cnum, item.cCount + 1)}>+</button>
                                 </td>
-                                <td>{(item.product.pPrice * item.cCount)}원</td>
+                                <td>{(item.product.pPrice * item.cCount).toLocaleString()}원</td>
                                 <td>
-                                    <button onClick={() => removeCartItem(item.cnum)}>삭제</button>
+                                    <button className='btn_del' onClick={() => removeCartItem(item.cnum)}>삭제</button>
                                 </td>
                             </tr>
                         ))}

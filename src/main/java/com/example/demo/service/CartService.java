@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,12 +33,19 @@ public class CartService {
     }
 
     public Cart addOrUpdateCartItem(Cart cart) {
-        return cartRepository.save(cart);
+        Optional<Cart> existingCartItem = cartRepository.findByUserIdAndProductPNum(cart.getUser().getId(), cart.getProduct().getpNum());
+        if (existingCartItem.isPresent()) {
+            Cart existingCart = existingCartItem.get();
+            existingCart.setcCount(existingCart.getcCount() + cart.getcCount());
+            return cartRepository.save(existingCart);
+        } else {
+            return cartRepository.save(cart);
+        }
     }
-    
+
     public Cart getCartItemById(int cnum) {
-    return cartRepository.findById(cnum).orElseThrow(() -> new RuntimeException("Cart item not found"));
-}
+        return cartRepository.findById(cnum).orElseThrow(() -> new RuntimeException("Cart item not found"));
+    }
 
     public void removeCartItem(int cnum) {
         cartRepository.deleteById(cnum);
