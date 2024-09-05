@@ -33,7 +33,7 @@ export default function PostDetail() {
   const deletePost = async () => {
     try {
       await axios.delete(`http://localhost:8080/posts/${poNum}`);
-      navigate("/");
+      navigate("/posts");
     } catch (error) {
       setError("Failed to delete post.");
     }
@@ -41,12 +41,10 @@ export default function PostDetail() {
 
   const downloadFile = async () => {
     try {
-      // 파일 다운로드를 위해 URL과 파일 이름 설정
       const response = await axios.get(`http://localhost:8080/files/${post.fileUrl}`, {
         responseType: 'blob', // 파일 데이터를 blob 형태로 받음
       });
 
-      // 다운로드 링크 생성
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
@@ -71,9 +69,12 @@ export default function PostDetail() {
           <h5>By {post.username}</h5>
           <p>{post.poContents}</p>
           {post.fileUrl && (
-            <button className="button download-button" onClick={downloadFile}>
-              Download File
-            </button>
+            <div className="file-info">
+              <p>첨부파일 :  {post.fileUrl}</p> {/* 파일 이름 표시 */}
+              <button className="button download-button" onClick={downloadFile}>
+                Download File
+              </button>
+            </div>
           )}
           <div className="button-group">
             <Link to={`/edit/${poNum}`} className="button edit-button">
@@ -83,8 +84,8 @@ export default function PostDetail() {
               Delete
             </button>
           </div>
-          <Link className="button back-button" to="/">
-            Back to Home
+          <Link className="button back-button" to="/posts">
+            Back to Posts
           </Link>
         </div>
       </div>

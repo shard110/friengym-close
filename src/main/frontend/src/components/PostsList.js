@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";  // Link 컴포넌트 import
+import { Link } from "react-router-dom";
+import './PostsList.css'; // CSS 파일을 import
 
 export default function PostsList() {
   const [posts, setPosts] = useState([]);
@@ -15,8 +16,8 @@ export default function PostsList() {
           throw new Error("Failed to fetch posts");
         }
         const data = await response.json();
-        
-        setPosts(data.posts); // 게시글 목록 설정
+
+        setPosts(data.posts); // 게시글 목록 설정 (서버에서 정렬된 데이터 가정)
         setTotalPages(Math.ceil(data.pageInfo.total / size)); // 전체 페이지 수 계산
       } catch (error) {
         console.error(error);
@@ -24,7 +25,7 @@ export default function PostsList() {
     };
 
     fetchPosts();
-  }, [page, size]); // 페이지나 페이지 크기 변경 시 데이터 새로 가져오기
+  }, [page, size]); // 페이지, 페이지 크기 변경 시 데이터 새로 가져오기
 
   // 페이지 변경 핸들러
   const handlePageChange = (newPage) => {
@@ -36,19 +37,32 @@ export default function PostsList() {
   return (
     <div className="container mt-4">
       <h2>Posts List</h2>
-      <ul className="list-group">
-        {posts.map((post) => (
-          <li key={post.poNum} className="list-group-item">
-            <h5>{post.poTitle}</h5>
-            <p>{post.poContents}</p>
-            <small>By {post.username}</small>
-            <Link to={`/post/${post.poNum}`} className="btn btn-outline-info mt-2">
-              View Details
-            </Link>
-          </li>
-        ))}
-      </ul>
-      <div className="mt-4">
+
+      <table className="table">
+        <thead>
+          <tr>
+            <th className="number">번호</th>
+            <th className="title">제목</th>
+            <th className="date">작성 날짜</th>
+            <th className="view-count">조회수</th>
+          </tr>
+        </thead>
+        <tbody>
+          {posts.map((post) => (
+            <tr key={post.poNum}>
+              <td>{post.poNum}</td>
+              <td>
+                <Link to={`/post/${post.poNum}`}>{post.poTitle}</Link>
+              </td>
+              <td>{new Date(post.poDate).toLocaleDateString()}</td>
+              <td>{post.viewCnt}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* 페이지 네비게이션 */}
+      <div className="pagination-container mt-4">
         <nav>
           <ul className="pagination">
             <li className="page-item">

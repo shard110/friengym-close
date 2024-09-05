@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.PageDTO;    // DTO 클래스 import
@@ -39,8 +40,15 @@ public class PostService {
     }
 
     public Post getPostById(Integer poNum) {
+            incrementViewCount(poNum); // 조회수 증가
         return postRepository.findById(poNum)
                 .orElseThrow(() -> new PostNotFoundException(poNum));
+    }
+    public void incrementViewCount(Integer poNum) {
+        Post post = postRepository.findById(poNum)
+                .orElseThrow(() -> new PostNotFoundException(poNum));
+        post.setViewCnt(post.getViewCnt() + 1);
+        postRepository.save(post);
     }
 
     public Post updatePost(Integer poNum, Post newPostData) {
@@ -61,23 +69,31 @@ public class PostService {
         return true; // 삭제 성공
     }
 
-    public Map<String, Object> getPagedPosts(int page, int size) {
-        Pageable pageable = PageRequest.of(page - 1, size);
-        Page<Post> postPage = postRepository.findAll(pageable);
 
-        // PageDTO 생성 및 설정
-        PageDTO pageInfo = new PageDTO(
-                page,
-                size,
-                10, // 노출할 페이지 수 (예: 10페이지)
-                (int) postPage.getTotalElements() // 전체 데이터 수
-        );
 
-        // 페이지 정보와 게시글 리스트 포함
-        Map<String, Object> response = new HashMap<>();
-        response.put("pageInfo", pageInfo);
-        response.put("posts", postPage.getContent());
-
-        return response;
+        public Map<String, Object> getPagedPosts(int page, int size, String search) {
+            Pageable pageable = PageRequest.of(page - 1, size, Sort.by(Sort.Order.desc("poDate")));
+            Page<Post> postPage;
+        
+            if (search == null || search.isEmpty()) {
+                postPage = postRepository.findAll(pageable);
+            } else {
+                postPage = postRepository.findByPoTitleContainingIgnoreCase(search, pageable);
+            }
+        
+            // PageDTO 객체 생성
+            PageDTO pageInfo = new PageDTO(
+                    page,
+                    size,
+                    10, // 노출할 페이지 수
+                    (int) postPage.getTotalElements()
+            );
+        
+            // 응답 맵 준비
+            Map<String, Object> response = new HashMap<>();
+            response.put("pageInfo", pageInfo);
+            response.put("posts", postPage.getContent());
+        
+            return response;
+        }
     }
-}

@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -8,14 +9,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.example.demo.entity.Post;
+import com.example.demo.entity.User;
 import com.example.demo.service.FileService;
 import com.example.demo.service.PostService;
+import com.example.demo.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Map;
 
 @RestController
 @RequestMapping("/posts")
-@CrossOrigin(origins = "http://localhost:3000") // CORS 설정: 클라이언트가 로컬 호스트에서 요청을 보낼 수 있도록 허용
+@CrossOrigin(origins = "http://localhost:3000")
 public class PostController {
 
     @Autowired
@@ -24,119 +28,105 @@ public class PostController {
     @Autowired
     private FileService fileService;
 
-    /**
-     * 게시글을 생성하고, 파일을 업로드합니다.
-     * 
-     * @param post 게시글 정보
-     * @param userId 사용자 ID
-     * @param file 업로드할 파일 (선택 사항)
-     * @return 생성된 게시글
-     */
+    @Autowired
+    private UserService userService;
+
     @PostMapping
     public ResponseEntity<Post> createPost(
-        @RequestPart("post") Post post, // 게시글 정보
-        @RequestPart("userId") String userId, // 사용자 ID
-        @RequestPart(value = "file", required = false) MultipartFile file) { // 선택적 파일
+        @RequestPart("post") String postJson,
+        @RequestPart("userId") String userId,
+        @RequestPart(value = "file", required = false) MultipartFile file) {
+
+        Post post;
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            post = objectMapper.readValue(postJson, Post.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+
+        post.setUserId(userId);
 
         String fileUrl = null;
-        // 파일이 존재하고 비어있지 않은 경우, 파일을 저장합니다.
         if (file != null && !file.isEmpty()) {
             try {
-                fileUrl = fileService.save(file); // 파일 저장 후 URL 반환
+                fileUrl = fileService.save(file);
             } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body(null); // 파일 저장 실패 시 서버 에러 응답
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
             }
         }
-        post.setFileUrl(fileUrl); // 파일 URL을 게시글에 설정
-        post.setUserId(userId); // 사용자 ID 설정
-       
-        Post createdPost = postService.createPost(post, userId); // 게시글 생성
-        return ResponseEntity.ok(createdPost); // 생성된 게시글 반환
-    }
+        post.setFileUrl(fileUrl);
 
-    /**
-     * 게시글 ID로 게시글을 조회합니다.
-     * 
-     * @param poNum 게시글 ID
-     * @return 게시글 정보
-     */
-    @GetMapping("/{poNum}")
-    public ResponseEntity<Post> getPostById(@PathVariable("poNum") Integer poNum) {
-        Post post = postService.getPostById(poNum); // 게시글 조회
-        if (post != null) {
-            return ResponseEntity.ok(post); // 게시글이 존재하면 반환
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // 게시글이 없으면 404 응답
+        User user = userService.findById(userId).orElse(null);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        post.setUser(user);
+
+        try {
+            Post createdPost = postService.createPost(post, userId);
+            return ResponseEntity.ok(createdPost);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
-    /**
-     * 게시글을 업데이트합니다.
-     * 
-     * @param poNum 게시글 ID
-     * @param newPostData 새로운 게시글 데이터
-     * @return 업데이트된 게시글
-     */
+
+@GetMapping("/{poNum}")
+public ResponseEntity<Post> getPostById(@PathVariable("poNum") Integer poNum) {
+    Post post = postService.getPostById(poNum); // 조회수 증가 처리
+    if (post != null) {
+        postService.incrementViewCount(poNum);
+        return ResponseEntity.ok(post);
+    } else {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
+    }
+
     @PutMapping("/{poNum}")
     public ResponseEntity<Post> updatePost(@PathVariable("poNum") Integer poNum, @RequestBody Post newPostData) {
-        Post updatedPost = postService.updatePost(poNum, newPostData); // 게시글 업데이트
+        Post updatedPost = postService.updatePost(poNum, newPostData);
         if (updatedPost != null) {
-            return ResponseEntity.ok(updatedPost); // 업데이트된 게시글 반환
+            return ResponseEntity.ok(updatedPost);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // 게시글이 없으면 404 응답
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
-    /**
-     * 게시글을 삭제합니다.
-     * 
-     * @param poNum 게시글 ID
-     * @return 삭제 성공 메시지
-     */
     @DeleteMapping("/post/{poNum}")
     public ResponseEntity<String> deletePost(@PathVariable("poNum") Integer poNum) {
-        boolean deleted = postService.deletePost(poNum); // 게시글 삭제 및 결과 확인
+        boolean deleted = postService.deletePost(poNum);
         if (deleted) {
-            return ResponseEntity.ok("Post with poNum " + poNum + " has been deleted successfully."); // 성공 응답
+            return ResponseEntity.ok("Post with poNum " + poNum + " has been deleted successfully.");
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Post with poNum " + poNum + " not found."); // 게시글이 없으면 404 응답
+                    .body("Post with poNum " + poNum + " not found.");
         }
     }
 
-    /**
-     * 파일을 다운로드합니다.
-     * 
-     * @param filename 파일 이름
-     * @return 파일 리소스
-     */
     @GetMapping("/files/{filename:.+}")
     public ResponseEntity<Resource> getFile(@PathVariable("filename") String filename) {
         try {
-            Resource file = fileService.getFile(filename); // 파일 조회
+            Resource file = fileService.getFile(filename);
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
-                    .body(file); // 파일 다운로드 응답
-                } catch (Exception e) {
-                    System.err.println("Error while retrieving file: " + e.getMessage());
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // 파일이 없으면 404 응답
-                }
-            }
-
-    /**
-     * 페이지네이션을 지원하여 게시글 목록을 조회합니다.
-     * 
-     * @param page 페이지 번호
-     * @param size 페이지당 게시글 수
-     * @return 게시글 목록
-     */
-    @GetMapping
-    public ResponseEntity<Map<String, Object>> getPosts(
-        @RequestParam(value = "page", defaultValue = "1") int page, // 페이지 번호
-        @RequestParam(value = "size", defaultValue = "10") int size) { // 페이지당 게시글 수
-
-        Map<String, Object> posts = postService.getPagedPosts(page, size); // 게시글 목록 조회
-        return ResponseEntity.ok(posts); // 게시글 목록 반환
+                    .body(file);
+        } catch (Exception e) {
+            System.err.println("Error while retrieving file: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
+
+
+@GetMapping
+public ResponseEntity<Map<String, Object>> getPosts(
+    @RequestParam(value = "page", defaultValue = "1") int page,
+    @RequestParam(value = "size", defaultValue = "10") int size,
+    @RequestParam(value = "search", defaultValue = "") String search) { // 검색 파라미터 추가
+
+    Map<String, Object> posts = postService.getPagedPosts(page, size, search); // 검색 파라미터 전달
+    return ResponseEntity.ok(posts);
+}
 }
