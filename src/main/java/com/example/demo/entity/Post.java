@@ -25,9 +25,6 @@ public class Post {
     @Column(name = "ponum") // 데이터베이스 컬럼 이름
     private Integer poNum; // 게시글 번호
 
-    @Column(name = "username", nullable = false, length = 50)
-    private String username;    /////////////////////수정
-
     @Column(name = "poTitle", nullable = false, length = 100)
     private String poTitle;
 
@@ -56,17 +53,16 @@ public class Post {
     
     private User user; // 작성자 (User 엔티티와 연결)
 
-    // Add userId field
+   
     @Transient
-    private String userId; // 데이터베이스에 저장되지않음
+    private String userId; // 데이터베이스에 저장되지않음(DTO와 상호작용하는데 사용됨)
     
 
    
    // 생성자
-   public Post(String poTitle, String poContents, String username, User user) {
+   public Post(String poTitle, String poContents, User user) {
     this.poTitle = poTitle;
     this.poContents = poContents;
-    this.username = username;
     this.user = user; // User 객체 설정
     this.poDate = LocalDateTime.now();
     this.replyCnt = 0; // 기본값 설정
