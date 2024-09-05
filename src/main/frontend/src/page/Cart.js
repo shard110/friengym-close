@@ -22,6 +22,7 @@ const Cart = () => {
                         'Authorization': `${token}` // 요청 헤더에 JWT 토큰 추가
                     }
                 });
+                console.log(response.data); // 응답 데이터 확인
                 setCartItems(response.data);
             } catch (error) {
                 console.error('장바구니 아이템을 불러오는 동안 오류 발생:', error);
@@ -78,7 +79,7 @@ const Cart = () => {
     return (
         <div className="cart">
             <h2>장바구니</h2>
-            {cartItems.length === 0 ? (
+            {Array.isArray(cartItems) && cartItems.length === 0 ? (
                 <p>장바구니가 비어 있습니다.</p>
             ) : (
                 <table>
@@ -93,7 +94,7 @@ const Cart = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {cartItems.map(item => (
+                        {Array.isArray(cartItems) && cartItems.map(item => (
                             <tr key={item.cnum}>
                                 <td>
                                     <Link to={`/productslist/${item.product.pNum}`}>
@@ -105,13 +106,13 @@ const Cart = () => {
                                         {item.product.pName}
                                     </Link>
                                 </td>
-                                <td>{item.product.pPrice.toLocaleString()}원</td>
+                                <td>{item.product.pPrice}원</td>
                                 <td>
                                     <button onClick={() => updateCartItemCount(item.cnum, item.cCount - 1)} disabled={item.cCount <= 1}>-</button>
                                     {item.cCount}
                                     <button onClick={() => updateCartItemCount(item.cnum, item.cCount + 1)}>+</button>
                                 </td>
-                                <td>{(item.product.pPrice * item.cCount).toLocaleString()}원</td>
+                                <td>{(item.product.pPrice * item.cCount)}원</td>
                                 <td>
                                     <button onClick={() => removeCartItem(item.cnum)}>삭제</button>
                                 </td>

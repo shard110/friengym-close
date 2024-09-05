@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "dorder")
 public class Dorder implements Serializable {
 
     @Id
@@ -16,7 +15,7 @@ public class Dorder implements Serializable {
     @Column(name = "docount", nullable = false)
     private int doCount;
 
-    @Column(name = "doprice", nullable = false)
+    @Column(name = "doprice", nullable = false) // 주문 당시의 상품 가격 저장 = product.pprice (소계가 아님)
     private int doPrice;
 
     @ManyToOne

@@ -1,8 +1,10 @@
 package com.example.demo.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,8 +34,8 @@ public class Product {
   @JoinColumn(name = "pcate", referencedColumnName = "catenum", insertable = false, updatable = false)
   private Category category;
 
-  @OneToMany(mappedBy = "product")
-  private List<Dorder> dorders;
+  @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Dorder> dorders = new ArrayList<>();
 
   public int getpNum() {
     return this.pNum;
