@@ -1,5 +1,3 @@
-// src/components/PostList.js
-
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
@@ -36,8 +34,8 @@ const PostList = () => {
   // 페이지 버튼 생성
   const renderPageButtons = () => {
     const buttons = [];
-    const startPage = Math.floor((page - 1) / 10) * 10 + 1; // 현재 그룹의 시작 페이지
-    const endPage = Math.min(startPage + 9, totalPages); // 현재 그룹의 끝 페이지
+    const startPage = Math.floor((page - 1) / 10) * 10 + 1;
+    const endPage = Math.min(startPage + 9, totalPages);
 
     for (let i = startPage; i <= endPage; i++) {
       buttons.push(
@@ -101,14 +99,14 @@ const PostList = () => {
         </thead>
         <tbody>
           {posts.map(post => (
-            <tr key={post.ponum}> {/* 게시글 번호를 key로 사용 */}
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>#{post.ponum}</td> {/* 게시글 번호 */}
+            <tr key={post.ponum}>
+              <td style={{ border: '1px solid #ddd', padding: '8px' }}>#{post.ponum}</td>
               <td style={{ border: '1px solid #ddd', padding: '8px' }}>{post.potitle}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{post.id}</td> {/* 작성자 */}
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(post.podate)}</td> {/* 작성일 */}
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{post.viewCnt}</td> {/* 조회수 */}
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{post.replyCnt}</td> {/* 댓글수 */}
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{post.pocontents || '내용 없음'}</td> {/* 내용이 null인 경우 처리 */}
+              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{post.username}</td> {/* 작성자 이름 표시 */}
+              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(post.podate)}</td>
+              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{post.viewCnt}</td>
+              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{post.replyCnt}</td>
+              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{post.pocontents || '내용 없음'}</td>
             </tr>
           ))}
         </tbody>

@@ -7,13 +7,24 @@ import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 import com.example.demo.config.JwtTokenProvider;
 
-import jakarta.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.servlet.http.HttpServletRequest;
+
+import java.nio.file.StandardCopyOption;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.Files;
 import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -52,7 +63,6 @@ public class UserController {
         boolean exists = userService.findById(id).isPresent();
         return ResponseEntity.ok(!exists);
     }
-
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
@@ -106,19 +116,19 @@ public class UserController {
     public ResponseEntity<?> updateUserInfo(@RequestBody User updatedUser, @RequestHeader("Authorization") String authHeader) {
         String token = authHeader.replace("Bearer ", "");
 
-        // 토큰 유효성 검사
+        // Validate token
         if (!jwtTokenProvider.validateToken(token)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token");
         }
 
-        // 토큰에서 사용자 정보 추출
+        // Extract user information from token
         String username = jwtTokenProvider.getClaims(token).getSubject();
         Optional<User> userOpt = userService.findById(username);
 
         if (userOpt.isPresent()) {
             User existingUser = userOpt.get();
 
-            // 필드 업데이트
+            // Update fields
             existingUser.setName(updatedUser.getName());
             existingUser.setPhone(updatedUser.getPhone());
             existingUser.setSex(updatedUser.getSex());
@@ -128,7 +138,7 @@ public class UserController {
             existingUser.setFirstday(updatedUser.getFirstday());
             existingUser.setRestday(updatedUser.getRestday());
 
-            // 사용자를 업데이트 (저장)
+            // Save updated user
             User updated = userService.save(existingUser);
 
             return ResponseEntity.ok(updated);
@@ -137,20 +147,76 @@ public class UserController {
         }
     }
 
-
-
-
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         if (token == null || !token.startsWith("Bearer ")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing or invalid Authorization header");
         }
-        token = token.substring(7); // "Bearer " 부분 제거
+        token = token.substring(7); // Remove "Bearer " prefix
 
-        // 토큰을 블랙리스트에 추가
+        // Add token to blacklist
         jwtTokenProvider.blacklistToken(token);
 
         return ResponseEntity.ok("Logout successful");
+    }
+
+    @PutMapping("/user/update-photo")
+    public ResponseEntity<?> updateProfilePhoto(@RequestParam("file") MultipartFile file, @RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+    
+        if (!jwtTokenProvider.validateToken(token)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token");
+        }
+    
+        String username = jwtTokenProvider.getClaims(token).getSubject();
+        Optional<User> userOpt = userService.findById(username);
+    
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            try {
+                // Get original file name and make it safe for storage
+                String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
+                String fileName = originalFilename; // Use original filename or modify as needed
+    
+                // Define file path
+                Path filePath = Paths.get("uploads/" + fileName);
+    
+                // Save file to server
+                Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+    
+                // Update user with the new photo URL
+                user.setPhoto("/api/user/photo/" + fileName);
+                userService.save(user);
+    
+                return ResponseEntity.ok(user);
+            } catch (IOException e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save photo");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+    }
+    
+    @GetMapping("/user/photo/{filename}")
+    public ResponseEntity<Resource> getProfilePhoto(@PathVariable String filename) {
+        try {
+            Path filePath = Paths.get("uploads/" + filename);
+            Resource resource = new UrlResource(filePath.toUri());
+    
+            // Automatically determine content type based on file extension
+            String contentType = Files.probeContentType(filePath);
+            if (contentType == null) {
+                contentType = MediaType.APPLICATION_OCTET_STREAM_VALUE; // Default to binary stream if type can't be determined
+            }
+    
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .body(resource);
+        } catch (MalformedURLException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 }

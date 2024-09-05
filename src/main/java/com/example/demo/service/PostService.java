@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,7 +9,10 @@ import org.springframework.stereotype.Service;
 import com.example.demo.dto.PageDTO;    // DTO 클래스 import
 import com.example.demo.entity.Post;
 import com.example.demo.exception.PostNotFoundException;
+import com.example.demo.exception.UserNotFoundException;
+import com.example.demo.entity.User;
 import com.example.demo.repository.PostRepository;
+import com.example.demo.repository.UserRepository;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +24,13 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
 
-    public Post createPost(Post post) {
+    @Autowired
+    private UserRepository userRepository;
+
+    public Post createPost(Post post, String userId) {
+        User user = userRepository.findById(userId)
+        .orElseThrow(() -> new UserNotFoundException(userId)); // 사용자 정의 예외
+        post.setUser(user);
         return postRepository.save(post);
     }
 
@@ -45,11 +53,12 @@ public class PostService {
                 .orElseThrow(() -> new PostNotFoundException(poNum));
     }
 
-    public void deletePost(Integer poNum) {
+    public boolean deletePost(Integer poNum) {
         if (!postRepository.existsById(poNum)) {
-            throw new PostNotFoundException(poNum);
+            return false; // 게시글이 존재하지 않으면 false 반환
         }
-        postRepository.deleteById(poNum);
+        postRepository.deleteById(poNum); // 게시글 삭제
+        return true; // 삭제 성공
     }
 
     public Map<String, Object> getPagedPosts(int page, int size) {

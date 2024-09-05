@@ -24,8 +24,9 @@ public class WebConfig implements WebMvcConfigurer {
         // 정적 파일 제공 설정
         registry.addResourceHandler("/images/**")
                 .addResourceLocations("classpath:/static/images/");
-        // 파일 시스템 경로를 사용
-        
+        // 파일 시스템 경로에서 파일 제공 설정
+        registry.addResourceHandler("/files/**")
+                .addResourceLocations("file:files/");
+}
        
     }
-}
