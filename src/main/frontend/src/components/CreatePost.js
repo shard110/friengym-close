@@ -1,55 +1,59 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 
 const CreatePostForm = () => {
+    const { user } = useAuth(); // AuthContext에서 사용자 정보를 가져옵니다
+    const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [file, setFile] = useState(null);
-    const [userId, setUserId] = useState('');
     const [message, setMessage] = useState('');
-    const navigate = useNavigate(); 
+
+    // Redirect to login page if not authenticated
+    if (!user) {
+        navigate('/login');
+        return null; // Return null while navigating
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const formData = new FormData();
-        formData.append('post', JSON.stringify({ poTitle: title, poContents: content })); 
-        formData.append('userId', userId);
+        const postObject = {
+            title,
+            content,
+            userId: user.userId // userId를 추가
+        };
+        formData.append('post', JSON.stringify(postObject));  // JSON 문자열로 추가
         if (file) {
             formData.append('file', file);
         }
 
         try {
+            // 요청 헤더에 인증 토큰을 포함
             const response = await axios.post('http://localhost:8080/posts', formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${user.token || localStorage.getItem('authToken')}` // 수정됨
                 }
             });
             console.log(response.data);
-            setMessage('Post created successfully!'); // 성공 메시지
-            alert('Post created successfully!'); // 성공 시 알림창
+            setMessage('Post created successfully!');
+            alert('Post created successfully!');
             setTimeout(() => {
-                navigate('/posts'); // 2초 후 이동
+                navigate('/posts');
             }, 2000);
         } catch (error) {
             console.error('An unexpected error occurred:', error);
             setMessage('An unexpected error occurred.');
-            alert('An unexpected error occurred.'); // 실패 시 알림창
+            alert('An unexpected error occurred.');
         }
-    }; // 수정된 부분: 닫는 괄호 추가
+    };
 
     return (
         <form onSubmit={handleSubmit}>
-            <div>
-                <label>ID (임시 DB에 저장된 아이디 입력)</label>
-                <input
-                    type="text"
-                    value={userId}
-                    onChange={(e) => setUserId(e.target.value)}
-                    required
-                />
-            </div>
             <div>
                 <label>Title:</label>
                 <input
@@ -75,7 +79,7 @@ const CreatePostForm = () => {
                 />
             </div>
             <button type="submit">Create Post</button>
-            {message && <p>{message}</p>} {/* 메시지 상태를 UI에 렌더링 */}
+            {message && <p>{message}</p>}
         </form>
     );
 };
