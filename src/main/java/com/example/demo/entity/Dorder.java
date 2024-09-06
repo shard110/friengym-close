@@ -18,12 +18,18 @@ public class Dorder implements Serializable {
     @Column(name = "doprice", nullable = false) // 주문 당시의 상품 가격 저장 = product.pprice (소계가 아님)
     private int doPrice;
 
+    @Column(name = "onum")
+    private int onum;
+
+    @Column(name = "pnum")
+    private int pNum;
+
     @ManyToOne
-    @JoinColumn(name = "onum")
+    @JoinColumn(name = "onum", insertable = false, updatable = false)
     private Ordertbl ordertbl;
 
     @ManyToOne
-    @JoinColumn(name = "pnum")
+    @JoinColumn(name = "pnum", insertable = false, updatable = false)
     private Product product;
     
     public int getDoNum() {
@@ -48,6 +54,22 @@ public class Dorder implements Serializable {
 
     public void setDoPrice(int doPrice) {
         this.doPrice = doPrice;
+    }
+
+    public int getOnum() {
+        return onum;
+    }
+
+    public void setOnum(int onum) {
+        this.onum = onum;
+    }
+
+    public int getpNum() {
+        return pNum;
+    }
+
+    public void setpNum(int pNum) {
+        this.pNum = pNum;
     }
 
     public Ordertbl getOrdertbl() {

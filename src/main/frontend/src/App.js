@@ -22,6 +22,7 @@ import Board from './page/Board';
 import ProductDetail from './page/ProductDetail';
 import ProductList from './page/ProductList';
 import Cart from './page/Cart';
+import Footer from './components/Footer';
 
 
 export default function App() {
@@ -34,7 +35,6 @@ export default function App() {
   return (
     <AuthProvider>
       <Router>
-        <Navbar />
         <div className="App">
           <nav>
             <ul>
@@ -50,7 +50,6 @@ export default function App() {
                     <Link to="/products">Products</Link>
                   </li>
                   <li>
-                    <Link to="/masters">Master 목록</Link>
                   </li>
                   <li>
                     <Link to="/productslist">상품 목록</Link>
@@ -94,6 +93,7 @@ export default function App() {
             <Route path="/edit-profile" element={<EditProfilePage />} />
         </Routes>
         </div>
+        <Footer />
       </Router>
     </AuthProvider>
   );

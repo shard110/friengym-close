@@ -71,8 +71,8 @@ const Mypage = () => {
                     <h2>User Info</h2>
                     <Avatar 
                         src={image + `?t=${new Date().getTime()}`}  // Cache-busting
-                        style={{ margin: '20px', cursor: 'pointer' }} 
-                        sx={{ width: 200, height: 200 }} 
+                        style={{ margin: '40px auto', cursor: 'pointer' }} 
+                        sx={{ width: 160, height: 160 }} 
                         onClick={() => fileInput.current.click()} 
                     />
                     <input 

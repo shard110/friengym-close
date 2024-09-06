@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom'; // useNavigate 추가
 import axios from 'axios';
 import { useAuth } from '../components/AuthContext'; // useAuth 훅 추가
 import { addToCart } from '../utils/cartUtils.js'; // addToCart 함수 임포트
@@ -11,6 +11,7 @@ const ProductDetail = () => {
     const { pNum } = useParams();
     const { user, loading } = useAuth(); // useAuth 훅 사용
     const [product, setProduct] = useState(null);
+    const navigate = useNavigate(); // useNavigate 훅 사용
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -34,6 +35,10 @@ const ProductDetail = () => {
     
     const formattedDate = new Date(product.pDate).toLocaleString();
 
+    const handleBuyNow = () => {
+        navigate('/order', { state: { product, quantity: 1 } });
+    };
+
     return (
         <div className="product-detail">
             <div className="product-detail-header">
@@ -47,7 +52,7 @@ const ProductDetail = () => {
                     <div className="count">재고 수량: {product.pCount}개</div>
                     <div className="date">업데이트: {formattedDate}</div>
                     <button type="submit" className='cartBtn' onClick={() => addToCart(product)}>장바구니</button>
-                    <button type="submit" className='buyBtn'>구매하기</button>
+                    <button type="submit" className='buyBtn' onClick={handleBuyNow}>구매하기</button>
                 </div>
             </div>
             {product.pDetailImgUrl ? (

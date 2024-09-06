@@ -73,7 +73,6 @@ const ProductList = () => {
                     </section>
                 </div>
             </div>
-            <Footer />
         </div>
     );
 };

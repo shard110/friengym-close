@@ -81,6 +81,7 @@ export default function PostsList() {
             </li>
           </ul>
         </nav>
+        <Link className="btn btn-outline-light" to="/create-post">Create Post</Link>
       </div>
     </div>
   );

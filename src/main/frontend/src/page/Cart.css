@@ -40,6 +40,13 @@
 }
 
 .cart .btn_del:nth-last-of-type(1){
+    background-color: #999;
     font-size: 12px;
     width: 60px;
+}
+
+.cart .buyBtn{
+    margin-top: 60px;
+    width: 160px;
+    height: 60px;
 }
