@@ -1,13 +1,13 @@
 package com.example.demo.dto;
 
-import org.springframework.web.multipart.MultipartFile;
+
 import com.example.demo.entity.Post;
+import com.example.demo.entity.User;
 
 public class PostRequest {
-    private String title;
-    private String content;
-    private String userId;
-    private MultipartFile file;
+    private String title; // Post 엔티티의 poTitle과 매칭
+    private String content; // Post 엔티티의 poContents와 매칭
+    private String userId; // User 엔티티와 연결
 
     // Getters and Setters
     public String getTitle() {
@@ -34,18 +34,11 @@ public class PostRequest {
         this.userId = userId;
     }
 
-    public MultipartFile getFile() {
-        return file;
-    }
-
-    public void setFile(MultipartFile file) {
-        this.file = file;
-    }
-
-    public Post toPost() {
+    public Post toPost(User user) {
         Post post = new Post();
         post.setPoTitle(this.title);
         post.setPoContents(this.content);
+        post.setUser(user);
         return post;
     }
 }

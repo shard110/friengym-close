@@ -1,80 +1,104 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 
-export default function EditPost() {
+const EditPost = () => {
   const { poNum } = useParams();
-  const [post, setPost] = useState({
-    poTitle: "",
-    poContents: "",
-    username: "",
+  const [postData, setPostData] = useState({
+    poContents: '',
+    poTitle: '',
   });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [file, setFile] = useState(null);
+  const [fileName, setFileName] = useState(''); // 선택한 파일 이름 상태 추가
+  const [notification, setNotification] = useState('');
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   useEffect(() => {
-    const fetchPost = async () => {
+    const fetchPostData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/post/${poNum}`);
-        setPost(response.data);
+        const response = await axios.get(`http://localhost:8080/posts/${poNum}`);
+        const data = response.data;
+        setPostData({
+          poContents: data.poContents || '',
+          poTitle: data.poTitle || '',
+        });
       } catch (error) {
-        setError("Failed to fetch post details.");
-      } finally {
-        setLoading(false);
+        console.error('Error fetching post data:', error);
       }
     };
 
-    fetchPost();
+    fetchPostData();
   }, [poNum]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setPost((prevPost) => ({ ...prevPost, [name]: value }));
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const postDataToSend = {
+      title: postData.poTitle,
+      content: postData.poContents,
+    };
+
+    const formData = new FormData();
+    formData.append('post', JSON.stringify(postDataToSend)); // JSON 객체를 문자열로 추가
+    if (file) {
+      formData.append('file', file);
+    }
+
     try {
-      await axios.put(`http://localhost:8080/post/${poNum}`, post);
-      navigate(`/post/${poNum}`);
+      await axios.put(`http://localhost:8080/posts/${poNum}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${user.token || localStorage.getItem('authToken')}`
+        }
+      });
+      setNotification('Post updated successfully!'); // 성공 메시지 설정
+      setTimeout(() => {
+        navigate('/posts'); // 3초 후 postslist 페이지로 이동
+      }, 3000);
     } catch (error) {
-      setError("Failed to update post.");
+      console.error('Error updating post:', error);
+      setNotification('Failed to update post.'); // 실패 메시지 설정
     }
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-
   return (
-    <div className="container mt-4">
-      <h2>Edit Post</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="poTitle" className="form-label">Title</label>
-          <input
-            type="text"
-            id="poTitle"
-            name="poTitle"
-            className="form-control"
-            value={post.poTitle}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="poContents" className="form-label">Content</label>
-          <textarea
-            id="poContents"
-            name="poContents"
-            className="form-control"
-            value={post.poContents}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button type="submit" className="btn btn-primary">Save Changes</button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label>Title:</label>
+        <input
+          type="text"
+          value={postData.poTitle}
+          onChange={(e) => setPostData({ ...postData, poTitle: e.target.value })}
+        />
+      </div>
+      <div>
+        <label>Content:</label>
+        <textarea
+          value={postData.poContents}
+          onChange={(e) => setPostData({ ...postData, poContents: e.target.value })}
+        />
+      </div>
+
+      <div>
+        <label>Reply Count:</label>
+        <input
+          type="number"
+          value={postData.replycnt}
+          onChange={(e) => setPostData({ ...postData, replycnt: +e.target.value })}
+        />
+      </div>
+      <div>
+        <label>Upload File:</label>
+        <input
+          type="file"
+          onChange={(e) => setFile(e.target.files[0])}
+        />
+      </div>
+      <button type="submit">Update Post</button>
+    </form>
   );
-}
+};
+
+export default EditPost;

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import './PostDetail.css'; // CSS 파일 import
+import { useAuth } from './AuthContext'; // 인증 컨텍스트 추가
 
 export default function PostDetail() {
   const [post, setPost] = useState({
@@ -14,6 +15,7 @@ export default function PostDetail() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const { poNum } = useParams();
+  const { user } = useAuth(); // 인증 정보 가져오기
 
   useEffect(() => {
     const loadPost = async () => {
@@ -32,7 +34,12 @@ export default function PostDetail() {
 
   const deletePost = async () => {
     try {
-      await axios.delete(`http://localhost:8080/posts/${poNum}`);
+      await axios.delete(`http://localhost:8080/posts/${poNum}`, {
+        headers: {
+          'Authorization': `Bearer ${user.token || localStorage.getItem('authToken')}` // 인증 헤더 추가
+        }
+      });
+
       navigate("/posts");
     } catch (error) {
       setError("Failed to delete post.");
@@ -76,14 +83,16 @@ export default function PostDetail() {
               </button>
             </div>
           )}
+          {user && user.username === post.username && ( // 로그인한 사용자와 작성자가 일치하는 경우만 삭제 버튼 표시
           <div className="button-group">
             <Link to={`/edit/${poNum}`} className="button edit-button">
               Edit
             </Link>
             <button className="button delete-button" onClick={deletePost}>
               Delete
-            </button>
+            </button>        
           </div>
+          )}
           <Link className="button back-button" to="/posts">
             Back to Posts
           </Link>

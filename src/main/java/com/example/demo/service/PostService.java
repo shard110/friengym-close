@@ -8,7 +8,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demo.dto.PageDTO;    // DTO 클래스 import
+import com.example.demo.config.JwtTokenProvider;
+import com.example.demo.dto.PageDTO; // DTO 클래스 import
 import com.example.demo.dto.PostRequest;
 import com.example.demo.entity.Post;
 import com.example.demo.exception.PostNotFoundException;
@@ -19,7 +20,6 @@ import com.example.demo.repository.UserRepository;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.List;
 
 @Service
 public class PostService {
@@ -33,15 +33,28 @@ public class PostService {
     @Autowired
     private FileService fileService;
 
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
-    public Post createPost(PostRequest postRequest) {
-        Post post =  postRequest.toPost(); 
+    // JWT 토큰에서 사용자 ID 추출
+    public String getUserIdFromToken(String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        if (!jwtTokenProvider.validateToken(token)) {
+            throw new IllegalArgumentException("Invalid token");
+        }
+        return jwtTokenProvider.getClaims(token).getSubject();
+    }
+
+    public Post createPost(PostRequest postRequest, MultipartFile file) {
         String userId = postRequest.getUserId();
-        MultipartFile file = postRequest.getFile();
+
+        if (userId == null || userId.isEmpty()) {
+            throw new IllegalArgumentException("User ID must not be null or empty");
+        }
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
-        post.setUser(user);
+        Post post = postRequest.toPost(user);
 
         String fileUrl = null;
         if (file != null && !file.isEmpty()) {
@@ -52,16 +65,11 @@ public class PostService {
             }
         }
         post.setFileUrl(fileUrl);
-
         return postRepository.save(post);
     }
 
-    public List<Post> getAllPosts() {
-        return postRepository.findAll();
-    }
-
     public Post getPostById(Integer poNum) {
-        incrementViewCount(poNum); // 조회수 증가
+        incrementViewCount(poNum);
         return postRepository.findById(poNum)
                 .orElseThrow(() -> new PostNotFoundException(poNum));
     }
@@ -73,22 +81,42 @@ public class PostService {
         postRepository.save(post);
     }
 
-    public Post updatePost(Integer poNum, Post newPostData) {
-        return postRepository.findById(poNum)
-                .map(post -> {
-                    post.setPoTitle(newPostData.getPoTitle());
-                    post.setPoContents(newPostData.getPoContents());
-                    return postRepository.save(post);
-                })
-                .orElseThrow(() -> new PostNotFoundException(poNum));
+    //게시글 업데이트
+  public Post updatePost(Integer poNum, PostRequest postRequest, MultipartFile file, String authHeader) {
+    String userId = getUserIdFromToken(authHeader);
+    Post post = postRepository.findById(poNum)
+            .orElseThrow(() -> new PostNotFoundException(poNum));
+    
+    if (!post.getUser().getId().equals(userId)) {
+        throw new IllegalArgumentException("User not authorized to update this post");
     }
 
-    public boolean deletePost(Integer poNum) {
-        if (!postRepository.existsById(poNum)) {
-            return false; // 게시글이 존재하지 않으면 false 반환
+
+    post.setPoTitle(postRequest.getTitle());
+    post.setPoContents(postRequest.getContent());
+
+    if (file != null && !file.isEmpty()) {
+        try {
+            String fileUrl = fileService.save(file);
+            post.setFileUrl(fileUrl);
+        } catch (Exception e) {
+            throw new RuntimeException("File save failed", e);
         }
-        postRepository.deleteById(poNum); // 게시글 삭제
-        return true; // 삭제 성공
+    }
+    
+    return postRepository.save(post);
+}
+
+    public void deletePost(Integer poNum, String authHeader) {
+        String userId = getUserIdFromToken(authHeader);
+        Post post = postRepository.findById(poNum)
+                .orElseThrow(() -> new PostNotFoundException(poNum));
+
+        if (!post.getUser().getId().equals(userId)) {
+            throw new IllegalArgumentException("User not authorized to delete this post");
+        }
+
+        postRepository.deleteById(poNum);
     }
 
     public Map<String, Object> getPagedPosts(int page, int size, String search) {
@@ -101,15 +129,12 @@ public class PostService {
             postPage = postRepository.findByPoTitleContainingIgnoreCase(search, pageable);
         }
 
-        // PageDTO 객체 생성
         PageDTO pageInfo = new PageDTO(
                 page,
                 size,
                 10, // 노출할 페이지 수
-                (int) postPage.getTotalElements()
-        );
+                (int) postPage.getTotalElements());
 
-        // 응답 맵 준비
         Map<String, Object> response = new HashMap<>();
         response.put("pageInfo", pageInfo);
         response.put("posts", postPage.getContent());
