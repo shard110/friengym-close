@@ -20,10 +20,12 @@ import UpdateAsk from './components/UpdateAsk';
 import ViewAsk from './components/ViewAsk';
 import AskPage from './page/AskPage';
 import Board from './page/Board';
+import Cart from './page/Cart';
 import MastersList from './page/MastersList';
 import ProductDetail from './page/ProductDetail';
 import ProductList from './page/ProductList';
 import QnaPage from './page/QnaPage';
+
 
 export default function App() {
     const [searchKeyword, setSearchKeyword] = useState('');
@@ -35,7 +37,7 @@ export default function App() {
   return (
     <AuthProvider>
       <Router>
-        <Navbar />
+    
         <div className="App">
           <nav>
             <ul>

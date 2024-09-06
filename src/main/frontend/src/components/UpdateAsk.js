@@ -35,8 +35,8 @@ const UpdateAsk = () => {
 
   const handleUpdate = async () => {
     const formData = new FormData();
-    formData.append("atitle", ask.atitle);
-    formData.append("acontents", ask.acontents);
+    formData.append("aTitle", ask.atitle);
+    formData.append("aContents", ask.acontents);
 
     if (newFile) {
       formData.append("afile", newFile);  // 새로운 파일을 선택한 경우
