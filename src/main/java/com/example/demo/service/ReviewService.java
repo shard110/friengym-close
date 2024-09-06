@@ -15,6 +15,10 @@ import com.example.demo.repository.ReviewRepository;
   
       @Autowired
       private ReviewRepository reviewRepository;
+
+      public List<Review> getAllReviews(){
+        return reviewRepository.findAll();
+      }
   
       // 리뷰 저장
       public Review saveReview(Review review) {

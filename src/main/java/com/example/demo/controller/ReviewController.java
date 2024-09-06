@@ -23,6 +23,11 @@ public class ReviewController {
     @Autowired
     private ReviewService reviewService;
 
+    @GetMapping
+    public List<Review> getAllReviews() {
+        return reviewService.getAllReviews();
+    }
+
     // 리뷰 저장
     @PostMapping
     public Review saveReview(@RequestBody Review review) {
