@@ -25,7 +25,7 @@ import MastersList from './page/MastersList';
 import ProductDetail from './page/ProductDetail';
 import ProductList from './page/ProductList';
 import QnaPage from './page/QnaPage';
-
+import ReviewPage from './page/ReviewPage'; // ReviewPage 임포트
 
 export default function App() {
     const [searchKeyword, setSearchKeyword] = useState('');
@@ -102,6 +102,7 @@ export default function App() {
                         <Route path="/asks" element={<AskPage />} />
                         <Route path="/asks/view/:anum" element={<ViewAsk />} />
                         <Route path="/asks/update/:anum" element={<UpdateAsk />} />
+                        <Route path="/reviews" element={<ReviewPage />} />
                     </Routes>
                 </div>
             </Router>

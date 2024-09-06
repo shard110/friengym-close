@@ -20,8 +20,8 @@ import lombok.Setter;
 @Table(name="review")
 @Entity
 public class Review {
-  @Id
-    @Column(name = "rvnum")
+  
+    @Id
     @JsonProperty("rvNum")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int rvNum;

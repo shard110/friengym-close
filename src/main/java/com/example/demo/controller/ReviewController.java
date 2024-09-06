@@ -36,9 +36,9 @@ public class ReviewController {
     }
 
     // 특정 상품에 대한 리뷰 조회
-    @GetMapping("/product/{pnum}")
-    public List<Review> getReviewsByProduct(@PathVariable int pnum) {
-        return reviewService.getReviewsByProduct(pnum);
+    @GetMapping("/product/{pNum}")
+    public List<Review> getReviewsByProduct(@PathVariable int pNum) {
+        return reviewService.getReviewsByProduct(pNum);
     }
 
     // 특정 유저가 남긴 리뷰 조회

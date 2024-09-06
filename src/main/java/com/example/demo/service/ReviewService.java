@@ -31,8 +31,8 @@ import com.example.demo.repository.ReviewRepository;
       }
   
       // 특정 상품에 대한 리뷰 가져오기
-      public List<Review> getReviewsByProduct(int pnum) {
-          return reviewRepository.findByProductPnum(pnum);
+      public List<Review> getReviewsByProduct(int pNum) {
+          return reviewRepository.findByProductPNum(pNum);
       }
   
       // 특정 유저가 남긴 리뷰 가져오기
