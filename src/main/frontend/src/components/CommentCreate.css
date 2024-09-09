@@ -1,0 +1,30 @@
+/* AddComment.css */
+
+.btn {
+    margin: 0;
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .btn-outline-primary {
+    background-color: transparent;
+    color: #007bff;
+    border: 1px solid #007bff;
+  }
+  
+  .btn-outline-primary:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .card-body {
+    padding: 1em;
+  }
+  
+  .card-footer {
+    padding: 1em;
+    background-color: #f8f9fa;
+  }
+  

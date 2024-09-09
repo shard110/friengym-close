@@ -1,139 +1,89 @@
-/* PostDetail.css */
+.post-edit-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
 
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  .post-detail-card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    padding: 20px;
-  }
-  
-  .card-header {
-    font-size: 1.5em;
-    font-weight: bold;
-    border-bottom: 2px solid #eee;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-  }
-  
-  .card-body {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .title {
-    font-size: 1.75em;
-    color: #333;
-  }
-  
-  .file-info {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .file-info p {
-    margin: 0;
-  }
-  
-  .button-group {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 1em;
-  }
-  
-  .edit-button {
-    background-color: #007bff;
-  }
-  
-  .delete-button {
-    background-color: #dc3545;
-  }
-  
-  .back-button {
-    background-color: #6c757d;
-  }
-  
-  .download-button {
-    background-color: #28a745;
-  }
-  
-  .update-button {
-    background-color: #007bff;
-  }
-  
-  .cancel-button {
-    background-color: #6c757d;
-  }
-  
-  .button:hover {
-    opacity: 0.9;
-  }
-  
-  .loading, .error {
-    font-size: 1.2em;
-    color: #ff6f6f;
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  /* Form styles for EditPost */
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  label {
-    font-weight: bold;
-  }
-  
-  input[type="text"],
-  input[type="number"],
-  input[type="datetime-local"],
-  textarea {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-  }
-  
-  textarea {
-    resize: vertical;
-    min-height: 100px;
-  }
-  
-  button[type="submit"] {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  button[type="submit"]:hover {
-    opacity: 0.9;
-  }
-  
-  .cancel-button {
-    background-color: #6c757d;
-    text-align: center;
-    margin-top: 10px;
-  }
+.post-edit-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.post-edit-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.form-group textarea {
+  resize: vertical;
+  height: 200px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.save-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.save-button:hover {
+  background-color: #0056b3;
+}
+
+.cancel-button {
+  background-color: #6c757d;
+  color: white;
+}
+
+.cancel-button:hover {
+  background-color: #5a6268;
+}
+
+.error {
+  color: red;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.loading {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.success-message {
+  color: green;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+

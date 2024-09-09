@@ -1,0 +1,36 @@
+package com.example.demo.dto;
+
+import com.example.demo.entity.Comment;
+import lombok.Getter;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+@Getter
+public class CommentResponse {
+
+    private Integer commentNo;
+    private String comment; //댓글내용
+    private String createdDate; // LocalDateTime 대신 String으로 변경
+    private String modifiedDate; // LocalDateTime 대신 String으로 변경
+    private Integer poNum;
+    private String userId; // 작성자 ID
+
+    /* Entity -> Dto */
+    public CommentResponse(Comment comment) {
+        this.commentNo = comment.getCommentNo();
+        this.comment = comment.getComment();
+        this.createdDate = formatDate(comment.getCreatedDate());
+        this.modifiedDate = formatDate(comment.getModifiedDate());
+        this.poNum = (comment.getPost() != null) ? comment.getPost().getPoNum() : null;
+        this.userId = (comment.getUser() != null) ? comment.getUser().getId() : "Anonymous"; // 작성자 ID
+    }
+
+    // 날짜 포맷팅 메서드
+    private String formatDate(LocalDateTime dateTime) {
+        if (dateTime == null) {
+            return null;
+        }
+        return dateTime.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
+    }
+}

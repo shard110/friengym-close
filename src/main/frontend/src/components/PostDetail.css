@@ -1,7 +1,7 @@
 /* PostDetail.css */
 
 .container {
-  width: 80%;
+  max-width: 800px;
   margin: 0 auto;
   padding: 20px;
 }
@@ -9,100 +9,70 @@
 .post-detail-card {
   border: 1px solid #ddd;
   border-radius: 8px;
-  padding: 20px;
-  background-color: #f9f9f9;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
 }
 
 .card-header {
-  font-size: 1.5em;
-  margin-bottom: 20px;
-  color: #333;
+  padding: 15px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .card-body {
-  font-size: 1em;
-  line-height: 1.6;
+  padding: 20px;
 }
 
 .title {
-  font-size: 2em;
+  font-size: 24px;
   margin: 0;
-  color: #222;
+  color: #333;
 }
 
-.button-group {
+.date {
+  font-size: 14px;
+  color: #888;
+  margin-top: 10px;
+}
+
+.file-info {
   margin-top: 20px;
 }
 
 .button {
-  background-color: #007bff;
-  color: white;
+  padding: 10px 15px;
   border: none;
   border-radius: 4px;
-  padding: 10px 20px;
-  margin-right: 10px;
+  color: #fff;
   cursor: pointer;
   text-decoration: none;
-  display: inline-block;
+  font-size: 14px;
 }
 
-.button:hover {
-  background-color: #0056b3;
+.download-button {
+  background-color: #007bff;
 }
 
 .edit-button {
   background-color: #28a745;
 }
 
-.edit-button:hover {
-  background-color: #218838;
-}
-
 .delete-button {
   background-color: #dc3545;
-}
-
-.delete-button:hover {
-  background-color: #c82333;
-}
-
-.download-button {
-  background-color: #ffc107;
-}
-
-.download-button:hover {
-  background-color: #e0a800;
 }
 
 .back-button {
   background-color: #6c757d;
 }
 
-.back-button:hover {
-  background-color: #5a6268;
+.button-group {
+  margin-top: 20px;
 }
 
 .loading, .error {
   text-align: center;
-  font-size: 1.2em;
+  font-size: 18px;
   margin-top: 20px;
-}
-
-/* PostDetail.css */
-.file-info {
-margin-top: 20px;
-}
-
-.file-info a {
-color: #007bff;
-text-decoration: none;
-}
-
-.file-info a:hover {
-text-decoration: underline;
-}
-
-.download-button {
-margin-top: 10px;
 }

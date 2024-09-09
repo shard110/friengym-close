@@ -17,7 +17,7 @@ export default function PostsList() {
         }
         const data = await response.json();
 
-        setPosts(data.posts); // 게시글 목록 설정 (서버에서 정렬된 데이터 가정)
+        setPosts(data.posts); // 게시글 목록 설정
         setTotalPages(Math.ceil(data.pageInfo.total / size)); // 전체 페이지 수 계산
       } catch (error) {
         console.error(error);
@@ -26,6 +26,13 @@ export default function PostsList() {
 
     fetchPosts();
   }, [page, size]); // 페이지, 페이지 크기 변경 시 데이터 새로 가져오기
+
+  // 날짜 포맷 함수
+  const formatDate = (dateString) => {
+    if (!dateString) return "No Date";
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' });
+  };
 
   // 페이지 변경 핸들러
   const handlePageChange = (newPage) => {
@@ -43,6 +50,7 @@ export default function PostsList() {
           <tr>
             <th className="number">번호</th>
             <th className="title">제목</th>
+            <th className="user-id">작성자</th>
             <th className="date">작성 날짜</th>
             <th className="view-count">조회수</th>
           </tr>
@@ -53,8 +61,10 @@ export default function PostsList() {
               <td>{post.poNum}</td>
               <td>
                 <Link to={`/post/${post.poNum}`}>{post.poTitle}</Link>
+                <span className="comment-count-badge">{post.commentCount} comments</span> {/* 댓글 수 표시 */}
               </td>
-              <td>{new Date(post.poDate).toLocaleDateString()}</td>
+              <td>{post.id}</td> {/* 작성자 ID 표시 */}
+              <td>{formatDate(post.createdDate)}</td> {/* 날짜만 표시 */}
               <td>{post.viewCnt}</td>
             </tr>
           ))}

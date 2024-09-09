@@ -6,8 +6,8 @@ import { useAuth } from './AuthContext';
 const CreatePostForm = () => {
     const { user } = useAuth(); // AuthContext에서 사용자 정보를 가져옵니다
     const navigate = useNavigate();
-    const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
+    const [poTitle, setpoTitle] = useState('');
+    const [poContents, setpoContents] = useState('');
     const [file, setFile] = useState(null);
     const [message, setMessage] = useState('');
 
@@ -21,22 +21,18 @@ const CreatePostForm = () => {
         e.preventDefault();
 
         const formData = new FormData();
-        const postObject = {
-            title,
-            content,
-            userId: user.userId // userId를 추가
-        };
-        formData.append('post', JSON.stringify(postObject));  // JSON 문자열로 추가
+        formData.append('poTitle', poTitle);
+        formData.append('poContents', poContents);
+        formData.append('userId', user.userId);
         if (file) {
             formData.append('file', file);
         }
 
         try {
-            // 요청 헤더에 인증 토큰을 포함
             const response = await axios.post('http://localhost:8080/posts', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${user.token || localStorage.getItem('authToken')}` // 수정됨
+                    'Authorization': `Bearer ${user.token || localStorage.getItem('authToken')}`
                 }
             });
             console.log(response.data);
@@ -58,16 +54,16 @@ const CreatePostForm = () => {
                 <label>Title:</label>
                 <input
                     type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    value={poTitle}
+                    onChange={(e) => setpoTitle(e.target.value)}
                     required
                 />
             </div>
             <div>
                 <label>Content:</label>
                 <textarea
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
+                    value={poContents}
+                    onChange={(e) => setpoContents(e.target.value)}
                     required
                 />
             </div>
