@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.entity.Post;
 
+//주석//
 public class PostRequest {
 
     private Post post;
