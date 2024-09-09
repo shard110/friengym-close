@@ -1,25 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useParams, useNavigate } from 'react-router-dom';
 
-export default function EditPost() {
+const EditPost = () => {
   const { poNum } = useParams();
+  const navigate = useNavigate();
   const [post, setPost] = useState({
-    poTitle: "",
-    poContents: "",
-    username: "",
+    poTitle: '',
+    poContents: '',
+    file: null
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
+  const [success, setSuccess] = useState(null);
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/post/${poNum}`);
-        setPost(response.data);
-      } catch (error) {
-        setError("Failed to fetch post details.");
+        const response = await axios.get(`http://localhost:8080/posts/${poNum}`);
+        setPost({
+          poTitle: response.data.potitle,
+          poContents: response.data.pocontents,
+          file: null
+        });
+      } catch (err) {
+        setError('Failed to fetch post details');
       } finally {
         setLoading(false);
       }
@@ -30,16 +35,35 @@ export default function EditPost() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setPost((prevPost) => ({ ...prevPost, [name]: value }));
+    setPost((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleFileChange = (e) => {
+    setPost((prev) => ({ ...prev, file: e.target.files[0] }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append('poTitle', post.poTitle);
+    formData.append('poContents', post.poContents);
+    if (post.file) {
+      formData.append('file', post.file);
+    }
+
     try {
-      await axios.put(`http://localhost:8080/post/${poNum}`, post);
-      navigate(`/post/${poNum}`);
-    } catch (error) {
-      setError("Failed to update post.");
+      await axios.put(`http://localhost:8080/posts/${poNum}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        }
+      });
+      setSuccess('Post updated successfully!');
+      setTimeout(() => {
+        navigate('/posts'); // /posts 페이지로 리다이렉트
+      }, 2000); // 2초 후 리다이렉트
+    } catch (err) {
+      setError('Failed to update post');
     }
   };
 
@@ -47,34 +71,40 @@ export default function EditPost() {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="container mt-4">
-      <h2>Edit Post</h2>
+    <div>
+      <h1>Update Post</h1>
+      {success && <div className="success-message">{success}</div>}
       <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="poTitle" className="form-label">Title</label>
+        <div>
+          <label>Title:</label>
           <input
             type="text"
-            id="poTitle"
             name="poTitle"
-            className="form-control"
             value={post.poTitle}
             onChange={handleChange}
             required
           />
         </div>
-        <div className="mb-3">
-          <label htmlFor="poContents" className="form-label">Content</label>
+        <div>
+          <label>Contents:</label>
           <textarea
-            id="poContents"
             name="poContents"
-            className="form-control"
             value={post.poContents}
             onChange={handleChange}
             required
           />
         </div>
-        <button type="submit" className="btn btn-primary">Save Changes</button>
+        <div>
+          <label>File:</label>
+          <input
+            type="file"
+            onChange={handleFileChange}
+          />
+        </div>
+        <button type="submit">Update Post</button>
       </form>
     </div>
   );
-}
+};
+
+export default EditPost;
