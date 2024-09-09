@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +43,10 @@ public class AskController {
     @Autowired
     private UserService userService; // UserService 주입
 
+    @Value("${file.ask-upload-dir}")
+    private String askUploadDir;
+
+    
      // 모든 문의글 조회 (페이징 처리)
      @GetMapping
      public ResponseEntity<Page<Ask>> getAllAsks(
@@ -98,10 +103,11 @@ public class AskController {
 // 파일 처리 로직
 if (file != null && !file.isEmpty()) {
     try {
-        String uploadDir = "C:/sowon0903/friengym/uploads/askuploads/";  // 실제 파일 경로
-        String fileName = file.getOriginalFilename();
-        Path path = Paths.get(uploadDir + fileName);
-        Files.write(path, file.getBytes());
+       // 파일을 askuploads 폴더에 저장
+       String fileName = file.getOriginalFilename();
+       Path path = Paths.get(askUploadDir, fileName);
+       Files.write(path, file.getBytes());
+
 
         ask.setAfile("/uploads/askuploads/" + fileName);  // URL 설정
     } catch (IOException e) {
@@ -135,10 +141,10 @@ if (file != null && !file.isEmpty()) {
        // 파일 업데이트 처리
        if (file != null && !file.isEmpty()) {
         try {
-            String uploadDir = "C:/sowon0903/friengym/uploads/askuploads/";
-            String fileName = file.getOriginalFilename();
-            Path path = Paths.get(uploadDir + fileName);
-            Files.write(path, file.getBytes());
+          // 파일을 askuploads 폴더에 저장
+          String fileName = file.getOriginalFilename();
+          Path path = Paths.get(askUploadDir, fileName);
+          Files.write(path, file.getBytes());
 
             ask.setAfile("/uploads/askuploads/" + fileName);
         } catch (IOException e) {
@@ -157,14 +163,16 @@ public ResponseEntity<Void> deleteAsk(@PathVariable int anum) {
     // anum으로 문의글을 가져옴
     Ask ask = askService.getAskById(anum);  // 해당 문의글을 가져옴
     if (ask.getAfile() != null) {
-        // 서버에서 파일 삭제
-        try {
-            Path path = Paths.get("C:/sowon0903/friengym/uploads/askuploads/" + ask.getAfile().substring(19));
-            Files.delete(path);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+          // 서버에서 파일 삭제
+          try {
+        // 절대 경로로 파일 경로 구성
+        String filePath = askUploadDir + "/" + Paths.get(ask.getAfile()).getFileName();
+        Path path = Paths.get(filePath);
+        Files.deleteIfExists(path);
+    } catch (IOException e) {
+        e.printStackTrace();
     }
+}
 
     askService.deleteAsk(anum);
     return ResponseEntity.noContent().build();

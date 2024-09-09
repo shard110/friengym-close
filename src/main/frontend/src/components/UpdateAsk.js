@@ -6,8 +6,8 @@ import { useNavigate, useParams } from "react-router-dom";
 const UpdateAsk = () => {
   const { anum } = useParams();
   const [ask, setAsk] = useState({
-    atitle: "",
-    acontents: "",
+    aTitle: "",
+    aContents: "",
     afile: ""
   });
 
@@ -35,8 +35,8 @@ const UpdateAsk = () => {
 
   const handleUpdate = async () => {
     const formData = new FormData();
-    formData.append("aTitle", ask.atitle);
-    formData.append("aContents", ask.acontents);
+    formData.append("aTitle", ask.aTitle);
+    formData.append("aContents", ask.aContents);
 
     if (newFile) {
       formData.append("afile", newFile);  // 새로운 파일을 선택한 경우
@@ -71,14 +71,14 @@ const UpdateAsk = () => {
     <h1>문의글 수정</h1>
     <input
       type="text"
-      name="atitle"
-      value={ask.atitle}
+      name="aTitle"
+      value={ask.aTitle}
       onChange={handleChange}
       placeholder="제목"
     />
     <textarea
-      name="acontents"
-      value={ask.acontents}
+      name="aContents"
+      value={ask.aContents}
       onChange={handleChange}
       placeholder="내용"
     />

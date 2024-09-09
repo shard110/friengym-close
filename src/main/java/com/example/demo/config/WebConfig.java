@@ -1,5 +1,6 @@
 package com.example.demo.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -19,19 +20,19 @@ public class WebConfig implements WebMvcConfigurer {
             .allowCredentials(true);  // 쿠키 및 인증 정보 허용
     }
 
+    @Value("${file.ask-upload-dir}")
+    private String askUploadDir;
+
     @Override
     public void addResourceHandlers(@NonNull ResourceHandlerRegistry registry) {
        // 쇼핑몰 이미지 제공 설정
        registry.addResourceHandler("/images/**")
        .addResourceLocations("classpath:/static/images/");
 
-        // 문의글 업로드 파일에 대한 외부 경로 제공 설정
-        registry.addResourceHandler("/uploads/**")
-        .addResourceLocations("file:C:/sowon0903/friengym/uploads/");
+         // 문의 파일에 대한 리소스 핸들러
+         registry.addResourceHandler("/uploads/askuploads/**")
+         .addResourceLocations("file:" + askUploadDir + "/");
         
-         // 파일 시스템 경로에서 파일 제공 설정
-         registry.addResourceHandler("/files/**")
-         .addResourceLocations("file:files/");
        
     }
 }
