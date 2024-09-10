@@ -8,6 +8,7 @@ import CommentCreate from "./CommentCreate"; // 댓글 추가 컴포넌트 impor
 
 export default function PostDetail() {
   const [post, setPost] = useState({
+    id:"",
     poTitle: "",
     poContents: "",
     name: "",
@@ -36,6 +37,7 @@ export default function PostDetail() {
       try {
         const result = await axios.get(`http://localhost:8080/posts/${poNum}`);
         setPost({
+          id: result.data.id, // `id` 필드를 추가
           poTitle: result.data.poTitle,
           poContents: result.data.poContents,
           name: result.data.name,
@@ -121,7 +123,7 @@ export default function PostDetail() {
               </button>
             </div>
           )}
-          {user && user.name === post.name && (
+          {user && user.id === post.id && (
             <div className="button-group">
               <Link to={`/edit/${poNum}`} className="button edit-button">
                 Edit
