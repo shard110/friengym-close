@@ -1,49 +1,56 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useAuth } from './AuthContext'; // 인증 컨텍스트 추가
 
-const EditPost = () => {
-  const { poNum } = useParams();
-  const navigate = useNavigate();
+export default function EditPost() {
   const [post, setPost] = useState({
-    poTitle: '',
-    poContents: '',
-    file: null
+    poTitle: "",
+    poContents: "",
+    file: null, // 파일 선택 상태
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
+  const navigate = useNavigate();
+  const { poNum } = useParams();
+  const { user } = useAuth(); // 인증 정보 가져오기
 
   useEffect(() => {
-    const fetchPost = async () => {
+    const loadPost = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/posts/${poNum}`);
+        const result = await axios.get(`http://localhost:8080/posts/${poNum}`);
         setPost({
-          poTitle: response.data.potitle,
-          poContents: response.data.pocontents,
-          file: null
+          poTitle: result.data.poTitle,
+          poContents: result.data.poContents,
         });
-      } catch (err) {
-        setError('Failed to fetch post details');
+      } catch (error) {
+        setError("게시글을 가져오는 데 실패했습니다.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchPost();
+    loadPost();
   }, [poNum]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setPost((prev) => ({ ...prev, [name]: value }));
+    setPost((prevPost) => ({
+      ...prevPost,
+      [name]: value,
+    }));
   };
 
   const handleFileChange = (e) => {
-    setPost((prev) => ({ ...prev, file: e.target.files[0] }));
+    setPost((prevPost) => ({
+      ...prevPost,
+      file: e.target.files[0], // 선택한 파일을 상태에 저장
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const formData = new FormData();
     formData.append('poTitle', post.poTitle);
     formData.append('poContents', post.poContents);
@@ -54,57 +61,61 @@ const EditPost = () => {
     try {
       await axios.put(`http://localhost:8080/posts/${poNum}`, formData, {
         headers: {
+          'Authorization': `Bearer ${user?.token || localStorage.getItem('authToken')}`, // 인증 헤더 추가
           'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
         }
       });
-      setSuccess('Post updated successfully!');
-      setTimeout(() => {
-        navigate('/posts'); // /posts 페이지로 리다이렉트
-      }, 2000); // 2초 후 리다이렉트
-    } catch (err) {
-      setError('Failed to update post');
+      navigate(`/post/${poNum}`); // 수정 완료 후 상세 페이지로 이동
+    } catch (error) {
+      setError("게시글 업데이트에 실패했습니다.");
     }
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading) return <div className="loading">로딩 중...</div>;
+  if (error) return <div className="error">오류: {error}</div>;
 
   return (
-    <div>
-      <h1>Update Post</h1>
-      {success && <div className="success-message">{success}</div>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Title:</label>
-          <input
-            type="text"
-            name="poTitle"
-            value={post.poTitle}
-            onChange={handleChange}
-            required
-          />
+    <div className="container">
+      <div className="post-edit-card">
+        <div className="card-header">게시글 수정</div>
+        <div className="card-body">
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="poTitle">제목</label>
+              <input
+                type="text"
+                id="poTitle"
+                name="poTitle"
+                value={post.poTitle}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="poContents">내용</label>
+              <textarea
+                id="poContents"
+                name="poContents"
+                value={post.poContents}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="file">파일 (선택)</label>
+              <input
+                type="file"
+                id="file"
+                name="file"
+                onChange={handleFileChange}
+              />
+            </div>
+            <button type="submit" className="button submit-button">
+              수정하기
+            </button>
+          </form>
         </div>
-        <div>
-          <label>Contents:</label>
-          <textarea
-            name="poContents"
-            value={post.poContents}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>File:</label>
-          <input
-            type="file"
-            onChange={handleFileChange}
-          />
-        </div>
-        <button type="submit">Update Post</button>
-      </form>
+      </div>
     </div>
   );
-};
-
-export default EditPost;
+}

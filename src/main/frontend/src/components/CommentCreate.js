@@ -53,7 +53,7 @@ export default function AddComment({ poNum, refreshComments }) {
           </>
         ) : (
           <div className="card-body" style={{ fontSize: "small" }}>
-            <a href="/auth/login">로그인</a> 후 댓글을 등록할 수 있습니다.
+            <a href="/api/login">로그인</a> 후 댓글을 등록할 수 있습니다.
           </div>
         )}
         {error && <div className="error">Error: {error}</div>}

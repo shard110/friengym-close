@@ -17,6 +17,7 @@ public class PostResponse {
     private String modifiedDate;
     private int viewCnt;
     private String name;
+    private String id;  // 필드 추가
     private String fileUrl;
     private List<CommentResponse> comments;
     private int commentCount;
@@ -32,6 +33,7 @@ public class PostResponse {
                             post.getUpdatedDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")) : "No Date";
         this.viewCnt = post.getViewCnt();
         this.name = post.getUser() != null ? post.getUser().getName() : "Unknown";
+        this.id = post.getUser() != null ? post.getUser().getId() : "Unknown"; // id 필드 설정
         this.fileUrl = post.getFileUrl(); // 파일 URL 추가
         this.comments = post.getComments() != null ? 
                         post.getComments().stream()
@@ -52,6 +54,7 @@ public class PostResponse {
                             post.getUpdatedDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm")) : "No Date";
         this.viewCnt = post.getViewCnt();
         this.name = post.getUser() != null ? post.getUser().getName() : "Unknown";
+        this.id = post.getUser() != null ? post.getUser().getId() : "Unknown"; // id 필드 설정
         this.fileUrl = post.getFileUrl(); // 파일 URL 추가
         this.comments = post.getComments() != null ? 
                         post.getComments().stream()
