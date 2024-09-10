@@ -15,6 +15,7 @@ public class CommentResponse {
     private String modifiedDate; // LocalDateTime 대신 String으로 변경
     private Integer poNum;
     private String name; // 작성자 이름
+    private String id; // 댓글 작성자 ID (변경된 필드 이름)
 
     /* Entity -> Dto */
     public CommentResponse(Comment comment) {
@@ -24,6 +25,7 @@ public class CommentResponse {
         this.modifiedDate = formatDate(comment.getModifiedDate());
         this.poNum = (comment.getPost() != null) ? comment.getPost().getPoNum() : null;
         this.name = (comment.getUser() != null) ? comment.getUser().getName() : "Anonymous"; // 작성자 이름
+        this.id = (comment.getUser() != null) ? comment.getUser().getId() : null; // 댓글 작성자 ID
     }
 
     // 날짜 포맷팅 메서드

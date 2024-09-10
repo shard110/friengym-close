@@ -175,7 +175,7 @@ public class PostController {
     }
 
     // 댓글 수정
-    @PutMapping("/comments/{commentNo}")
+    @PutMapping("{poNum}/comments/{commentNo}")
     public ResponseEntity<CommentResponse> updateComment(
             @PathVariable("commentNo") Integer commentNo,
             @RequestBody CommentRequest commentRequest,
@@ -193,7 +193,7 @@ public class PostController {
     }
 
     // 댓글 삭제
-    @DeleteMapping("/comments/{commentNo}")
+    @DeleteMapping("{poNum}/comments/{commentNo}")
     public ResponseEntity<String> deleteComment(
             @PathVariable("commentNo") Integer commentNo,
             @RequestHeader("Authorization") String authHeader) {
