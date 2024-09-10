@@ -1,15 +1,16 @@
 package com.example.demo.config;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JwtTokenProvider {
@@ -37,15 +38,19 @@ public class JwtTokenProvider {
 
     // JWT 토큰에서 Claims 추출
     public Claims getClaims(String token) {
+        System.out.println("Parsing token: " + token);  // 토큰 출력
+        
         if (isTokenBlacklisted(token)) {
             throw new JwtException("Token is blacklisted");
         }
         try {
             return Jwts.parser()
-                    .setSigningKey(secretKey.getBytes())
+                    .setSigningKey(secretKey.getBytes())   // secretKey 확인
                     .parseClaimsJws(token)
                     .getBody();
         } catch (JwtException | IllegalArgumentException e) {
+            // 여기서 오류가 발생하면 정확한 이유를 확인할 수 있도록 로깅 추가
+        System.err.println("Error parsing JWT token: " + e.getMessage());
             throw new JwtException("Invalid JWT token");
         }
     }

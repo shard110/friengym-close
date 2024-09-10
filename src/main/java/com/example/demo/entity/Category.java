@@ -15,7 +15,7 @@ public class Category {
     @JsonProperty("catenum")
       private int catenum;
 
-      @Column(name = "catename")
+    @Column(name = "catename")
     @JsonProperty("catename")
       private String catename;
 }

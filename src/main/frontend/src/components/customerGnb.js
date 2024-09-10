@@ -11,9 +11,9 @@ const Gnb = () => {
                 </div>
                 <ul className="gnb-menu">
                     <li><a href="/">About frienGym</a></li>
-                    <li><a href="/posts">게시판</a></li>
-                    <li><a href="/products">쇼핑몰</a></li>
-                    <li><a href="/qna">고객센터</a></li>
+                    <li><a href="/qna">자주 묻는 질문</a></li>
+                    <li><a href="/asks">1:1문의 게시판</a></li>
+                    <li><a href="/customer">약관 및 정책</a></li>
                 </ul>
             </div>
         </nav>
