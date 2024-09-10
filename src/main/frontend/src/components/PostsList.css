@@ -1,0 +1,105 @@
+/* PostsList.css */
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* 열 너비 고정 */
+  }
+  
+  .table th, .table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }
+  
+  .table td a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .table td a:hover {
+    text-decoration: underline;
+  }
+  
+  /* 열 너비 조정 */
+  .table th.number, .table td.number {
+    width: 10%; /* 번호 열 너비 */
+  }
+  
+  .table th.user-id, .table td.user-id {
+    width: 15%; /* 작성자 열 너비 */
+  }
+  
+  .table th.view-count, .table td.view-count {
+    width: 10%; /* 조회수 열 너비 */
+  }
+  
+  .table th.date, .table td.date {
+    width: 20%; /* 작성 날짜 열 너비 */
+  }
+  
+  .table th.title, .table td.title {
+    width: 45%; /* 제목 열 너비 */
+  }
+  
+  /* 페이지 네비게이션 */
+  .pagination-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .pagination {
+    display: inline-flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .page-item {
+    margin: 0 5px;
+  }
+  
+  .page-link {
+    display: inline-block;
+    padding: 0.5em 1em;
+    font-size: 1em;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    color: #007bff;
+    text-decoration: none;
+    border-radius: 4px;
+  }
+  
+  .page-link:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .page-item.active .page-link {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+  }
+  
+  .title-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .comment-count-badge {
+    margin-left: 10px; /* 제목과 댓글 수 사이의 간격 조정 */
+    font-size: 0.9em;
+    color: #888;
+  }
