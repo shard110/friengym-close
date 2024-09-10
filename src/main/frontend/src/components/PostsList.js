@@ -78,6 +78,11 @@ export default function PostsList() {
               >
                 Next
               </button>
+              <li className="nav-item">
+                <Link className="btn btn-outline-light" to="/create-post">
+                  Create Post
+                </Link>
+              </li>
             </li>
           </ul>
         </nav>
