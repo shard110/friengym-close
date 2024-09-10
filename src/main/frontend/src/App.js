@@ -99,7 +99,7 @@ export default function App() {
             {/* 댓글 관련 경로 추가 */}
             <Route path="/post/:poNum/comments" element={<CommentList />} />
             <Route path="/post/:poNum/comments/create" element={<CommentCreate />} />
-            <Route path="/post/:poNum/comments/:commentId/edit" element={<CommentEdit />} />
+            <Route path="/post/:poNum/comments/:commentNo/edit" element={<CommentEdit />} />
           </Routes>
         </div>
       </Router>

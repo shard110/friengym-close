@@ -10,9 +10,9 @@ export default function PostDetail() {
   const [post, setPost] = useState({
     poTitle: "",
     poContents: "",
-    username: "",
+    name: "",
     createdDate: "",
-    fileUrl: "",
+    fileUrl: "", // 파일 URL 추가
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -68,6 +68,7 @@ export default function PostDetail() {
       link.click();
       link.remove();
     } catch (error) {
+      console.error("파일 다운로드에 실패했습니다.", error);
       setError("파일 다운로드에 실패했습니다.");
     }
   };
@@ -82,21 +83,21 @@ export default function PostDetail() {
   return (
     <div className="container">
       <div className="post-detail-card">
-        <div className="card-header">Details of Post ID: {poNum}</div>
+        <div className="card-header">No. {poNum}</div>
         <div className="card-body">
-          <h2 className="title">{post.poTitle}</h2> {/* 데이터 필드 이름 수정 */}
-          <h5>By {post.id}</h5>
-          <p>{post.poContents}</p> {/* 데이터 필드 이름 수정 */}
-          <p className="date">Created on: {post.createdDate}</p> {/* 작성 날짜 표시 */}
+          <h2 className="title">{post.poTitle}</h2>
+          <h5>By {post.name}</h5>
+          <p>{post.poContents}</p>
+          <p className="date">Created on: {post.createdDate}</p>
           {post.fileUrl && (
             <div className="file-info">
-              <p>첨부파일: {post.fileUrl}</p> {/* 파일 이름 표시 */}
+              <p>첨부파일: {post.fileUrl}</p>
               <button className="button download-button" onClick={downloadFile}>
                 Download File
               </button>
             </div>
           )}
-          {user && user.username === post.username && (
+          {user && user.name === post.name && (
             <div className="button-group">
               <Link to={`/edit/${poNum}`} className="button edit-button">
                 Edit
