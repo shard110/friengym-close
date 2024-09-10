@@ -24,7 +24,6 @@ function PopularProducts({ limit }) {
 
     return (
         <div>
-            <h2>Popular Products</h2>
             <div className="product-list">
                 {popularProducts.map(product => (
                     <div key={product.pNum} className="product-item">

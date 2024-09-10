@@ -1,6 +1,6 @@
 import React from 'react';
 import './Gnb.css';
-import logo from '../img/logo.png'
+import logo from '../img/logo.svg'
 
 const Gnb = () => {
     return (
@@ -10,10 +10,14 @@ const Gnb = () => {
                     <img src={logo} alt="frienGym"/>
                 </div>
                 <ul className="gnb-menu">
-                    <li><a href="/">About frienGym</a></li>
-                    <li><a href="/board">게시판</a></li>
-                    <li><a href="/products">쇼핑몰</a></li>
-                    <li><a href="/">고객센터</a></li>
+                    <li><link href="#">About frienGym</link></li>
+                    <li><link href="/board">게시판</link></li>
+                    <li><link href="/products">쇼핑몰</link></li>
+                    <li><link href="#">고객센터</link></li>
+                </ul>
+                <ul className="gnb-sign">
+                    <li><link href="/login">회원가입</link></li>
+                    <li><link href="/register">로그인</link></li>
                 </ul>
             </div>
         </nav>
