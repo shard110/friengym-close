@@ -101,12 +101,12 @@ const PostList = () => {
           {posts.map(post => (
             <tr key={post.ponum}>
               <td style={{ border: '1px solid #ddd', padding: '8px' }}>#{post.ponum}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{post.potitle}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{post.username}</td> {/* 작성자 이름 표시 */}
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(post.podate)}</td>
+              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{post.poTitle}</td>
+              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{post.name}</td> {/* 작성자 이름 표시 */}
+              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(post.poDate)}</td>
               <td style={{ border: '1px solid #ddd', padding: '8px' }}>{post.viewCnt}</td>
               <td style={{ border: '1px solid #ddd', padding: '8px' }}>{post.replyCnt}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{post.pocontents || '내용 없음'}</td>
+              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{post.poContents || '내용 없음'}</td>
             </tr>
           ))}
         </tbody>

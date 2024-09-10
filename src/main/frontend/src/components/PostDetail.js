@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import './PostDetail.css'; // CSS 파일 import
-import { useAuth } from './AuthContext'; // 인증 컨텍스트 추가
+import "./PostDetail.css"; // CSS 파일 import
+import { useAuth } from "./AuthContext"; // 인증 컨텍스트 추가
 import CommentList from "./CommentList"; // 댓글 목록 컴포넌트 import
 import CommentCreate from "./CommentCreate"; // 댓글 추가 컴포넌트 import
 
@@ -12,6 +12,7 @@ export default function PostDetail() {
     poContents: "",
     name: "",
     createdDate: "",
+    updatedDate: "", // 수정 날짜 필드 추가
     fileUrl: "", // 파일 URL 추가
   });
   const [loading, setLoading] = useState(true);
@@ -21,11 +22,27 @@ export default function PostDetail() {
   const { poNum } = useParams();
   const { user, loading: authLoading } = useAuth(); // 인증 정보 가져오기
 
+  // 날짜 및 시간 포맷 함수 추가
+  const formatDateTime = (dateString) => {
+    const date = new Date(dateString);
+    return `${date.toLocaleDateString()} ${date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    })}`;
+  };
+
   useEffect(() => {
     const loadPost = async () => {
       try {
         const result = await axios.get(`http://localhost:8080/posts/${poNum}`);
-        setPost(result.data);
+        setPost({
+          poTitle: result.data.poTitle,
+          poContents: result.data.poContents,
+          name: result.data.name,
+          createdDate: result.data.createdDate,
+          updatedDate: result.data.updatedDate || result.data.createdDate, // 수정된 날짜가 없으면 작성 날짜로 설정, // 수정 날짜 설정
+          fileUrl: result.data.fileUrl,
+        });
       } catch (error) {
         setError("게시글을 가져오는 데 실패했습니다.");
       } finally {
@@ -40,8 +57,10 @@ export default function PostDetail() {
     try {
       await axios.delete(`http://localhost:8080/posts/${poNum}`, {
         headers: {
-          'Authorization': `Bearer ${user?.token || localStorage.getItem('authToken')}` // 인증 헤더 추가
-        }
+          Authorization: `Bearer ${
+            user?.token || localStorage.getItem("authToken")
+          }`, // 인증 헤더 추가
+        },
       });
       navigate("/posts");
     } catch (error) {
@@ -56,14 +75,17 @@ export default function PostDetail() {
     }
 
     try {
-      const response = await axios.get(`http://localhost:8080/files/${post.fileUrl}`, {
-        responseType: 'blob', // 파일 데이터를 blob 형태로 받음
-      });
+      const response = await axios.get(
+        `http://localhost:8080/files/${post.fileUrl}`,
+        {
+          responseType: "blob", // 파일 데이터를 blob 형태로 받음
+        }
+      );
 
       const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
-      link.setAttribute('download', post.fileUrl); // 파일 이름 설정
+      link.setAttribute("download", post.fileUrl); // 파일 이름 설정
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -88,7 +110,9 @@ export default function PostDetail() {
           <h2 className="title">{post.poTitle}</h2>
           <h5>By {post.name}</h5>
           <p>{post.poContents}</p>
-          <p className="date">Created on: {post.createdDate}</p>
+          <p className="date">
+          {post.updatedDate !== post.createdDate ? `Updated on: ${formatDateTime(post.updatedDate)}` : `Created on: ${formatDateTime(post.createdDate)}`}
+          </p>
           {post.fileUrl && (
             <div className="file-info">
               <p>첨부파일: {post.fileUrl}</p>
