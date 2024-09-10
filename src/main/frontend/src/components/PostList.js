@@ -99,8 +99,8 @@ const PostList = () => {
         </thead>
         <tbody>
           {posts.map(post => (
-            <tr key={post.ponum}>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>#{post.ponum}</td>
+            <tr key={post.poNum}>
+              <td style={{ border: '1px solid #ddd', padding: '8px' }}>#{post.poNum}</td>
               <td style={{ border: '1px solid #ddd', padding: '8px' }}>{post.poTitle}</td>
               <td style={{ border: '1px solid #ddd', padding: '8px' }}>{post.name}</td> {/* 작성자 이름 표시 */}
               <td style={{ border: '1px solid #ddd', padding: '8px' }}>{formatDate(post.poDate)}</td>
