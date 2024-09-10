@@ -39,7 +39,7 @@ public class Comment {
 
     @ManyToOne
     @JsonBackReference
-    @JoinColumn(name = "poNum", nullable = false)
+    @JoinColumn(name = "ponum", nullable = false)   //오타수정
     private Post post; // 댓글이 달린 게시글
 
     @ManyToOne
