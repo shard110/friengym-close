@@ -10,6 +10,12 @@ function ProductHome() {
     const [showCategories, setShowCategories] = useState(false);
     const [recentProducts, setRecentProducts] = useState([]);
 
+    const [searchKeyword, setSearchKeyword] = useState('');
+
+    const handleSearch = () => {
+        window.location.href = `/productslist?keyword=${searchKeyword}`;
+    };
+
     const images = [
         'http://localhost:8080/images/banner2.jpg',
         'http://localhost:8080/images/banner3.jpg',
@@ -46,37 +52,33 @@ function ProductHome() {
         <div className="product-home">
             <nav className="navbar">
                 <ul>
-                    <li><Link to="/">회사 정보</Link></li>
-                    <li><Link to="/posts">게시판</Link></li>
-                    <li><Link to="/products">쇼핑몰</Link></li>
-                    <li><Link to="/support">고객센터</Link></li>
-                </ul>
-            </nav>
-
-            <div className="interaction-area">
-                <div className="category-menu"
-                     onMouseEnter={() => setShowCategories(true)}
-                     onMouseLeave={() => setShowCategories(false)}>
+                    <li><Link to="/posts">쇼핑홈</Link></li>
+                    <li className="category-menu"
+                    onMouseEnter={() => setShowCategories(true)}
+                    onMouseLeave={() => setShowCategories(false)}>
                     <div className="category-toggle">카테고리</div>
-                    {showCategories && (
-                        <ul className="category-list"
-                            onMouseEnter={() => setShowCategories(true)}
-                            onMouseLeave={() => setShowCategories(false)}>
-                            {categories.map(category => (
-                                <li key={category.catenum}>
-                                    <Link to={`/categories/${category.catenum}`}
-                                          onClick={() => setShowCategories(false)}>{category.catename}</Link>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
-                </div>
+                    <ul className={`category-list ${showCategories ? 'show' : ''}`}>
+                        {categories.map(category => (
+                            <li key={category.catenum}>
+                                <Link to={`/categories/${category.catenum}`}
+                                    onClick={() => setShowCategories(false)}>{category.catename}</Link>
+                            </li>
+                        ))}
+                    </ul>
+                    </li>
+                    <li><Link to="/products">신상품</Link></li>
+                    <li><Link to="/support">베스트</Link></li>
+                </ul>
                 <div className="search-bar">
-                    <input type="text" placeholder="검색어를 입력하세요..." />
-                    <button>검색</button>
+                    <input
+                        type="text"
+                        placeholder="쇼핑몰 상품 검색"
+                        value={searchKeyword}
+                        onChange={(e) => setSearchKeyword(e.target.value)}
+                    />
+                    <button onClick={handleSearch}>🔍︎</button>
                 </div>
-            </div>
-
+            </nav>
             <div className="banner">
                 <img
                     src={images[currentImageIndex]}
@@ -84,20 +86,20 @@ function ProductHome() {
                     className="banner-image"
                 />
                 <button className="prev-button" onClick={() => setCurrentImageIndex(currentImageIndex === 0 ? images.length - 1 : currentImageIndex - 1)}>
-                    &#10094;
+                    <p className='btn-icon-prev'></p>
                 </button>
                 <button className="next-button" onClick={() => setCurrentImageIndex(currentImageIndex === images.length - 1 ? 0 : currentImageIndex + 1)}>
-                    &#10095;
+                    <p className='btn-icon-next'></p>
                 </button>
             </div>
 
             <div className="section popular-products">
-                <h3><Link to="/products/popular">인기상품 모두보기</Link></h3>
-                <PopularProducts limit={4} />
+                <Link to="/products/popular">more</Link>
             </div>
+            <PopularProducts limit={4} />
 
             <div className="section new-products">
-                <h3><Link to="/products/new">신상품 모두보기</Link></h3>
+                <Link to="/products/new">more</Link>
                 <div className="product-list">
                     {recentProducts.length > 0 ? (
                         recentProducts.map(product => (

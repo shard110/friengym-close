@@ -28,16 +28,9 @@ import Cart from './page/Cart';
 
 
 export default function App() {
-  const [searchKeyword, setSearchKeyword] = useState('');
-
-  const handleSearch = () => {
-    window.location.href = `/productslist?keyword=${searchKeyword}`;
-  };
-
   return (
     <AuthProvider>
       <Router>
-        <Navbar />
         <div className="App">
           <nav>
 
