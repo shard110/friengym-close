@@ -1,79 +1,86 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../components/AuthContext"; // AuthContext import
+import { useAuth } from "./AuthContext";
 
-export default function CreatePost() {
-  const { user } = useAuth(); // 로그인한 사용자 정보 가져오기
-  const [poTitle, setPoTitle] = useState("");
-  const [poContents, setPoContents] = useState("");
-  const [error, setError] = useState(null);
+const CreatePostForm = () => {
+  const { user } = useAuth(); // AuthContext에서 사용자 정보를 가져옵니다
   const navigate = useNavigate();
+  const [poTitle, setpoTitle] = useState("");
+  const [poContents, setpoContents] = useState("");
+  const [file, setFile] = useState(null);
+  const [message, setMessage] = useState("");
+
+  // Redirect to login page if not authenticated
+  if (!user) {
+    navigate("/login");
+    return null; // Return null while navigating
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!user) {
-      setError("You need to be logged in to create a post.");
-      return;
+    const formData = new FormData();
+    formData.append("poTitle", poTitle);
+    formData.append("poContents", poContents);
+    formData.append("userId", user.userId);
+    if (file) {
+      formData.append("file", file);
     }
 
-    const newPost = { 
-      username: user.name, // 로그인한 사용자의 이름 사용
-      poTitle, 
-      poContents 
-    };
-
     try {
-      const response = await fetch("http://localhost:8080/post", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newPost),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to create post");
-      }
-
-      setPoTitle("");
-      setPoContents("");
-      navigate("/posts");
+      const response = await axios.post(
+        "http://localhost:8080/posts",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${
+              user.token || localStorage.getItem("authToken")
+            }`,
+          },
+        }
+      );
+      console.log(response.data);
+      setMessage("Post created successfully!");
+      alert("Post created successfully!");
+      setTimeout(() => {
+        navigate("/posts");
+      }, 2000);
     } catch (error) {
-      setError("Failed to create post. Please try again.");
-      console.error(error);
+      console.error("An unexpected error occurred:", error);
+      setMessage("An unexpected error occurred.");
+      alert("An unexpected error occurred.");
     }
   };
 
   return (
-    <div className="container mt-4">
-      <h2>Create New Post</h2>
-      {error && <div className="alert alert-danger">{error}</div>}
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="poTitle" className="form-label">Title</label>
-          <input
-            type="text"
-            id="poTitle"
-            className="form-control"
-            value={poTitle}
-            onChange={(e) => setPoTitle(e.target.value)}
-            required
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="poContents" className="form-label">Content</label>
-          <textarea
-            id="poContents"
-            className="form-control"
-            rows="4"
-            value={poContents}
-            onChange={(e) => setPoContents(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit" className="btn btn-primary">Create Post</button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label>Title:</label>
+        <input
+          type="text"
+          value={poTitle}
+          onChange={(e) => setpoTitle(e.target.value)}
+          required
+        />
+      </div>
+      <div>
+        <label>Content:</label>
+        <textarea
+          value={poContents}
+          onChange={(e) => setpoContents(e.target.value)}
+          required
+        />
+      </div>
+      <div>
+        <label>File:</label>
+        <input type="file" onChange={(e) => setFile(e.target.files[0])} />
+      </div>
+      <button type="submit">Create Post</button>
+      {message && <p>{message}</p>}
+    </form>
   );
-}
+};
+
+export default CreatePostForm;

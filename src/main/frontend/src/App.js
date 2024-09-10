@@ -12,6 +12,9 @@ import CreatePost from "./components/CreatePost";
 import PostsList from "./components/PostsList";
 import PostDetail from "./components/PostDetail";
 import EditPost from './components/EditPost';
+import CommentEdit from './components/CommentEdit';
+import CommentList from './components/CommentList';
+import CommentCreate from './components/CommentCreate';
 import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import HomePage from './components/HomePage';
@@ -25,11 +28,11 @@ import Cart from './page/Cart';
 
 
 export default function App() {
-    const [searchKeyword, setSearchKeyword] = useState('');
+  const [searchKeyword, setSearchKeyword] = useState('');
 
-    const handleSearch = () => {
-        window.location.href = `/productslist?keyword=${searchKeyword}`;
-    };
+  const handleSearch = () => {
+    window.location.href = `/productslist?keyword=${searchKeyword}`;
+  };
 
   return (
     <AuthProvider>
@@ -59,7 +62,12 @@ export default function App() {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/mypage" element={<Mypage />} />
             <Route path="/edit-profile" element={<EditProfilePage />} />
-        </Routes>
+
+            {/* 댓글 관련 경로 추가 */}
+            <Route path="/post/:poNum/comments" element={<CommentList />} />
+            <Route path="/post/:poNum/comments/create" element={<CommentCreate />} />
+            <Route path="/post/:poNum/comments/:commentNo/edit" element={<CommentEdit />} />
+          </Routes>
         </div>
       </Router>
     </AuthProvider>
