@@ -1,0 +1,150 @@
+/* 슬라이드 컨테이너 스타일 */
+.slide-container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-height: 500px; /* 슬라이드의 최대 높이 */
+  }
+  
+  /* 슬라이드 스타일 */
+  .slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  /* 개별 슬라이드 스타일 */
+  .slide {
+    min-width: 100%;
+    box-sizing: border-box;
+    position: relative; /* 위치 지정에 필요 */
+  }
+  
+  .slide img {
+    width: 100%;
+    height: auto; /* 비율 유지 */
+    border-radius: 10px; /* 이미지 모서리 둥글게 */
+  }
+  
+  .slide h2 {
+    position: absolute; /* 슬라이드 내에서 위치 조정 */
+    bottom: 20px;
+    left: 20px;
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .slide p {
+    position: absolute;
+    bottom: 60px;
+    left: 20px;
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  /* 버튼 스타일 */
+  .slide-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    z-index: 10; /* 버튼이 슬라이드 위에 보이도록 설정 */
+  }
+  
+  .prev-button {
+    left: 10px;
+  }
+  
+  .next-button {
+    right: 10px;
+  }
+  
+  /* 인기 상품 섹션 스타일 */
+  .product-section {
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  /* 새 상품 섹션 스타일 */
+  .product-section2 {
+    padding: 20px;
+    background-color: white;
+  }
+  
+  
+  /* 상품 헤더 스타일 */
+  .product-header {
+    display: flex;
+    justify-content: flex-start; /* 제목과 링크를 양쪽 끝에 배치 */
+    align-items: center;
+    margin-bottom: -5px; /* 카드 리스트와의 간격 조정 */
+    width: 100%; /* 전체 폭 사용 */
+  }
+  
+  /* 제목 스타일 */
+  .product-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-left: 13%; /* 오른쪽으로 밀어내기 위해 */
+    
+  }
+  
+  /* 더보기 링크 스타일 */
+  .more-products-link {
+    font-size: 16px;
+    color: #007bff;
+    text-decoration: none;
+    margin-left: 65%; /* 왼쪽으로 밀어내기 */
+  }
+  
+  .more-products-link:hover {
+    text-decoration: underline;
+  }
+  
+  /* 상품 리스트 스타일 */
+  .product-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* 중앙 정렬 */
+    gap: 20px;
+    margin: 0 auto; /* 부모 컨테이너 내에서 중앙 정렬 */
+    max-width: 1200px; /* 리스트가 너무 넓어지지 않도록 제한 */
+  }
+  
+  /* 상품 카드 스타일 */
+  .product-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 300px;
+    height: 300px;
+    text-align: center;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+  
+  .product-card img {
+    width: 100%;
+    height: 60%;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .product-card h3 {
+    margin: 10px 0;
+    font-size: 20px;
+  }
+  
+  .product-card p {
+    color: #666;
+    font-size: 16px;
+  }
+  

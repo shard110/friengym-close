@@ -40,41 +40,8 @@ export default function App() {
         <Navbar />
         <div className="App">
           <nav>
-            <ul>
-              <li>
-                <ul>
-                  <li>
-                    <Link to="/">Home</Link>
-                  </li>
-                  <li>
-                    <Link to="/posts">Posts</Link>
-                  </li>
-                  <li>
-                    <Link to="/products">Products</Link>
-                  </li>
-                  <li>
-                    <Link to="/masters">Master 목록</Link>
-                  </li>
-                  <li>
-                    <Link to="/productslist">상품 목록</Link>
-                  </li>
-                  <li>
-                    <Link to="/cart">장바구니</Link>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <div className="search-bar">
-                  <input
-                    type="text"
-                    placeholder="검색어를 입력하세요..."
-                    value={searchKeyword}
-                    onChange={(e) => setSearchKeyword(e.target.value)}
-                  />
-                  <button onClick={handleSearch}>검색</button>
-                </div>
-              </li>
-            </ul>
+
+
           </nav>
           <Routes>
             <Route path="/" element={<HomePage />} />

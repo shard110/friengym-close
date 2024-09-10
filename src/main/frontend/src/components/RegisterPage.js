@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import styles from './RegisterPage.module.css'; // CSS 모듈 임포트
+
 
 function RegisterPage() {
   const [id, setId] = useState('');
@@ -10,7 +12,7 @@ function RegisterPage() {
   const [sex, setSex] = useState('');
   const [error, setError] = useState('');
   const [idError, setIdError] = useState('');
-  const [idSuccess, setIdSuccess] = useState(''); // ID 확인 성공 메시지 상태 추가
+  const [idSuccess, setIdSuccess] = useState('');
   const [isIdAvailable, setIsIdAvailable] = useState(true);
   const navigate = useNavigate();
 
@@ -47,13 +49,12 @@ function RegisterPage() {
     }
 
     try {
-      // 서버에 JSON 형식으로 회원가입 요청
       const response = await axios.post('/api/register', {
         id,
         pwd,
         name,
         phone,
-        sex  // 성별 추가
+        sex
       });
       console.log('회원가입 성공:', response.data);
       navigate('/login');
@@ -64,43 +65,48 @@ function RegisterPage() {
   };
 
   return (
-    <div className="RegisterPage">
-      <h2>회원가입</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {idError && <p style={{ color: 'red' }}>{idError}</p>}
-      {idSuccess && <p style={{ color: 'green' }}>{idSuccess}</p>} {/* 성공 메시지 표시 */}
+    <div className={styles.RegisterPage}>
+      <h2 className={styles.heading}>회원가입</h2>
+      {error && <p className={styles.error}>{error}</p>}
+      {idError && <p className={styles.error}>{idError}</p>}
+      {idSuccess && <p className={styles.success}>{idSuccess}</p>}
       <input
         type="text"
         value={id}
         onChange={(e) => setId(e.target.value)}
         placeholder="사용자 ID"
+        className={styles.input}
       />
-      <button onClick={checkIdAvailability}>ID 중복 확인</button>
+      <button onClick={checkIdAvailability} className={styles.button}>ID 중복 확인</button>
       <input
         type="password"
         value={pwd}
         onChange={(e) => setPwd(e.target.value)}
         placeholder="비밀번호"
+        className={styles.input}
       />
       <input
         type="text"
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder="이름"
+        className={styles.input}
       />
       <input
         type="text"
         value={phone}
         onChange={(e) => setPhone(e.target.value)}
         placeholder="전화번호"
+        className={styles.input}
       />
       <input
         type="text"
         value={sex}
         onChange={(e) => setSex(e.target.value)}
-        placeholder="성별"  // 성별 입력 필드 추가
+        placeholder="성별"
+        className={styles.input}
       />
-      <button onClick={handleRegister}>회원가입</button>
+      <button onClick={handleRegister} className={styles.button}>회원가입</button>
     </div>
   );
 }

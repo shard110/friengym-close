@@ -1,8 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import axios from 'axios';
 import { useAuth } from './AuthContext';
 import { Link } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import './Mypage.css';
+import Footer from './Footer'; // Footer 컴포넌트 import
 
 const Mypage = () => {
     const { user, loading } = useAuth();
@@ -11,7 +14,7 @@ const Mypage = () => {
     const [image, setImage] = useState("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
     const fileInput = useRef(null);
 
-    const fetchUserInfo = async () => {
+    const fetchUserInfo = useCallback(async () => {
         const token = user?.token || localStorage.getItem('authToken');
         if (token) {
             try {
@@ -28,13 +31,13 @@ const Mypage = () => {
         } else {
             setError('No user token found');
         }
-    };
+    }, [user]);
 
     useEffect(() => {
         if (!loading) {
             fetchUserInfo();
         }
-    }, [loading, user]);
+    }, [loading, user, fetchUserInfo]);
 
     const onChange = async (e) => {
         if (e.target.files[0]) {
@@ -64,42 +67,49 @@ const Mypage = () => {
     }
 
     return (
-        <div className="Mypage">
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            {userInfo ? (
-                <div>
-                    <h2>User Info</h2>
-                    <Avatar 
-                        src={image + `?t=${new Date().getTime()}`}  // Cache-busting
-                        style={{ margin: '20px', cursor: 'pointer' }} 
-                        sx={{ width: 200, height: 200 }} 
-                        onClick={() => fileInput.current.click()} 
-                    />
-                    <input 
-                        type='file' 
-                        style={{ display: 'none' }} 
-                        accept='image/jpg,image/png,image/jpeg' 
-                        name='profile_img' 
-                        onChange={onChange} 
-                        ref={fileInput}
-                    />
-                    <p>ID: {userInfo.id}</p>
-                    <p>Name: {userInfo.name}</p>
-                    <p>Phone: {userInfo.phone}</p>
-                    <p>Sex: {userInfo.sex}</p>
-                    <p>Height: {userInfo.height}</p>
-                    <p>Weight: {userInfo.weight}</p>
-                    <p>Birth: {userInfo.birth}</p>
-                    <p>Firstday: {userInfo.firstday}</p>
-                    <p>Restday: {userInfo.restday}</p>
-                    <Link to="/edit-profile">Edit Profile</Link>
-                </div>
-            ) : (
-                <p>No user info available.</p>
-            )}
+        <div className="page-wrapper">
+            <div className="Mypage">
+                {error && <p className="error">{error}</p>}
+                {userInfo ? (
+                    <div>
+                        <h2>회원 정보</h2>
+                        <div className="avatar-container">
+                            <Avatar 
+                                src={image + `?t=${new Date().getTime()}`}  // Cache-busting
+                                sx={{ width: 200, height: 200 }} 
+                                onClick={() => fileInput.current.click()} 
+                            />
+                            <input 
+                                type='file' 
+                                style={{ display: 'none' }} 
+                                accept='image/jpg,image/png,image/jpeg' 
+                                name='profile_img' 
+                                onChange={onChange} 
+                                ref={fileInput}
+                            />
+                        </div>
+                        <div className="user-info">
+                            <p><span>ID:</span> {userInfo.id}</p>
+                            <p><span>Name:</span> {userInfo.name}</p>
+                            <p><span>Phone:</span> {userInfo.phone}</p>
+                            <p><span>Sex:</span> {userInfo.sex}</p>
+                            <p><span>Height:</span> {userInfo.height}</p>
+                            <p><span>Weight:</span> {userInfo.weight}</p>
+                            <p><span>Birth:</span> {userInfo.birth}</p>
+                            <p><span>Firstday:</span> {userInfo.firstday}</p>
+                            <p><span>Restday:</span> {userInfo.restday}</p>
+                        </div>
+                        <Button variant="contained" color="primary" component={Link} to="/edit-profile">
+                            회원정보 수정
+                        </Button>
+                    </div>
+                ) : (
+                    <p>No user info available.</p>
+                )}
+            </div>
+            <Footer /> {/* Footer를 Mypage 본문 외부에 위치시킵니다 */}
         </div>
     );
 };
 
 export default Mypage;
-
