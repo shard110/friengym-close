@@ -135,18 +135,19 @@
 /* 상품 섹션 */
 #shop_cont{
   width: 1200px;
-  margin: 80px auto;
+  margin: 0 auto;
 }
 
 .product-home .flex_box{
   display: flex;
   margin-bottom: 40px;
+  justify-content: space-between;
 }
 
 .product-home h2{
   font-size: 32px;
   text-align: left;
-  margin-bottom: 8px;
+  margin: 88px 0 4px 0;
 }
 
 .product-home .etc{
@@ -175,7 +176,7 @@
 
 .product-home .product-item {
   text-align: left;
-  width: 22%;
+  width: 23%;
   border-radius: 5px;
   background-color: #fff;
 }
@@ -185,4 +186,62 @@
   height: auto;
   cursor: pointer;
   margin-bottom: 10px;
+}
+
+.prod_name{
+  font-size: 18px;
+}
+
+.prod_price{
+  font-size: 22px;
+  font-weight: 700;
+  color: #03C7A6;
+}
+
+.prod_count{
+  font-size: 16px;
+  color: #888;
+}
+
+
+/*ad*/
+.product-home .ad{
+  width: 100%;
+  height: 360px;
+  background: url("../img/ad1.jpg") left center/100% no-repeat fixed;
+  margin: 100px 0;
+}
+
+.product-home .ad{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.product-home .ad p{
+  color: #fff;
+}
+
+.product-home .ad p:first-child{
+  font-size: 32px;
+  margin-bottom: 8px;
+  font-weight: 300;
+}
+
+.product-home .ad p:nth-child(2){
+  font-size: 16px;
+  margin-bottom: 32px;
+}
+
+.product-home .ad a{
+  margin: 0 auto;
+  padding: 12px 64px;
+  border: 1px solid #fff ;
+  color: #fff;
+}
+
+
+.product-home .ad a:hover{
+  background-color: #ffffff56;
+  opacity: 100%;
 }

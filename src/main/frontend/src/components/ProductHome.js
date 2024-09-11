@@ -12,9 +12,9 @@ function ProductHome() {
     const [currentReviewIndex, setCurrentReviewIndex] = useState(0); // 현재 리뷰 인덱스
 
     const images = [
+        'http://localhost:8080/images/banner1.jpg',
         'http://localhost:8080/images/banner2.jpg',
-        'http://localhost:8080/images/banner3.jpg',
-        'http://localhost:8080/images/banner4.jpg'
+        'http://localhost:8080/images/banner3.jpg'
     ];
 
     useEffect(() => {
@@ -81,7 +81,15 @@ function ProductHome() {
                     </div>
                 </div>
                 <PopularProducts limit={4} />
+            </section>
 
+                <div className="ad">
+                    <p>영양제, 뭘 선택해야할지 고민이시죠?</p>
+                    <p>각종 영양제 종류부터 효과까지 frengym에서 자세히 알려드려요</p>
+                    <a href="#">click →</a>
+                </div>
+
+            <section id='shop_cont'>
                 <div className="section new-products">
                     <h2>이 달의 신규상품</h2>
                     <div className='flex_box'>
@@ -95,7 +103,7 @@ function ProductHome() {
                                     <img src={product.pImg} alt={`상품명: ${product.pName}`} />
                                     <p className='prod_name'>{product.pName}</p>
                                     <p className='prod_price'> ₩ {product.pPrice.toLocaleString()}</p>
-                                    <p>재고 : {product.pCount}개</p>
+                                    <p className='prod_count'>재고 : {product.pCount}개</p>
                                 </div>
                             ))
                         ) : (
@@ -103,7 +111,6 @@ function ProductHome() {
                         )}
                     </div>
                 </div>
-            </section>
             
              {/* 리뷰 슬라이드 섹션 */}
              <div className="section review-slider">
@@ -118,7 +125,8 @@ function ProductHome() {
                         </div>
                     )}
                 </div>
-            </div>
+                </div>
+            </section>
         </div>
 );
 }
