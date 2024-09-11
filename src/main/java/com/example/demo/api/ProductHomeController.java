@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.ProductResponseDTO;
 import com.example.demo.entity.Product;
 import com.example.demo.service.ProductService;
 
@@ -61,12 +62,12 @@ public ResponseEntity<List<Product>> getNewProducts() {
 
 
 @GetMapping("/category/{catenum}")
-public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable (value = "catenum") int catenum) {
-    List<Product> products = productService.findProductsByCategory(catenum);
-    if (products.isEmpty()) {
+public ResponseEntity<List<ProductResponseDTO>> getProductsByCategory(@PathVariable (value = "catenum") int catenum) {
+    List<ProductResponseDTO> productDTOs = productService.findProductsByCategory(catenum);
+    if (productDTOs.isEmpty()) {
         return ResponseEntity.notFound().build();
     }
-    return ResponseEntity.ok(products);
+    return ResponseEntity.ok(productDTOs);
 }
 
 }
