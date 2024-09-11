@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "./AuthContext"; // 인증 컨텍스트 추가
 
 export default function CommentList({ poNum }) {
@@ -32,7 +32,7 @@ export default function CommentList({ poNum }) {
         {
           headers: {
             Authorization: `Bearer ${
-              user.token || localStorage.getItem("authToken")
+              user.token || localStorage.getItem("jwtToken")
             }`,
           },
         }
@@ -68,7 +68,7 @@ export default function CommentList({ poNum }) {
         {
           headers: {
             Authorization: `Bearer ${
-              user.token || localStorage.getItem("authToken")
+              user.token || localStorage.getItem("jwtToken")
             }`,
           },
         }

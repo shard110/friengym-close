@@ -8,6 +8,8 @@ import axios from 'axios';
 function ProductHome() {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [recentProducts, setRecentProducts] = useState([]);
+    const [reviews, setReviews] = useState([]); // 리뷰 상태 추가
+    const [currentReviewIndex, setCurrentReviewIndex] = useState(0); // 현재 리뷰 인덱스
 
     const images = [
         'http://localhost:8080/images/banner2.jpg',
@@ -24,14 +26,35 @@ function ProductHome() {
                 console.error('Error fetching recent products:', error);
             });
 
+            // 리뷰 목록 가져오기
+        axios.get('http://localhost:8080/reviews')
+        .then(response => {
+            setReviews(response.data);
+        })
+        .catch(error => {
+            console.error('Error fetching reviews:', error);
+        });
+
+
         const interval = setInterval(() => {
             setCurrentImageIndex(prevIndex =>
                 prevIndex === images.length - 1 ? 0 : prevIndex + 1
             );
         }, 2000);
 
-        return () => clearInterval(interval);
-    }, [images.length]);
+        // 리뷰 슬라이드
+        const reviewInterval = setInterval(() => {
+            setCurrentReviewIndex(prevIndex =>
+                prevIndex === reviews.length - 1 ? 0 : prevIndex + 1
+            );
+        }, 1000); // 1초마다 리뷰가 변경되도록 설정
+
+        return () => {
+            clearInterval(interval);
+            clearInterval(reviewInterval);
+        };
+    }, [images.length, reviews.length]);
+
 
     return (
         <div className="product-home">
@@ -81,8 +104,23 @@ function ProductHome() {
                     </div>
                 </div>
             </section>
+            
+             {/* 리뷰 슬라이드 섹션 */}
+             <div className="section review-slider">
+                <h3>리뷰</h3>
+                <div className="review-container">
+                    {reviews.length > 0 && (
+                        <div className="review-item">
+                            <p><strong>상품명:</strong> {reviews[currentReviewIndex].productName}</p>
+                            <p><strong>작성자:</strong> {reviews[currentReviewIndex].userId}</p>
+                            <p><strong>별점:</strong> {reviews[currentReviewIndex].star}/5</p>
+                            <p><strong>리뷰 내용:</strong> {reviews[currentReviewIndex].rvContents}</p>
+                        </div>
+                    )}
+                </div>
+            </div>
         </div>
-    );
+);
 }
 
 export default ProductHome;

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
 import axios from "axios";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 
@@ -36,7 +36,7 @@ const CreatePostForm = () => {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${
-              user.token || localStorage.getItem("authToken")
+              user.token || localStorage.getItem("jwtToken")
             }`,
           },
         }

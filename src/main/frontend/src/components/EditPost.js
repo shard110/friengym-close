@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from './AuthContext'; // 인증 컨텍스트 추가
 
 export default function EditPost() {
@@ -61,7 +61,7 @@ export default function EditPost() {
     try {
       await axios.put(`http://localhost:8080/posts/${poNum}`, formData, {
         headers: {
-          'Authorization': `Bearer ${user?.token || localStorage.getItem('authToken')}`, // 인증 헤더 추가
+          'Authorization': `Bearer ${user?.token || localStorage.getItem('jwtToken')}`, // 인증 헤더 추가
           'Content-Type': 'multipart/form-data',
         }
       });
