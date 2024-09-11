@@ -1,37 +1,51 @@
-/* 최상단 고정바 스타일링 */
-.navbar {
-  background-color: #333;
-  padding: 10px 0;
+/* lnb */
+.product-home .navbar {
   position: relative;
-  width: 100%;
-  top: 0;
+  width: 1200px;
+  height: 48px;
+  margin: 0 auto;
+  top: -1px;
   z-index: 1000;
+  color: #333;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
 }
 
-.navbar ul {
+.product-home .navbar ul {
   list-style-type: none;
   padding: 0;
   margin: 0;
   display: flex;
-  justify-content: center;
 }
 
-.navbar ul li {
-  margin: 0 20px;
+.product-home .navbar>ul>li {
+  margin-right:8px;
+  padding: 24px;
 }
 
-.navbar ul li a {
-  color: white;
-  text-decoration: none;
+.product-home .navbar .category-list li {
+  padding: 32px;
+}
+
+.product-home .category-toggle{
+  cursor: pointer;
+}
+
+.product-home .category-toggle:hover{
+  color: #03C7A6;;
+}
+
+.product-home .navbar ul li a {
   font-weight: bold;
+  color: #333;
 }
 
-.navbar ul li a:hover {
-  text-decoration: underline;
-  display: block;
+.product-home .navbar ul li a:hover {
+  color: #03C7A6;
 }
 
-.interaction-area {
+.product-home .interaction-area {
   position: sticky;
   top: 0;
   background-color: white;
@@ -42,125 +56,133 @@
   border-bottom: 1px solid #ccc;
 }
 
-.category-menu {
-  position: relative;
-}
-
-.category-list {
+.product-home .category-list {
   position: absolute;
-  top: 0; /* 리스트가 상단에 맞춰지도록 설정 */
-  left: 100%; /* 카테고리 메뉴의 오른쪽 옆에 위치하게 설정 */
+  top: 100%;
+  left: 0;
   background-color: white;
-  border: 1px solid #ccc;
   list-style-type: none;
-  padding: 10px;
-  display: none;
+  padding: 0;
+  height: 0;
+  overflow: hidden;
+  transition: height 0.2s ease;
   z-index: 998;
-  min-width: 150px; /* 리스트가 너무 좁지 않도록 최소 너비 설정 */
+  min-width: 400px;
 }
 
-.category-menu:hover .category-list {
-  display: block;
+.product-home .category-list.show {
+  height: 88px;
+  border: 1px solid #ccc;
 }
 
-.search-bar {
+.product-home .search-bar {
   display: flex;
   align-items: center;
 }
 
-.search-bar input {
+.product-home .search-bar input {
   padding: 8px;
   margin-right: 8px;
   font-size: 16px;
 }
 
-.search-bar button {
+.product-home .search-bar button {
+  width: 80px;
   padding: 8px 16px;
-  background-color: #aacc8a;
   color: white;
   border: none;
   cursor: pointer;
 }
 
-.search-bar button:hover {
-  background-color: #aacc8a;
-}
-
-
-
-
-/* 배너 스타일링 */
-.banner {
+/* 배너 */
+.product-home .banner {
   position: relative;
-  width: 1600px;
-  height: 400px;
-  margin: 50px auto;
-  border: 1px solid #ccc;
+  width: 100%;
+  height: 60vh;
+  margin: 0 auto;
   overflow: hidden;
 }
 
-.banner-image {
+.product-home .banner-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.prev-button, .next-button {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
+.product-home .prev-button, .product-home .next-button {
+  width: 48px;
+  height: 48px;
   border: none;
-  padding: 10px;
+  border-bottom: 2px solid #fff;
+  border-left: 2px solid #fff;
+  position: absolute;
+  top: 48%;
   cursor: pointer;
-  font-size: 18px;
   z-index: 1;
+  background-color: rgba(255, 255, 255, 0);
 }
 
-.prev-button {
-  left: 10px;
+.product-home .prev-button {
+  left: 40px;
+  transform: rotate(45deg);
 }
 
-.next-button {
-  right: 10px;
+.product-home .next-button {
+  right: 40px;
+  transform: rotate(225deg);
 }
 
-.prev-button:hover, .next-button:hover {
-  background-color: rgba(0, 0, 0, 0.8);
+/* 상품 섹션 */
+#shop_cont{
+  width: 1200px;
+  margin: 80px auto;
 }
 
-/* 상품 섹션 스타일링 */
-.product-sections {
+.product-home .flex_box{
+  display: flex;
+  margin-bottom: 40px;
+}
+
+.product-home h2{
+  font-size: 32px;
+  text-align: left;
+  margin-bottom: 8px;
+}
+
+.product-home .etc{
+  font-size: 16px;
+  text-align: left;
+  color: #333;
+  font-weight: 300;
+}
+
+
+.product-home .product-sections {
   margin-top: 20px;
 }
 
-.section h3 {
+.product-home .section h3 {
   text-align: center;
   margin-bottom: 10px;
 }
 
-.product-list {
+.product-home .product-list {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   flex-wrap: wrap;
   margin-bottom: 20px;
 }
 
-.product-item {
-  text-align: center;
-  width: 20%;
-  margin: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  padding: 10px;
+.product-home .product-item {
+  text-align: left;
+  width: 22%;
   border-radius: 5px;
   background-color: #fff;
 }
 
-.product-item img {
+.product-home .product-item img {
   width: 100%;
   height: auto;
   cursor: pointer;
   margin-bottom: 10px;
 }
-
