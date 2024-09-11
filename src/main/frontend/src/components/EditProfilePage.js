@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from './AuthContext';
+import styles from './EditProfilePage.module.css'; // CSS 모듈 임포트
 
 const EditProfilePage = () => {
     const { user } = useAuth();
@@ -45,7 +45,7 @@ const EditProfilePage = () => {
             }
         };
 
-        fetchUserInfo();
+        fetchUserInfo(); 
     }, [user]);
 
     const handleChange = (e) => {
@@ -73,9 +73,9 @@ const EditProfilePage = () => {
     };
 
     return (
-        <div className="EditProfilePage">
-            <h2>Edit Profile</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+        <div className={styles.EditProfilePage}>
+            <h2>회원 정보 수정 </h2>
+            {error && <p>{error}</p>}
             <form onSubmit={handleSubmit}>
                 <label>
                     Name:
@@ -149,7 +149,7 @@ const EditProfilePage = () => {
                         onChange={handleChange}
                     />
                 </label>
-                <button type="submit">Save Changes</button>
+                <button type="submit">회원정보 수정</button>
             </form>
         </div>
     );
