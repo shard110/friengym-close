@@ -16,6 +16,8 @@ import Mypage from './components/Mypage';
 import NewProducts from './components/NewProducts';
 import PopularProductsPage from './components/PopularProductsPage';
 import PostDetail from "./components/PostDetail";
+import PostsList from './components/PostsList';
+import ProductHome from './components/ProductHome';
 import RegisterPage from './components/RegisterPage';
 import UpdateAsk from './components/UpdateAsk';
 import ViewAsk from './components/ViewAsk';
