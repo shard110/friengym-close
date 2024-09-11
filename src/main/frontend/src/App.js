@@ -31,12 +31,6 @@ import QnaPage from './page/QnaPage';
 import ReviewPage from './page/ReviewPage'; // ReviewPage 임포트
 
 export default function App() {
-  const [searchKeyword, setSearchKeyword] = useState('');
-
-  const handleSearch = () => {
-    window.location.href = `/productslist?keyword=${searchKeyword}`;
-  };
-
   return (
     <AuthProvider>
       <Router>

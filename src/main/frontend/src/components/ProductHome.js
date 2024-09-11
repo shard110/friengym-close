@@ -1,13 +1,12 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PopularProducts from './PopularProducts';
+import ShopLnb from './ShopLnb';
 import './ProductHome.css';
+import axios from 'axios';
 
 function ProductHome() {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const [categories, setCategories] = useState([]);
-    const [showCategories, setShowCategories] = useState(false);
     const [recentProducts, setRecentProducts] = useState([]);
     const [reviews, setReviews] = useState([]); // 리뷰 상태 추가
     const [currentReviewIndex, setCurrentReviewIndex] = useState(0); // 현재 리뷰 인덱스
@@ -19,14 +18,6 @@ function ProductHome() {
     ];
 
     useEffect(() => {
-        axios.get('/api/categories')
-            .then(response => {
-                setCategories(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching categories:', error);
-            });
-
         axios.get('http://localhost:8080/product')
             .then(response => {
                 setRecentProducts(response.data);
@@ -67,40 +58,7 @@ function ProductHome() {
 
     return (
         <div className="product-home">
-            <nav className="navbar">
-                <ul>
-                    <li><Link to="/">회사 정보</Link></li>
-                    <li><Link to="/posts">게시판</Link></li>
-                    <li><Link to="/products">쇼핑몰</Link></li>
-                    <li><Link to="/support">고객센터</Link></li>
-                    <li><Link to="/reviews">리뷰 보기</Link></li> {/* 리뷰 보기 링크 추가 */}
-                </ul>
-            </nav>
-
-            <div className="interaction-area">
-                <div className="category-menu"
-                     onMouseEnter={() => setShowCategories(true)}
-                     onMouseLeave={() => setShowCategories(false)}>
-                    <div className="category-toggle">카테고리</div>
-                    {showCategories && (
-                        <ul className="category-list"
-                            onMouseEnter={() => setShowCategories(true)}
-                            onMouseLeave={() => setShowCategories(false)}>
-                            {categories.map(category => (
-                                <li key={category.catenum}>
-                                    <Link to={`/categories/${category.catenum}`}
-                                          onClick={() => setShowCategories(false)}>{category.catename}</Link>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
-                </div>
-                <div className="search-bar">
-                    <input type="text" placeholder="검색어를 입력하세요..." />
-                    <button>검색</button>
-                </div>
-            </div>
-
+            <ShopLnb />
             <div className="banner">
                 <img
                     src={images[currentImageIndex]}
@@ -108,35 +66,45 @@ function ProductHome() {
                     className="banner-image"
                 />
                 <button className="prev-button" onClick={() => setCurrentImageIndex(currentImageIndex === 0 ? images.length - 1 : currentImageIndex - 1)}>
-                    &#10094;
+                    <p className='btn-icon-prev'></p>
                 </button>
                 <button className="next-button" onClick={() => setCurrentImageIndex(currentImageIndex === images.length - 1 ? 0 : currentImageIndex + 1)}>
-                    &#10095;
+                    <p className='btn-icon-next'></p>
                 </button>
             </div>
-
-            <div className="section popular-products">
-                <h3><Link to="/products/popular">인기상품 모두보기</Link></h3>
-                <PopularProducts limit={4} />
-            </div>
-
-            <div className="section new-products">
-                <h3><Link to="/products/new">신상품 모두보기</Link></h3>
-                <div className="product-list">
-                    {recentProducts.length > 0 ? (
-                        recentProducts.map(product => (
-                            <div key={product.pNum} className="product-item">
-                                <img src={product.pImg} alt={`상품명: ${product.pName}`} />
-                                <p>{product.pName}</p>
-                                <p>{product.pPrice}원</p>
-                            </div>
-                        ))
-                    ) : (
-                        <p>No new products available.</p>
-                    )}
+            <section id='shop_cont'>
+                <div className="section popular-products">
+                    <h2>Best</h2>
+                    <div className='flex_box'>
+                        <p className='etc'>frengym에서 최고 인기! Best 상품들을 만나보세요.</p>
+                        <Link to="/products/popular">more</Link>
+                    </div>
                 </div>
-            </div>
+                <PopularProducts limit={4} />
 
+                <div className="section new-products">
+                    <h2>이 달의 신규상품</h2>
+                    <div className='flex_box'>
+                        <p className='etc'>트레이너들이 엄선한 신규 상품, 당신에게 꼭 맞는 상품을 찾아보세요.</p>
+                        <Link to="/products/new">more</Link>
+                    </div>
+                    <div className="product-list">
+                        {recentProducts.length > 0 ? (
+                            recentProducts.map(product => (
+                                <div key={product.pNum} className="product-item">
+                                    <img src={product.pImg} alt={`상품명: ${product.pName}`} />
+                                    <p className='prod_name'>{product.pName}</p>
+                                    <p className='prod_price'> ₩ {product.pPrice.toLocaleString()}</p>
+                                    <p>재고 : {product.pCount}개</p>
+                                </div>
+                            ))
+                        ) : (
+                            <p>No new products available.</p>
+                        )}
+                    </div>
+                </div>
+            </section>
+            
              {/* 리뷰 슬라이드 섹션 */}
              <div className="section review-slider">
                 <h3>리뷰</h3>
