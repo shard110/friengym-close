@@ -26,21 +26,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // 요청에서 토큰 추출
         String token = resolveToken(request);
 
-         System.out.println("Token: " + token);  // 토큰이 제대로 들어오는지 확인
+        System.out.println("Token: " + token);  // 토큰이 제대로 들어오는지 확인
 
-    if (token != null && jwtTokenProvider.validateToken(token)) {
-        Claims claims = jwtTokenProvider.getClaims(token);
-        System.out.println("Claims: " + claims.getSubject());  // 클레임이 제대로 추출되는지 확인
+        try {
+            if (token != null && jwtTokenProvider.validateToken(token)) {
+                Claims claims = jwtTokenProvider.getClaims(token);
+                System.out.println("Claims: " + claims.getSubject());  // 클레임이 제대로 추출되는지 확인
 
-        // 인증 객체를 생성하여 SecurityContext에 설정
-        JwtAuthentication authentication = new JwtAuthentication(claims);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-    } else {
-        System.out.println("Invalid token or token is null.");
+                // 인증 객체를 생성하여 SecurityContext에 설정
+                JwtAuthentication authentication = new JwtAuthentication(claims);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } else {
+                System.out.println("Invalid token or token is null.");
+            }
+        } catch (Exception e) {
+            System.out.println("JWT processing failed: " + e.getMessage());
+        }
+
+        // 체이닝 진행
+        chain.doFilter(request, response);
     }
-
-    chain.doFilter(request, response);
-}
 
     private String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");

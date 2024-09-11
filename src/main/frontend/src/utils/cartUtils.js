@@ -1,9 +1,9 @@
 // utils/cartUtils.js
 import axios from 'axios';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 export const addToCart = async (product) => {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('jwtToken');
     if (!token) {
         console.error('토큰을 찾을 수 없습니다.');
         alert("로그인이 필요합니다.");

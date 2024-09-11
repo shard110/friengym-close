@@ -26,7 +26,9 @@ public class JwtTokenProvider {
     public String createToken(String username) {
         Claims claims = Jwts.claims().setSubject(username);
         Date now = new Date();
+        System.out.println("Current time: " + now.getTime()); // 현재 시간 확인
         Date validity = new Date(now.getTime() + VALIDITY_IN_MS);
+        System.out.println("Expiration time: " + validity.getTime()); // 만료 시간 확인
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -55,12 +57,15 @@ public class JwtTokenProvider {
         }
     }
 
-    // JWT 토큰 유효성 검증
+    // 토큰 유효성 검증
     public boolean validateToken(String token) {
         try {
             Claims claims = getClaims(token);
-            return !claims.getExpiration().before(new Date());
+            boolean isExpired = claims.getExpiration().before(new Date());
+            System.out.println("Token is expired: " + isExpired);
+            return !isExpired;
         } catch (JwtException e) {
+            System.err.println("Invalid token: " + e.getMessage());
             return false;
         }
     }

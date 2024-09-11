@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useAuth } from '../components/AuthContext'; // useAuth 훅 추가
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'; // Link 컴포넌트 추가
+import { useAuth } from '../components/AuthContext'; // useAuth 훅 추가
 import './Cart.css';
 
 const Cart = () => {
@@ -10,7 +10,7 @@ const Cart = () => {
 
     useEffect(() => {
         const fetchCartItems = async () => {
-            const token = user?.token || localStorage.getItem('authToken');
+            const token = user?.token || localStorage.getItem('jwtToken');
             if (!token) {
                 console.error('토큰을 찾을 수 없습니다.');
                 alert('로그인이 필요합니다.');
@@ -35,7 +35,7 @@ const Cart = () => {
     }, [user]);
 
     const updateCartItemCount = async (cnum, newCount) => {
-        const token = user?.token || localStorage.getItem('authToken');
+        const token = user?.token || localStorage.getItem('jwtToken');
         if (!token) {
             console.error('토큰을 찾을 수 없습니다.');
             return;
@@ -54,7 +54,7 @@ const Cart = () => {
     };
 
     const removeCartItem = async (cnum) => {
-        const token = user?.token || localStorage.getItem('authToken');
+        const token = user?.token || localStorage.getItem('jwtToken');
         if (!token) {
             console.error('토큰을 찾을 수 없습니다.');
             return;

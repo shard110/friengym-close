@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useAuth } from './AuthContext';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 
 const EditProfilePage = () => {
     const { user } = useAuth();
@@ -21,7 +21,7 @@ const EditProfilePage = () => {
     useEffect(() => {
         const fetchUserInfo = async () => {
             try {
-                const token = user?.token || localStorage.getItem('authToken');
+                const token = user?.token || localStorage.getItem('jwtToken');
                 if (token) {
                     const response = await axios.get('/api/mypage', {
                         headers: { 
@@ -56,7 +56,7 @@ const EditProfilePage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const token = user?.token || localStorage.getItem('authToken');
+            const token = user?.token || localStorage.getItem('jwtToken');
             if (token) {
                 await axios.put('/api/user/update', formData, {
                     headers: { 

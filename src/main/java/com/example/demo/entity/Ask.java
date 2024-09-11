@@ -33,7 +33,7 @@ public class Ask {
   private String afile;
   private String passwordHash; // 비밀번호 해시값
 
-  @ManyToOne
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false) // 외래키 컬럼 이름
     private User user; // 작성자 (User 엔티티와 연결)
 
