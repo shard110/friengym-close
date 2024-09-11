@@ -1,6 +1,5 @@
 /* Navbar 기본 스타일 */
 .navbar {
-    background-color: #6c757d; /* 배경 색상 */
     padding: 15px; /* 상하 좌우 패딩 */
     max-width: auto; /* 최대 너비 설정 */
     margin: 0 auto; /* 중앙 정렬 */
