@@ -28,9 +28,9 @@ function PopularProducts({ limit }) {
                 {popularProducts.map(product => (
                     <div key={product.pNum} className="product-item">
                         <img src={product.pImg} alt={`상품명: ${product.pName}`} />
-                        <p>{product.pName}</p>
-                        <p> ₩ {product.pPrice.toLocaleString()}</p>
-                        <p>재고 : {product.pCount}개</p>
+                        <p className='prod_name'>{product.pName}</p>
+                        <p className='prod_price'> ₩ {product.pPrice.toLocaleString()}</p>
+                        <p className='prod_count'>재고 : {product.pCount}개</p>
                     </div>
                 ))}
             </div>
