@@ -31,6 +31,7 @@ export default function App() {
   return (
     <AuthProvider>
       <Router>
+        <Navbar />
         <div className="App">
           <nav>
 
