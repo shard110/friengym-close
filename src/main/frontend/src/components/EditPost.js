@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from './AuthContext'; // 인증 컨텍스트 추가
+import style from './EditPost.module.css'; // CSS 모듈 임포트
 
 export default function EditPost() {
   const [post, setPost] = useState({
@@ -71,16 +72,16 @@ export default function EditPost() {
     }
   };
 
-  if (loading) return <div className="loading">로딩 중...</div>;
-  if (error) return <div className="error">오류: {error}</div>;
+  if (loading) return <div className={style.loading}>로딩 중...</div>;
+  if (error) return <div className={style.error}>오류: {error}</div>;
 
   return (
-    <div className="container">
-      <div className="post-edit-card">
-        <div className="card-header">게시글 수정</div>
-        <div className="card-body">
+    <div className={style.container}>
+      <div className={style.postEditCard}>
+        <div className={style.cardHeader}>게시글 수정</div>
+        <div className={style.cardBody}>
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
+            <div className={style.formGroup}>
               <label htmlFor="poTitle">제목</label>
               <input
                 type="text"
@@ -91,7 +92,7 @@ export default function EditPost() {
                 required
               />
             </div>
-            <div className="form-group">
+            <div className={style.formGroup}>
               <label htmlFor="poContents">내용</label>
               <textarea
                 id="poContents"
@@ -101,7 +102,7 @@ export default function EditPost() {
                 required
               />
             </div>
-            <div className="form-group">
+            <div className={style.formGroup}>
               <label htmlFor="file">파일 (선택)</label>
               <input
                 type="file"
@@ -110,7 +111,7 @@ export default function EditPost() {
                 onChange={handleFileChange}
               />
             </div>
-            <button type="submit" className="button submit-button">
+            <button type="submit" className={style.button}>
               수정하기
             </button>
           </form>
