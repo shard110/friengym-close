@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./PostDetail.css"; // CSS 파일 import
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "./AuthContext"; // 인증 컨텍스트 추가
-import CommentList from "./CommentList"; // 댓글 목록 컴포넌트 import
 import CommentCreate from "./CommentCreate"; // 댓글 추가 컴포넌트 import
+import CommentList from "./CommentList"; // 댓글 목록 컴포넌트 import
+import "./PostDetail.css"; // CSS 파일 import
 
 export default function PostDetail() {
   const [post, setPost] = useState({
@@ -58,7 +58,7 @@ export default function PostDetail() {
       await axios.delete(`http://localhost:8080/posts/${poNum}`, {
         headers: {
           Authorization: `Bearer ${
-            user?.token || localStorage.getItem("authToken")
+            user?.token || localStorage.getItem("jwtToken")
           }`, // 인증 헤더 추가
         },
       });
