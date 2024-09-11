@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import './MastersList.css';
 
 function MastersList() {
   const [masters, setMasters] = useState([]);

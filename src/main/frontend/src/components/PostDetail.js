@@ -40,7 +40,7 @@ export default function PostDetail() {
           poContents: result.data.poContents,
           name: result.data.name,
           createdDate: result.data.createdDate,
-          updatedDate: result.data.updatedDate || result.data.createdDate, // 수정된 날짜가 없으면 작성 날짜로 설정, // 수정 날짜 설정
+          updatedDate: result.data.updatedDate || result.data.createdDate, // 수정된 날짜가 없으면 작성 날짜로 설정
           fileUrl: result.data.fileUrl,
         });
       } catch (error) {
@@ -105,14 +105,18 @@ export default function PostDetail() {
   return (
     <div className="container">
       <div className="post-detail-card">
-        <div className="card-header">No. {poNum}</div>
+        <div className="card-headerN">No. {poNum}</div>
+         <hr color="#ddd"></hr>
         <div className="card-body">
           <h2 className="title">{post.poTitle}</h2>
-          <h5>By {post.name}</h5>
-          <p>{post.poContents}</p>
-          <p className="date">
-          {post.updatedDate !== post.createdDate ? `Updated on: ${formatDateTime(post.updatedDate)}` : `Created on: ${formatDateTime(post.createdDate)}`}
-          </p>
+          <div className="author-date">
+            <span className="author">작성자: {post.name}</span>
+            <span className="date">
+              {post.updatedDate !== post.createdDate ? `Updated on: ${formatDateTime(post.updatedDate)}` : `등록일: ${formatDateTime(post.createdDate)}`}
+            </span>
+          </div>
+          {/* 글 내용 */}
+          <p className="content">{post.poContents}</p> 
           {post.fileUrl && (
             <div className="file-info">
               <p>첨부파일: {post.fileUrl}</p>
@@ -121,23 +125,26 @@ export default function PostDetail() {
               </button>
             </div>
           )}
-          {user && user.name === post.name && (
-            <div className="button-group">
-              <Link to={`/edit/${poNum}`} className="button edit-button">
-                Edit
-              </Link>
-              <button className="button delete-button" onClick={deletePost}>
-                Delete
-              </button>
-            </div>
-          )}
-          <Link className="button back-button" to="/posts">
-            Back to Posts
-          </Link>
+          <div className="button-group">
+            {user && user.name === post.name && (
+              <>
+                <Link to={`/edit/${poNum}`} className="button edit-button">
+                  글 수정
+                </Link>
+                <button className="button delete-button" onClick={deletePost}>
+                  글 삭제
+                </button>
+              </>
+            )}
+            <Link className="button back-button" to="/posts">
+              게시글 목록
+            </Link>
+          </div>
         </div>
+        <hr color="#ddd"></hr>
       </div>
-      <CommentList poNum={poNum} key={commentsKey} />
       <CommentCreate poNum={poNum} refreshComments={refreshComments} />
+      <CommentList poNum={poNum} key={commentsKey} />
     </div>
   );
 }

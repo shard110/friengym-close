@@ -1,100 +1,84 @@
-/* Navbar 기본 스타일 */
+/* Navbar.css */
+
 .navbar {
-    background-color: #6c757d; /* 배경 색상 */
-    padding: 15px; /* 상하 좌우 패딩 */
-    max-width: auto; /* 최대 너비 설정 */
+    width: 100%;
+    background-color: #333; /* 원하는 배경색으로 변경 */
+    color: #fff; /* 글자색 */
+    padding: 10px 0; /* 상하 여백 */
+  }
+  
+  .navbar-container {
+    max-width: 1200px;
     margin: 0 auto; /* 중앙 정렬 */
-}
-
-/* 기본 화면 크기에서의 스타일 */
-.container {
     display: flex;
-    align-items: center; /* 수직 중앙 정렬 */
-    width: 100%; /* 전체 너비 차지 */
-    justify-content: flex-start; /* 왼쪽으로 정렬 */
-}
-
-.navbar-logo-container {
-    align-items: center; /* 로고를 수직 중앙 정렬 */
-    margin-right: 20px; /* 로고와 메뉴 간의 간격 조정 */
-    margin-left: -10%;
-}
-
-.navbar-logo {
-    max-height: 50px; /* 로고 최대 높이 설정 */
-}
-
-.navbar-main-menu {
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px; /* 좌우 여백 */
+  }
+  
+  .navbar-logo-container {
+    flex: 1;
+  }
+  
+  .navbar-logo {
+    height: 55px; /* 로고 높이 조정 */
+  }
+  
+  .navbar-main-menu {
+    flex: 2;
+    display: flex; /* Flexbox 사용 */
+    align-items: center;
+    margin-right: 50px; /* 오른쪽 여백 조정, 필요에 따라 조정 */
+  }
+  
+  .navbar-nav {
+    list-style: none;
     display: flex;
-    align-items: center; /* 메뉴 항목 수직 중앙 정렬 */
-    flex: 1; /* 나머지 공간을 차지하도록 설정 */
-}
-
-.navbar-user-menu {
+    padding: 0;
+    margin: 0;
+  }
+  
+  .nav-item {
+    margin: 0 15px; /* 메뉴 항목 간 여백 */
+  }
+  
+  .nav-link {
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px; /* 글자 크기 조정 */
+  }
+  
+  .nav-link:hover {
+    text-decoration: underline;
+  }
+  
+  .navbar-user-menu {
     display: flex;
-    align-items: center; /* 사용자 메뉴 항목 정렬 */
-    margin-left: auto; /* 사용자 메뉴를 오른쪽으로 붙여 배치 */
-    gap: 20px; /* 로그인, 회원가입, 환영 메시지 간의 간격 조정 */
-}
-
-.navbar-nav {
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px; /* 항목 사이의 간격 조정 */
+    flex: 1;
+  }
+  
+  .user-menu-logged-in, .user-menu-logged-out {
     display: flex;
-    list-style: none; /* 불릿 제거 */
-    padding: 0; /* 패딩 제거 */
-    margin: 0; /* 마진 제거 */
-}
-
-.navbar-nav .nav-item {
-    margin-left: 15px; /* 메뉴 항목 간의 간격 */
-}
-
-.nav-link {
-    text-decoration: none; /* 링크의 밑줄 제거 */
-    color: white; /* 링크 텍스트 색상 */
-    font-weight: 500; /* 링크 텍스트 굵기 */
-    padding: 5px 10px; /* 링크의 패딩 */
-    border-radius: 4px; /* 링크의 모서리 둥글게 설정 */
-    background-color: transparent; /* 기본 배경색 투명 */
-    transition: background-color 0.3s; /* 배경 색상 변화 애니메이션 */
-}
-
-.nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.1); /* 호버 시 배경 색상 변화 */
-}
-
-/* Navbar 안의 버튼만 스타일 적용 */
-.navbar button {
-    background-color: #ffa857; /* 버튼의 기본 배경색 */
-    border: none; /* 버튼 테두리 제거 */
-    color: white; /* 버튼 텍스트 색상 */
-    cursor: pointer; /* 마우스 커서 포인터로 변경 */
-    font: inherit; /* 상속된 폰트 스타일 사용 */
-    margin-left: 15px; /* 버튼 간의 간격 */
-    padding: 5px 10px; /* 버튼의 패딩 */
-    border-radius: 4px; /* 버튼의 모서리 둥글게 설정 */
-    transition: background-color 0.3s; /* 배경 색상 변화 애니메이션 */
-}
-
-.navbar button:hover {
-    background-color: rgba(255, 255, 255, 0.1); /* 호버 시 배경 색상 변화 */
-    text-decoration: underline; /* 버튼 텍스트에 호버 시 밑줄 추가 */
-}
-
-/* 1336x823 해상도에서의 스타일 조정 */
-@media (max-width: 1336px) {
-    .navbar-logo-container {
-        margin-right: -3.5%; /* 로고와 메뉴 간의 간격을 줄임 */
-    }
-
-    .navbar-logo {
-        max-height: 40px; /* 로고의 최대 높이 줄이기 */
-    }
-
-    .navbar-user-menu {
-        gap: 15px; /* 사용자 메뉴 항목 간의 간격 조정 */
-    }
-
-    .navbar-nav .nav-item {
-        margin-left: 10px; /* 메뉴 항목 간의 간격을 줄임 */
-    }
-}
+    align-items: center;
+    gap: 10px; /* 항목 간 간격 조정 */
+  }
+  
+  .user-menu-logged-in .nav-link, .user-menu-logged-out .nav-link {
+    margin: 0; /* 기본 여백 제거 */
+  }
+  
+  button.nav-link {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+  }
+  
+  button.nav-link:hover {
+    text-decoration: underline;
+  }
+  

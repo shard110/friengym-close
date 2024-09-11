@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "./AuthContext"; // 인증 컨텍스트 추가
+import style from './CommentList.module.css'; // CSS 모듈 import
 
 export default function CommentList({ poNum }) {
   const [comments, setComments] = useState([]);
@@ -88,73 +89,82 @@ export default function CommentList({ poNum }) {
     }
   };
 
-  if (error) return <div className="error">Error: {error}</div>;
+  if (error) return <div className={style.error}>Error: {error}</div>;
 
   return (
-    <div className="card">
-      <div className="card-header bi bi-chat-dots">
-        {comments.length} Comments
-      </div>
-      <ul className="list-group-flush">
-        {comments.map((comment) => (
-          <li key={comment.commentNo} className="list-group-item">
-            <span>
-              <span style={{ fontSize: "small" }}>
-                {comment.name || "Anonymous"}
-              </span>
-              <span style={{ fontSize: "xx-small" }}>
-                {editingCommentNo === comment.commentNo ? (
-                  "Editing..."
-                ) : (
-                  <>
-                    {comment.modifiedDate || comment.createdDate}
-                  </>
-                )}
-              </span>
-              {user && user.id === comment.id && (
-                <>
-                  {editingCommentNo === comment.commentNo ? (
+    <div className={style.container}>
+      <div className={style.cardBody}>
+        <div className={style.cardHeader}>
+          {comments.length} 댓글
+        </div>
+        <ul className={style.listGroup}>
+          {comments.map((comment) => (
+            <li key={comment.commentNo} className={style.listGroupItem}>
+              <div className={style.listGroupItemContent}>
+                <div className={style.commentText}>
+                  <span style={{ fontSize: "small" }}>
+                    {comment.name || "Anonymous"}
+                  </span>
+                  <span style={{ fontSize: "xx-small" }}>
+                    {editingCommentNo === comment.commentNo ? (
+                      "Editing..."
+                    ) : (
+                      <>
+                        {comment.modifiedDate || comment.createdDate}
+                      </>
+                    )}
+                  </span>
+                </div>
+                <div className={style.buttonContainer}>
+                  {user && user.id === comment.id && (
                     <>
-                      <textarea
-                        value={editedCommentText}
-                        onChange={handleEditChange}
-                      />
-                      <button
-                        className="badge bi bi-check"
-                        onClick={saveEdit}
-                      >
-                        Save
-                      </button>
-                      <button
-                        className="badge bi bi-x"
-                        onClick={cancelEditing}
-                      >
-                        Cancel
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <button
-                        className="badge bi bi-pencil"
-                        onClick={() => startEditing(comment)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="badge bi bi-trash"
-                        onClick={() => deleteComment(comment.commentNo)}
-                      >
-                        Delete
-                      </button>
+                      {editingCommentNo === comment.commentNo ? (
+                        <>
+                          <textarea
+                            className={style.textarea}
+                            value={editedCommentText}
+                            onChange={handleEditChange}
+                          />
+                          <button
+                            className={`${style.button} ${style.saveButton}`}
+                            onClick={saveEdit}
+                          >
+                            저장
+                          </button>
+                          <button
+                            className={`${style.button} ${style.cancelButton}`}
+                            onClick={cancelEditing}
+                          >
+                            취소
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            className={`${style.button} ${style.editButton}`}
+                            onClick={() => startEditing(comment)}
+                          >
+                            댓글 수정
+                          </button>
+                          <button
+                            className={`${style.button} ${style.deleteButton}`}
+                            onClick={() => deleteComment(comment.commentNo)}
+                          >
+                            댓글 삭제
+                          </button>
+                        </>
+                      )}
                     </>
                   )}
-                </>
-              )}
-            </span>
-            <div>{comment.comment}</div>
-          </li>
-        ))}
-      </ul>
+                </div>
+              </div>
+              <div className={style.commentText}>
+                {comment.comment}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

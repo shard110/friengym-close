@@ -15,48 +15,45 @@ export default function Navbar() {
 
   return (
     <nav className="navbar">
-        <div className="container">
-            <div className="navbar-logo-container">
-                <Link to="/">
-                    <img src={logo} alt="Logo" className="navbar-logo" />
-                </Link>
-            </div>
-
-            <div className="navbar-main-menu">
-                <ul className="navbar-nav">
-                    <li className="nav-item">
-                        <Link className="nav-link" to="/posts">Posts</Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link className="nav-link" to="/products">Products</Link>
-                    </li>
-                    {/* <li className="nav-item">
-                        <Link className="nav-link" to="/masters">Master 목록</Link>
-                    </li> */}
-                    <li className="nav-item">
-                        <Link className="nav-link" to="/productslist">상품 목록</Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link className="nav-link" to="/cart">장바구니</Link>
-                    </li>
-                </ul>
-            </div>
-
-            <div className="navbar-user-menu">
-                {user ? (
-                    <div>
-                        <span className="nav-link">환영합니다! {user.name}님</span>
-                        <button onClick={handleLogout} className="nav-link">로그아웃</button>
-                        <button onClick={() => navigate('/mypage')} className="nav-link">마이페이지</button>
-                    </div>
-                ) : (
-                    <div>
-                        <Link className="nav-link" to="/login">로그인</Link>
-                        <Link className="nav-link" to="/register">회원가입</Link>
-                    </div>
-                )}
-            </div>
+      <div className="navbar-container">
+        <div className="navbar-logo-container">
+          <Link to="/">
+            <img src={logo} alt="Logo" className="navbar-logo" />
+          </Link>
         </div>
+
+        <div className="navbar-main-menu">
+          <ul className="navbar-nav">
+            <li className="nav-item">
+              <Link className="nav-link" to="/posts">Posts</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/products">Products</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/productslist">상품 목록</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/cart">장바구니</Link>
+            </li>
+          </ul>
+        </div>
+
+        <div className="navbar-user-menu">
+          {user ? (
+            <div className="user-menu-logged-in">
+              <span className="nav-link">환영합니다! {user.name}님</span>
+              <button onClick={handleLogout} className="nav-link">로그아웃</button>
+              <button onClick={() => navigate('/mypage')} className="nav-link">마이페이지</button>
+            </div>
+          ) : (
+            <div className="user-menu-logged-out">
+              <Link className="nav-link" to="/login">로그인</Link>
+              <Link className="nav-link" to="/register">회원가입</Link>
+            </div>
+          )}
+        </div>
+      </div>
     </nav>
   );
 }
