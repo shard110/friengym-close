@@ -14,13 +14,13 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="navbar">
-        <div className="container">
-            <div className="navbar-logo-container">
-                <Link to="/">
-                    <img src={logo} alt="Logo" className="navbar-logo" />
-                </Link>
-            </div>
+    <nav className="navbarH">
+      <div className="navbar-container">
+        <div className="navbar-logo-container">
+          <Link to="/">
+            <img src={logo} alt="Logo" className="navbar-logo" />
+          </Link>
+        </div>
 
             <div className="navbar-main-menu">
                 <ul className="navbar-nav">

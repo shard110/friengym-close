@@ -7,7 +7,7 @@ import NewProducts from './components/NewProducts';
 import ProductHome from './components/ProductHome';
 import PopularProductsPage from './components/PopularProductsPage';
 import { AuthProvider } from './components/AuthContext';
-import Navbar from "./components/NavBar";
+import NavBar from "./components/NavBar";
 import CreatePost from "./components/CreatePost";
 import PostsList from "./components/PostsList";
 import PostDetail from "./components/PostDetail";
@@ -25,16 +25,52 @@ import Board from './page/Board';
 import ProductDetail from './page/ProductDetail';
 import ProductList from './page/ProductList';
 import Cart from './page/Cart';
-
+import QnaPage from './page/QnaPage';
+import AskPage from './page/AskPage';
+import ViewAsk from './components/ViewAsk';
+import UpdateAsk from './components/UpdateAsk';
+import ReviewPage from './page/ReviewPage';
 
 export default function App() {
+  const [searchKeyword, setSearchKeyword] = useState('');
+
+  const handleSearch = () => {
+    window.location.href = `/productslist?keyword=${searchKeyword}`;
+  };
+
   return (
     <AuthProvider>
       <Router>
+        <NavBar />
         <div className="App">
           <nav>
-
-
+            <ul>
+              <li>
+                <ul>
+                  <li>
+                    <Link to="/">Home</Link>
+                  </li>
+                  <li>
+                    <Link to="/posts">Posts</Link>
+                  </li>
+                  <li>
+                    <Link to="/products">Products</Link>
+                  </li>
+                  <li>
+                    <Link to="/masters">Master 목록</Link>
+                  </li>
+                  <li>
+                    <Link to="/productslist">상품 목록</Link>
+                  </li>
+                  <li>
+                    <Link to="/cart">장바구니</Link>
+                  </li>
+                  <li>
+                    <Link to="/qna">고객센터</Link>
+                  </li>
+                </ul>
+              </li>
+            </ul>
           </nav>
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -60,6 +96,11 @@ export default function App() {
             <Route path="/post/:poNum/comments" element={<CommentList />} />
             <Route path="/post/:poNum/comments/create" element={<CommentCreate />} />
             <Route path="/post/:poNum/comments/:commentNo/edit" element={<CommentEdit />} />
+            <Route path="/qna" element={<QnaPage />} />
+            <Route path="/asks" element={<AskPage />} />
+            <Route path="/asks/view/:anum" element={<ViewAsk />} />
+            <Route path="/asks/update/:anum" element={<UpdateAsk />} />
+            <Route path="/reviews" element={<ReviewPage />} />
           </Routes>
         </div>
       </Router>
