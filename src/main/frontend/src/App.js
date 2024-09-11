@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
 
@@ -64,15 +64,7 @@ export default function App() {
                 </ul>
               </li>
               <li>
-                <div className="search-bar">
-                  <input
-                    type="text"
-                    placeholder="검색어를 입력하세요..."
-                    value={searchKeyword}
-                    onChange={(e) => setSearchKeyword(e.target.value)}
-                  />
-                  <button onClick={handleSearch}>검색</button>
-                </div>
+         
               </li>
             </ul>
           </nav>
