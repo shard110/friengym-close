@@ -29,8 +29,8 @@ function PopularProducts({ limit }) {
                     <div key={product.pNum} className="product-item">
                         <img src={product.pImg} alt={`상품명: ${product.pName}`} />
                         <p>{product.pName}</p>
-                        <p> ₩ {product.pPrice.toLocaleString()}</p>
-                        <p>재고 : {product.pCount}개</p>
+                        <p>{product.pPrice}원</p>
+                        <p>재고 : {product.pCount}</p>
                     </div>
                 ))}
             </div>

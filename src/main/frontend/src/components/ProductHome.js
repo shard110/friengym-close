@@ -1,13 +1,20 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PopularProducts from './PopularProducts';
-import ShopLnb from './ShopLnb';
 import './ProductHome.css';
-import axios from 'axios';
 
 function ProductHome() {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [categories, setCategories] = useState([]);
+    const [showCategories, setShowCategories] = useState(false);
     const [recentProducts, setRecentProducts] = useState([]);
+
+    const [searchKeyword, setSearchKeyword] = useState('');
+
+    const handleSearch = () => {
+        window.location.href = `/productslist?keyword=${searchKeyword}`;
+    };
 
     const images = [
         'http://localhost:8080/images/banner2.jpg',
@@ -16,6 +23,14 @@ function ProductHome() {
     ];
 
     useEffect(() => {
+        axios.get('/api/categories')
+            .then(response => {
+                setCategories(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching categories:', error);
+            });
+
         axios.get('http://localhost:8080/product')
             .then(response => {
                 setRecentProducts(response.data);
@@ -35,7 +50,35 @@ function ProductHome() {
 
     return (
         <div className="product-home">
-            <ShopLnb />
+            <nav className="navbar">
+                <ul>
+                    <li><Link to="/posts">쇼핑홈</Link></li>
+                    <li className="category-menu"
+                    onMouseEnter={() => setShowCategories(true)}
+                    onMouseLeave={() => setShowCategories(false)}>
+                    <div className="category-toggle">카테고리</div>
+                    <ul className={`category-list ${showCategories ? 'show' : ''}`}>
+                        {categories.map(category => (
+                            <li key={category.catenum}>
+                                <Link to={`/categories/${category.catenum}`}
+                                    onClick={() => setShowCategories(false)}>{category.catename}</Link>
+                            </li>
+                        ))}
+                    </ul>
+                    </li>
+                    <li><Link to="/products">신상품</Link></li>
+                    <li><Link to="/support">베스트</Link></li>
+                </ul>
+                <div className="search-bar">
+                    <input
+                        type="text"
+                        placeholder="쇼핑몰 상품 검색"
+                        value={searchKeyword}
+                        onChange={(e) => setSearchKeyword(e.target.value)}
+                    />
+                    <button onClick={handleSearch}>🔍︎</button>
+                </div>
+            </nav>
             <div className="banner">
                 <img
                     src={images[currentImageIndex]}
@@ -49,38 +92,28 @@ function ProductHome() {
                     <p className='btn-icon-next'></p>
                 </button>
             </div>
-            <section id='shop_cont'>
-                <div className="section popular-products">
-                    <h2>Best</h2>
-                    <div className='flex_box'>
-                        <p className='etc'>frengym에서 최고 인기! Best 상품들을 만나보세요.</p>
-                        <Link to="/products/popular">more</Link>
-                    </div>
-                </div>
-                <PopularProducts limit={4} />
 
-                <div className="section new-products">
-                    <h2>이 달의 신규상품</h2>
-                    <div className='flex_box'>
-                        <p className='etc'>트레이너들이 엄선한 신규 상품, 당신에게 꼭 맞는 상품을 찾아보세요.</p>
-                        <Link to="/products/new">more</Link>
-                    </div>
-                    <div className="product-list">
-                        {recentProducts.length > 0 ? (
-                            recentProducts.map(product => (
-                                <div key={product.pNum} className="product-item">
-                                    <img src={product.pImg} alt={`상품명: ${product.pName}`} />
-                                    <p className='prod_name'>{product.pName}</p>
-                                    <p className='prod_price'> ₩ {product.pPrice.toLocaleString()}</p>
-                                    <p>재고 : {product.pCount}개</p>
-                                </div>
-                            ))
-                        ) : (
-                            <p>No new products available.</p>
-                        )}
-                    </div>
+            <div className="section popular-products">
+                <Link to="/products/popular">more</Link>
+            </div>
+            <PopularProducts limit={4} />
+
+            <div className="section new-products">
+                <Link to="/products/new">more</Link>
+                <div className="product-list">
+                    {recentProducts.length > 0 ? (
+                        recentProducts.map(product => (
+                            <div key={product.pNum} className="product-item">
+                                <img src={product.pImg} alt={`상품명: ${product.pName}`} />
+                                <p>{product.pName}</p>
+                                <p>{product.pPrice}원</p>
+                            </div>
+                        ))
+                    ) : (
+                        <p>No new products available.</p>
+                    )}
                 </div>
-            </section>
+            </div>
         </div>
     );
 }

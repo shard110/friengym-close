@@ -1,8 +1,7 @@
-/* lnb */
-.product-home .navbar {
+/* 최상단 고정바 스타일링 */
+.navbar {
   position: relative;
   width: 1200px;
-  height: 48px;
   margin: 0 auto;
   top: -1px;
   z-index: 1000;
@@ -12,40 +11,40 @@
   justify-content: space-between;
 }
 
-.product-home .navbar ul {
+.navbar ul {
   list-style-type: none;
   padding: 0;
   margin: 0;
   display: flex;
 }
 
-.product-home .navbar>ul>li {
+.navbar>ul>li {
   margin-right:8px;
   padding: 24px;
 }
 
-.product-home .navbar .category-list li {
+.navbar .category-list li {
   padding: 32px;
 }
 
-.product-home .category-toggle{
+.category-toggle{
   cursor: pointer;
 }
 
-.product-home .category-toggle:hover{
+.category-toggle:hover{
   color: #03C7A6;;
 }
 
-.product-home .navbar ul li a {
+.navbar ul li a {
   font-weight: bold;
   color: #333;
 }
 
-.product-home .navbar ul li a:hover {
+.navbar ul li a:hover {
   color: #03C7A6;
 }
 
-.product-home .interaction-area {
+.interaction-area {
   position: sticky;
   top: 0;
   background-color: white;
@@ -56,7 +55,7 @@
   border-bottom: 1px solid #ccc;
 }
 
-.product-home .category-list {
+.category-list {
   position: absolute;
   top: 100%;
   left: 0;
@@ -70,23 +69,23 @@
   min-width: 400px;
 }
 
-.product-home .category-list.show {
+.category-list.show {
   height: 88px;
   border: 1px solid #ccc;
 }
 
-.product-home .search-bar {
+.search-bar {
   display: flex;
   align-items: center;
 }
 
-.product-home .search-bar input {
+.search-bar input {
   padding: 8px;
   margin-right: 8px;
   font-size: 16px;
 }
 
-.product-home .search-bar button {
+.search-bar button {
   width: 80px;
   padding: 8px 16px;
   color: white;
@@ -94,22 +93,22 @@
   cursor: pointer;
 }
 
-/* 배너 */
-.product-home .banner {
+/* 배너 스타일링 */
+.banner {
   position: relative;
   width: 100%;
-  height: 60vh;
-  margin: 0 auto;
+  height: 70vh;
+  margin: 0 auto 50px auto;
   overflow: hidden;
 }
 
-.product-home .banner-image {
+.banner-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.product-home .prev-button, .product-home .next-button {
+.prev-button, .next-button {
   width: 48px;
   height: 48px;
   border: none;
@@ -122,65 +121,43 @@
   background-color: rgba(255, 255, 255, 0);
 }
 
-.product-home .prev-button {
+.prev-button {
   left: 40px;
   transform: rotate(45deg);
 }
 
-.product-home .next-button {
+.next-button {
   right: 40px;
   transform: rotate(225deg);
 }
 
-/* 상품 섹션 */
-#shop_cont{
-  width: 1200px;
-  margin: 80px auto;
-}
-
-.product-home .flex_box{
-  display: flex;
-  margin-bottom: 40px;
-}
-
-.product-home h2{
-  font-size: 32px;
-  text-align: left;
-  margin-bottom: 8px;
-}
-
-.product-home .etc{
-  font-size: 16px;
-  text-align: left;
-  color: #333;
-  font-weight: 300;
-}
-
-
-.product-home .product-sections {
+/* 상품 섹션 스타일링 */
+.product-sections {
   margin-top: 20px;
 }
 
-.product-home .section h3 {
+.section h3 {
   text-align: center;
   margin-bottom: 10px;
 }
 
-.product-home .product-list {
+.product-list {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   flex-wrap: wrap;
   margin-bottom: 20px;
 }
 
-.product-home .product-item {
+.product-item {
   text-align: left;
-  width: 22%;
+  width: 20%;
+  margin: 10px;
+  padding: 10px;
   border-radius: 5px;
   background-color: #fff;
 }
 
-.product-home .product-item img {
+.product-item img {
   width: 100%;
   height: auto;
   cursor: pointer;
