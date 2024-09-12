@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import './PopularProducts.css';
 
 function PopularProducts({ limit }) {
     const [popularProducts, setPopularProducts] = useState([]);
@@ -24,14 +25,13 @@ function PopularProducts({ limit }) {
 
     return (
         <div>
-            <h2>Popular Products</h2>
             <div className="product-list">
                 {popularProducts.map(product => (
                     <div key={product.pNum} className="product-item">
                         <img src={product.pImg} alt={`상품명: ${product.pName}`} />
-                        <p>{product.pName}</p>
-                        <p>{product.pPrice}원</p>
-                        <p>재고 : {product.pCount}</p>
+                        <p className='prod_name'>{product.pName}</p>
+                        <p className='prod_price'> ₩ {product.pPrice.toLocaleString()}</p>
+                        <p className='prod_count'>재고 : {product.pCount}개</p>
                     </div>
                 ))}
             </div>

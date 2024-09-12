@@ -1,7 +1,9 @@
-import React, { useState } from "react";
 import axios from "axios";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
+import styles from './CreatePostForm.module.css'; // CSS 모듈 import
+import Footer from './Footer'; // Footer 컴포넌트 import
 
 const CreatePostForm = () => {
   const { user } = useAuth(); // AuthContext에서 사용자 정보를 가져옵니다
@@ -36,7 +38,7 @@ const CreatePostForm = () => {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${
-              user.token || localStorage.getItem("authToken")
+              user.token || localStorage.getItem("jwtToken")
             }`,
           },
         }
@@ -55,31 +57,44 @@ const CreatePostForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Title:</label>
-        <input
-          type="text"
-          value={poTitle}
-          onChange={(e) => setpoTitle(e.target.value)}
-          required
-        />
+    <>
+      <div className={styles.container}>
+        <div className={styles.formWrapper}>
+          <form onSubmit={handleSubmit}>
+            <div className={styles.field}>
+              <label className={styles.label}>제목</label>
+              <input
+                type="text"
+                className={styles.inputText}
+                value={poTitle}
+                onChange={(e) => setpoTitle(e.target.value)}
+                required
+              />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label}>내용</label>
+              <textarea
+                className={styles.textarea}
+                value={poContents}
+                onChange={(e) => setpoContents(e.target.value)}
+                required
+              />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label}>첨부파일</label>
+              <input
+                type="file"
+                className={styles.inputFile}
+                onChange={(e) => setFile(e.target.files[0])}
+              />
+            </div>
+            <button type="submit" className={styles.button}>게시글 등록</button>
+            {message && <p className={styles.message}>{message}</p>}
+          </form>
+        </div>
       </div>
-      <div>
-        <label>Content:</label>
-        <textarea
-          value={poContents}
-          onChange={(e) => setpoContents(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label>File:</label>
-        <input type="file" onChange={(e) => setFile(e.target.files[0])} />
-      </div>
-      <button type="submit">Create Post</button>
-      {message && <p>{message}</p>}
-    </form>
+      <Footer /> {/* Footer 추가 */}
+    </>
   );
 };
 

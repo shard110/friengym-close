@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from './AuthContext';
+import styles from './LoginPage.module.css'; // Corrected import for CSS module
+
 
 function LoginPage() {
   const [id, setId] = useState('');
@@ -26,22 +28,24 @@ function LoginPage() {
   };
 
   return (
-    <div className="LoginPage">
-      <h2>Login</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+    <div className={styles.LoginPage}>
+      <h2 className={styles.heading}>로그인</h2>
+      {error && <p className={styles.error}>{error}</p>}
       <input
         type="text"
         value={id}
         onChange={(e) => setId(e.target.value)}
         placeholder="User ID"
+        className={styles.input}
       />
       <input
         type="password"
         value={pwd}
         onChange={(e) => setPwd(e.target.value)}
         placeholder="Password"
+        className={styles.input}
       />
-      <button onClick={handleLogin}>Login</button>
+      <button onClick={handleLogin} className={styles.button}>Login</button>
     </div>
   );
 }

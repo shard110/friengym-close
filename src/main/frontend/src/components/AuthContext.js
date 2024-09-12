@@ -1,19 +1,22 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
+
+// Context 생성
 const AuthContext = createContext();
 
+// AuthContext Provider를 사용하여 로그인 상태 관리
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchUser = async () => {
-            const token = localStorage.getItem('authToken');
+            const token = localStorage.getItem('jwtToken');
             if (token) {
                 try {
                     const response = await axios.get('/api/mypage', {
-                        headers: { 
+                        headers: {
                             Authorization: `Bearer ${token}`
                         }
                     });
@@ -22,7 +25,7 @@ export const AuthProvider = ({ children }) => {
                 } catch (error) {
                     console.error('Failed to fetch user info in AuthProvider:', error);
                     setUser(null);
-                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('jwtToken');
                 }
             }
             setLoading(false);
@@ -33,12 +36,12 @@ export const AuthProvider = ({ children }) => {
 
     const login = (userData) => {
         setUser(userData);
-        localStorage.setItem('authToken', userData.token);
+        localStorage.setItem('jwtToken', userData.token);
     };
 
     const logout = () => {
         setUser(null);
-        localStorage.removeItem('authToken');
+        localStorage.removeItem('jwtToken');
     };
 
     return (

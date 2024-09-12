@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import "./PostsList.css"; // CSS 파일을 import
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import styles from './PostsList.module.css'; // CSS 모듈 import
+import Footer from './Footer'; // Footer 컴포넌트 import
 
 export default function PostsList() {
   const [posts, setPosts] = useState([]);
@@ -47,72 +48,78 @@ export default function PostsList() {
   };
 
   return (
-    <div className="container mt-4">
-      <h2>Posts List</h2>
-      <table className="table">
-        <thead>
-          <tr>
-            <th className="number">번호</th>
-            <th className="title">제목</th>
-            <th className="user-name">작성자</th>
-            <th className="date">작성 날짜</th>
-            <th className="view-count">조회수</th>
-          </tr>
-        </thead>
-        <tbody>
-          {posts.map((post) => (
-            <tr key={post.poNum}>
-              <td>{post.poNum}</td>
-              <td>
-                <Link to={`/post/${post.poNum}`}>{post.poTitle}</Link>
-                <span className="comment-count-badge">
-                  {post.commentCount} comments
-                </span>
-              </td>
-              <td>{post.name}</td>
-              <td>{formatDate(post.createdDate)}</td>
-              <td>{post.viewCnt}</td>
+    <div className={styles.container}>
+      <div className={styles.tableWrapper}>
+        <h2 className={styles.heading}>게시글 목록</h2>
+        <Link className={styles.createPostBtn} to="/create-post">
+          게시글 등록
+        </Link>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th className="number">번호</th>
+              <th className="title">제목</th>
+              <th className="user-name">작성자</th>
+              <th className="date">작성 날짜</th>
+              <th className="view-count">조회수</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      <div className="pagination-container mt-4">
-        <nav>
-          <ul className="pagination">
-            <li className="page-item">
-              <button
-                className="page-link"
-                onClick={() => handlePageChange(page - 1)}
-                disabled={page === 1}
-              >
-                Previous
-              </button>
-            </li>
-            {[...Array(totalPages)].map((_, index) => (
-              <li
-                key={index}
-                className={`page-item ${page === index + 1 ? "active" : ""}`}
-              >
+          </thead>
+          <tbody>
+            {posts.map((post) => (
+              <tr key={post.poNum}>
+                <td>{post.poNum}</td>
+                <td>
+                  <Link to={`/post/${post.poNum}`}>{post.poTitle}</Link>
+                  <span className="comment-count-badge">
+                    {post.commentCount} comments
+                  </span>
+                </td>
+                <td>{post.name}</td>
+                <td>{formatDate(post.createdDate)}</td>
+                <td>{post.viewCnt}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className={styles.paginationContainer}>
+          <nav>
+            <ul className={styles.pagination}>
+              <li className={`${styles.pageItem} ${page === 1 ? styles.disabled : ""}`}>
                 <button
-                  className="page-link"
-                  onClick={() => handlePageChange(index + 1)}
+                  className={`${styles.navButton} ${page === 1 ? styles.disabled : ""}`}
+                  onClick={() => handlePageChange(page - 1)}
+                  disabled={page === 1}
                 >
-                  {index + 1}
+                  이전
                 </button>
               </li>
-            ))}
-            <li className="page-item">
-              <button
-                className="page-link"
-                onClick={() => handlePageChange(page + 1)}
-                disabled={page === totalPages}
-              >
-                Next
-              </button>
-            </li>
-          </ul>
-        </nav>
+              {[...Array(totalPages)].map((_, index) => (
+                <li
+                  key={index}
+                  className={`${styles.pageItem} ${page === index + 1 ? styles.active : ""}`}
+                >
+                  <button
+                    className={styles.pageLink}
+                    onClick={() => handlePageChange(index + 1)}
+                  >
+                    {index + 1}
+                  </button>
+                </li>
+              ))}
+              <li className={`${styles.pageItem} ${page === totalPages ? styles.disabled : ""}`}>
+                <button
+                  className={`${styles.navButton} ${page === totalPages ? styles.disabled : ""}`}
+                  onClick={() => handlePageChange(page + 1)}
+                  disabled={page === totalPages}
+                >
+                  다음
+                </button>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </div>
+
     </div>
   );
 }

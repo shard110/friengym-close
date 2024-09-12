@@ -34,6 +34,12 @@ public class Product {
   @JoinColumn(name = "pcate", referencedColumnName = "catenum", insertable = false, updatable = false)
   private Category category;
 
+
+  public Category getCategory() {
+    return this.category;
+}
+
+
   @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Dorder> dorders = new ArrayList<>();
 

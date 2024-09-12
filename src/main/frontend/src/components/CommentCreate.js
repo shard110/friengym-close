@@ -1,5 +1,5 @@
-import React, { useState } from "react";
 import axios from "axios";
+import React, { useState } from "react";
 import { useAuth } from './AuthContext'; // 인증 컨텍스트 추가
 import './CommentCreate.css'; // CSS 파일 임포트
 
@@ -18,7 +18,7 @@ export default function AddComment({ poNum, refreshComments }) {
     try {
       await axios.post(`http://localhost:8080/posts/${poNum}/comments`, { comment }, {
         headers: {
-          'Authorization': `Bearer ${user.token || localStorage.getItem('authToken')}`
+          'Authorization': `Bearer ${user.token || localStorage.getItem('jwtToken')}`
         }
       });
       setComment("");
@@ -31,7 +31,7 @@ export default function AddComment({ poNum, refreshComments }) {
 
   return (
     <div className="card">
-      <div className="card-header bi bi-chat-right-dots">Write a Comment</div>
+      <div className="card-header bi bi-chat-right-dots">댓글 쓰기</div>
       <form onSubmit={handleSubmit}>
         {user ? (
           <>
@@ -47,7 +47,7 @@ export default function AddComment({ poNum, refreshComments }) {
             </div>
             <div className="card-footer">
               <button type="submit" className="btn btn-outline-primary bi bi-pencil-square">
-                Register
+                댓글 등록하기
               </button>
             </div>
           </>
