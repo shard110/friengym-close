@@ -127,26 +127,4 @@ export default function PostDetail() {
               </button>
             </div>
           )}
-          <div className="button-group">
-            {user && user.name === post.name && (
-              <>
-                <Link to={`/edit/${poNum}`} className="button edit-button">
-                  글 수정
-                </Link>
-                <button className="button delete-button" onClick={deletePost}>
-                  글 삭제
-                </button>
-              </>
-            )}
-            <Link className="button back-button" to="/posts">
-              게시글 목록
-            </Link>
-          </div>
-        </div>
-        <hr color="#ddd"></hr>
-      </div>
-      <CommentCreate poNum={poNum} refreshComments={refreshComments} />
-      <CommentList poNum={poNum} key={commentsKey} />
-    </div>
-  );
-}
+
