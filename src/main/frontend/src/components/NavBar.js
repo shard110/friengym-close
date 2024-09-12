@@ -14,7 +14,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="navbar">
+    <nav className="navbarH">
       <div className="navbar-container">
         <div className="navbar-logo-container">
           <Link to="/">
@@ -35,6 +35,9 @@ export default function Navbar() {
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/cart">장바구니</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/cart">고객센터</Link>
             </li>
           </ul>
         </div>

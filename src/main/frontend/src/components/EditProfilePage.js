@@ -2,6 +2,8 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './EditProfilePage.module.css'; // CSS 모듈 임포트
+import { useAuth } from './AuthContext';
+
 
 const EditProfilePage = () => {
     const { user } = useAuth();
