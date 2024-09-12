@@ -1,5 +1,6 @@
 import React from 'react';
-import logo from '../img/logo.svg'
+import { Link } from 'react-router-dom'; // React Router의 Link를 사용합니다.
+import logo from '../img/logo.svg';
 import './Gnb.css';
 
 const Gnb = () => {
@@ -10,14 +11,14 @@ const Gnb = () => {
                     <img src={logo} alt="frienGym"/>
                 </div>
                 <ul className="gnb-menu">
-                    <li><link href="#">About frienGym</link></li>
-                    <li><link href="/board">게시판</link></li>
-                    <li><link href="/products">쇼핑몰</link></li>
-                    <li><link href="#">고객센터</link></li>
+                    <li><Link to="#">About frienGym</Link></li>
+                    <li><Link to="/board">게시판</Link></li>
+                    <li><Link to="/products">쇼핑몰</Link></li>
+                    <li><Link to="#">고객센터</Link></li>
                 </ul>
                 <ul className="gnb-sign">
-                    <li><link href="/login">회원가입</link></li>
-                    <li><link href="/register">로그인</link></li>
+                    <li><Link to="/login">회원가입</Link></li>
+                    <li><Link to="/register">로그인</Link></li>
                 </ul>
             </div>
         </nav>

@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'; // Link 컴포넌트 임포트
 import './HomePage.css';
-import Footer from './Footer'; // Footer 컴포넌트 import
+import Footer from './Footer';
 
 // 슬라이드 데이터
 const slidesData = [
-  { id: 1,   img: 'http://localhost:8080/images/banner2.jpg' },
-  { id: 2,   img: 'http://localhost:8080/images/banner3.jpg' },
-  { id: 3,  img: 'http://localhost:8080/images/banner4.jpg' },
+  { id: 1, img: 'http://localhost:8080/images/banner2.jpg', title: '', description: '' },
+  { id: 2, img: 'http://localhost:8080/images/banner3.jpg', title: '', description: '' },
+  { id: 3, img: 'http://localhost:8080/images/banner4.jpg', title: '', description: '' },
 ];
 
 // 인기 상품 데이터
 const productsData = [
   { id: 1, name: 'Product 1', price: '$10', img: 'http://localhost:8080/images/p7.jpg', link: '/productslist/1' },
-  { id: 2, name: 'Product 2', price: '$20', img: 'http://localhost:8080/images/banner2.jpg', link: '/productslist/2' },
+  { id: 2, name: 'Product 2', price: '$20', img: 'http://localhost:8080/images/banner2.jpg', link :'/productslist/2' },
   { id: 3, name: 'Product 3', price: '$30', img: 'http://localhost:8080/images/banner2.jpg', link: '/productslist/3' },
   { id: 4, name: 'Product 4', price: '$30', img: 'http://localhost:8080/images/banner2.jpg', link: '/productslist/4' },
 ];
@@ -27,11 +28,11 @@ const postsData = [
 
 // 상품 카드 컴포넌트
 const ProductCard = ({ product }) => (
-  <a href={product.link || '#'} className="product-card">
+  <Link to={product.link || '/'} className="product-card">
     <img src={product.img} alt={product.name} />
     <h3>{product.name}</h3>
     <p>{product.price}</p>
-  </a>
+  </Link>
 );
 
 const HomePage = () => {
@@ -52,7 +53,7 @@ const HomePage = () => {
           <div className="slides" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
             {slidesData.map((slide) => (
               <div className="slide" key={slide.id}>
-                <img src={slide.img} alt={slide.title} />
+                <img src={slide.img} alt={`Slide ${slide.id}`} />
                 <h2>{slide.title}</h2>
                 <p>{slide.description}</p>
               </div>
@@ -65,11 +66,11 @@ const HomePage = () => {
         <div className="product-section2">
           <div className="product-header">
             <h2 className="product-title">Best 게시물</h2>
-            <a href="/posts" className="more-products-link">게시물 더보기</a>
+            <Link to="/posts" className="more-products-link">게시물 더보기</Link>
           </div>
           <div className="product-list">
-            {postsData.map((product) => (
-              <ProductCard key={product.id} product={product} />
+            {postsData.map((post) => (
+              <ProductCard key={post.id} product={post} />
             ))}
           </div>
         </div>
@@ -77,7 +78,7 @@ const HomePage = () => {
         <div className="product-section">
           <div className="product-header">
             <h2 className="product-title">인기 상품</h2>
-            <a href="/products" className="more-products-link2">상품 더보기</a>
+            <Link to="/products" className="more-products-link2">상품 더보기</Link>
           </div>
           <div className="product-list">
             {productsData.map((product) => (
@@ -89,7 +90,7 @@ const HomePage = () => {
         <div className="product-section2">
           <div className="product-header">
             <h2 className="product-title">새 상품</h2>
-            <a href="/products" className="more-products-link">상품 더보기</a>
+            <Link to="/products" className="more-products-link">상품 더보기</Link>
           </div>
           <div className="product-list">
             {productsData.map((product) => (
