@@ -8,7 +8,6 @@ import "./PostDetail.css"; // CSS 파일 import
 
 export default function PostDetail() {
   const [post, setPost] = useState({
-    id:"",
     poTitle: "",
     poContents: "",
     name: "",
@@ -37,7 +36,6 @@ export default function PostDetail() {
       try {
         const result = await axios.get(`http://localhost:8080/posts/${poNum}`);
         setPost({
-          id: result.data.id, // `id` 필드를 추가
           poTitle: result.data.poTitle,
           poContents: result.data.poContents,
           name: result.data.name,
@@ -127,4 +125,26 @@ export default function PostDetail() {
               </button>
             </div>
           )}
-
+          <div className="button-group">
+            {user && user.name === post.name && (
+              <>
+                <Link to={`/edit/${poNum}`} className="button edit-button">
+                  글 수정
+                </Link>
+                <button className="button delete-button" onClick={deletePost}>
+                  글 삭제
+                </button>
+              </>
+            )}
+            <Link className="button back-button" to="/posts">
+              게시글 목록
+            </Link>
+          </div>
+        </div>
+        <hr color="#ddd"></hr>
+      </div>
+      <CommentCreate poNum={poNum} refreshComments={refreshComments} />
+      <CommentList poNum={poNum} key={commentsKey} />
+    </div>
+  );
+}
