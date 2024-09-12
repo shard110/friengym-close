@@ -8,6 +8,7 @@ import CommentCreate from './components/CommentCreate';
 import CommentEdit from './components/CommentEdit';
 import CommentList from './components/CommentList';
 import CreatePost from "./components/CreatePost";
+import Customer from './components/Customer';
 import EditPost from './components/EditPost';
 import EditProfilePage from './components/EditProfilePage';
 import HomePage from './components/HomePage';
@@ -97,6 +98,7 @@ export default function App() {
                         <Route path="/asks/view/:anum" element={<ViewAsk />} />
                         <Route path="/asks/update/:anum" element={<UpdateAsk />} />
                         <Route path="/reviews" element={<ReviewPage />} />
+                        <Route path="/customer" element={<Customer />} />
                     </Routes>
                 </div>
             </Router>

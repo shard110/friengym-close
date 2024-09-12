@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import './PopularProducts.css';
 
 function PopularProducts({ limit }) {
     const [popularProducts, setPopularProducts] = useState([]);
