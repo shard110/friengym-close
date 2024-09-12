@@ -37,7 +37,7 @@ export default function Navbar() {
               <Link className="nav-link" to="/cart">장바구니</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/cart">고객센터</Link>
+              <Link className="nav-link" to="/qna">고객센터</Link>
             </li>
           </ul>
         </div>
