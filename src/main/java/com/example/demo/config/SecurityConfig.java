@@ -32,6 +32,7 @@ public class SecurityConfig {
         .authorizeHttpRequests(authorize -> authorize
             .requestMatchers("/api/asks/**").authenticated()  // 인증 필요 경로
             .requestMatchers("/uploads/**").permitAll()  // 인증 불필요 경로
+            .requestMatchers("/files/**").permitAll()  // /files 경로도 인증 없이 허용
             .anyRequest().permitAll()  // 그 외 모든 요청 허용
         )
         .sessionManagement(session -> session

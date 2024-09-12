@@ -1,9 +1,9 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PopularProducts from './PopularProducts';
-import ShopLnb from './ShopLnb';
 import './ProductHome.css';
-import axios from 'axios';
+import ShopLnb from './ShopLnb';
 
 function ProductHome() {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -26,15 +26,14 @@ function ProductHome() {
                 console.error('Error fetching recent products:', error);
             });
 
-            // 리뷰 목록 가져오기
+        // 리뷰 목록 가져오기
         axios.get('http://localhost:8080/reviews')
-        .then(response => {
-            setReviews(response.data);
-        })
-        .catch(error => {
-            console.error('Error fetching reviews:', error);
-        });
-
+            .then(response => {
+                setReviews(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching reviews:', error);
+            });
 
         const interval = setInterval(() => {
             setCurrentImageIndex(prevIndex =>
@@ -98,7 +97,7 @@ function ProductHome() {
                     </div>
                     <div className="product-list">
                         {recentProducts.length > 0 ? (
-                            recentProducts.map(product => (
+                            recentProducts.slice(0, 3).map(product => (  // 3개만 표시
                                 <div key={product.pNum} className="product-item">
                                     <img src={product.pImg} alt={`상품명: ${product.pName}`} />
                                     <p className='prod_name'>{product.pName}</p>
@@ -112,8 +111,8 @@ function ProductHome() {
                     </div>
                 </div>
             
-             {/* 리뷰 슬라이드 섹션 */}
-             <div className="section review-slider">
+            {/* 리뷰 슬라이드 섹션 */}
+            <div className="section review-slider">
                 <h3>리뷰</h3>
                 <div className="review-container">
                     {reviews.length > 0 && (
@@ -128,7 +127,7 @@ function ProductHome() {
                 </div>
             </section>
         </div>
-);
+    );
 }
 
 export default ProductHome;

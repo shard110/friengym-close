@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.ProductDetailDTO;
 import com.example.demo.dto.ProductListDTO;
+import com.example.demo.dto.ProductResponseDTO;
 import com.example.demo.entity.Product;
 import com.example.demo.repository.ProductRepository;
 
@@ -108,11 +109,13 @@ public class ProductService {
         }, java.sql.Date.valueOf(oneMonthAgo));
     }
 
-    // 카테고리별 상품 가져오기
-    public List<Product> findProductsByCategory(int catenum) {
-        return productRepository.findByCategory(catenum);
-    }
-
+    // 카테고리별 상품을 ProductResponseDTO로 반환
+public List<ProductResponseDTO> findProductsByCategory(int catenum) {
+    List<Product> products = productRepository.findByCategory(catenum);
+    return products.stream()
+                   .map(ProductResponseDTO::new)
+                   .collect(Collectors.toList());
+}
 
     // 검색
     public List<ProductListDTO> searchProducts(String keyword) {

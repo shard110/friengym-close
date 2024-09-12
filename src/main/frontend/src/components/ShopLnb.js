@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import './ShopLnb.css';
 
 function ShopLnb() {
@@ -39,8 +39,8 @@ function ShopLnb() {
                         ))}
                     </ul>
                 </li>
-                <li><Link to="/products">신상품</Link></li>
-                <li><Link to="/support">베스트</Link></li>
+                <li><Link to="/products/new">신상품</Link></li>
+                <li><Link to="/products/popular">베스트</Link></li>
             </ul>
             <div className="search-bar">
                 <input

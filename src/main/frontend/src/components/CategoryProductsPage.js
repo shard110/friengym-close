@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom'; // Link 컴포넌트 추가
+import './CategoryProductsPage.css';
 
 function CategoryProductsPage() {
     const { catenum } = useParams();
@@ -14,25 +15,26 @@ function CategoryProductsPage() {
           .catch(error => {
               console.error('Error fetching products:', error);
           });
-  }, [catenum]);
+    }, [catenum]);
 
     return (
       <div className="category-products">
-      <h2>카테고리별 상품 목록</h2>
-      {products.length === 0 ? (
+        <h2>카테고리별 상품 목록</h2>
+        {products.length === 0 ? (
           <p>해당 카테고리에 상품이 없습니다.</p>
-      ) : (
+        ) : (
           <ul>
-              {products.map(product => (
-                  <li key={product.pNum}>
-                      <img src={product.pImg} alt={product.pName} />
-                      <h3>{product.pName}</h3>
-                      <p>가격: {product.pPrice}원</p>
-                  </li>
-              ))}
+            {products.map(product => (
+              <li key={product.pNum}>
+                  <img src={product.pImg} alt={product.pName} />
+                  <h3>{product.pName}</h3>
+                  <p>가격: {product.pPrice}원</p>
+                
+              </li>
+            ))}
           </ul>
-      )}
-  </div>
+        )}
+      </div>
     );
 }
 

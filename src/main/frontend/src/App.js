@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { AuthProvider } from './components/AuthContext';
 import NavBar from './components/NavBar'; // NavBar 컴포넌트 임포트
 
@@ -7,7 +7,8 @@ import CategoryProductsPage from './components/CategoryProductsPage';
 import CommentCreate from './components/CommentCreate';
 import CommentEdit from './components/CommentEdit';
 import CommentList from './components/CommentList';
-import CreatePost from './components/CreatePost';
+import CreatePost from "./components/CreatePost";
+import Customer from './components/Customer';
 import EditPost from './components/EditPost';
 import EditProfilePage from './components/EditProfilePage';
 import HomePage from './components/HomePage';
@@ -58,14 +59,15 @@ export default function App() {
             <Route path="/post/:poNum/comments" element={<CommentList />} />
             <Route path="/post/:poNum/comments/create" element={<CommentCreate />} />
             <Route path="/post/:poNum/comments/:commentNo/edit" element={<CommentEdit />} />
-            <Route path="/qna" element={<QnaPage />} />
-            <Route path="/asks" element={<AskPage />} />
-            <Route path="/asks/view/:anum" element={<ViewAsk />} />
-            <Route path="/asks/update/:anum" element={<UpdateAsk />} />
-            <Route path="/reviews" element={<ReviewPage />} />
-          </Routes>
-        </div>
-      </Router>
-    </AuthProvider>
-  );
+                          <Route path="/qna" element={<QnaPage />} />
+                        <Route path="/asks" element={<AskPage />} />
+                        <Route path="/asks/view/:anum" element={<ViewAsk />} />
+                        <Route path="/asks/update/:anum" element={<UpdateAsk />} />
+                        <Route path="/reviews" element={<ReviewPage />} />
+                        <Route path="/customer" element={<Customer />} />
+                    </Routes>
+                </div>
+            </Router>
+        </AuthProvider>
+    );
 }
