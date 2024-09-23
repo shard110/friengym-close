@@ -66,6 +66,8 @@ const AskPage = () => {
         },
       }
     );
+
+    
     if (response.status === 200) {
       setIsPasswordVerified(true);  // 비밀번호가 일치하면 상태를 업데이트
     } else {
@@ -74,7 +76,7 @@ const AskPage = () => {
     }
   } catch (error) {
     if (error.response ) {
-      alert("비밀번호 확인 중 오류가 발생했습니다.");
+      alert("비밀번호가 일치하지 않습니다.");
     }
   }
 };
